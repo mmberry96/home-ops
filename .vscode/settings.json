@@ -19,6 +19,10 @@
     "*.secret.sops.yaml": "lock",
     "renovate.jsonc": "renovate"
   },
+  "material-icon-theme.folders.associations": {
+    "default": "home",
+    "flux-system": "pipe"
+  },
   "sops.defaults.ageKeyFile": "age.key",
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
