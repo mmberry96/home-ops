@@ -15,10 +15,9 @@ spec:
         name: cert-manager
         namespace: cert-manager
       interval: 12h
-  # install:
-  #   crds: CreateReplace
+  install:
+    crds: CreateReplace
   values:
-    installCRDs: true
     replicaCount: 3
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
