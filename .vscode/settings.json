@@ -1,0 +1,43 @@
+{
+  "cSpell.words": [
+    "agekey",
+    "datetime",
+    "dotenv",
+    "keygen",
+    "fluxcd",
+    "letsencrypt",
+    "opnsense",
+    "openmeteo",
+    "pihole",
+    "taskfiles",
+    "traefik",
+    "unifi",
+    "websecure"
+  ],
+  "material-icon-theme.files.associations": {
+    "*.secret.sops.yaml": "lock",
+    "renovate.jsonc": "renovate"
+  },
+  "sops.defaults.ageKeyFile": "age.key",
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+    "kubernetes": "./kubernetes/*.yaml",
+    "kubernetes://schema/helm.toolkit.fluxcd.io/v2@helmrelease": [
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/traefik/helm-release.yaml",
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/cert-manager/helm-release.yaml"
+    ],
+    "kubernetes://schema/kustomize.toolkit.fluxcd.io/v1%40kustomization": "file:///home/matt/git/HomeOps/kubernetes/clusters/cluster01/infrastructure.yaml",
+    "kubernetes://schema/kustomize.toolkit.fluxcd.io/v1@kustomization": "file:///home/matt/git/HomeOps/kubernetes/clusters/cluster01/apps.yaml",
+    "https://json.schemastore.org/kustomization.json": [
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/configs/kustomization.yaml",
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/traefik/dashboard/kustomization.yaml",
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/traefik/kustomization.yaml",
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/kustomization.yaml"
+    ],
+    "kubernetes://schema/source.toolkit.fluxcd.io/v1@helmrepository": [
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/cert-manager/helm-repository.yaml",
+      "file:///home/matt/git/HomeOps/kubernetes/infrastructure/controllers/traefik/helm-repository.yaml"
+    ],
+    "https://taskfile.dev/schema.json": "file:///home/matt/git/HomeOps/Taskfile.yaml"
+  }
+}

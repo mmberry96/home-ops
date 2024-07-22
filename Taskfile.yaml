@@ -1,0 +1,33 @@
+---
+version: '3'
+
+includes:
+  flux: .taskfiles/Flux
+  sops: .taskfiles/Sops
+
+vars:
+  # Directories
+  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
+  # Files
+  AGE_FILE: '{{.ROOT_DIR}}/age.key'
+  CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
+  KUBECONFIG_FILE: '{{.ROOT_DIR}}/kubeconfig'
+  SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
+
+dotenv:
+  - '.env'
+
+tasks:
+  default: task -l
+
+  init:
+    desc: Initialize a new config file for a cluster
+    summary: |
+      CLUSTER: The name of cluster to initialize a config file for
+    cmds:
+      - mkdir -p {{.KUBERNETES_DIR}}/{{.CLUSTER}}
+      - cp -n {{.CONFIG_FILE | replace ".yaml" ".sample.yaml"}} {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/{{.CONFIG_FILE}}
+      - echo Created config file {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/{{.CONFIG_FILE}}
+    requires:
+      vars: [CLUSTER]
+    silent: true

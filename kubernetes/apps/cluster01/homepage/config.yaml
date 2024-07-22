@@ -1,0 +1,127 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: default
+  labels:
+    app: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: Mordex.io Homepage
+
+    background:
+      image: https://plus.unsplash.com/premium_photo-1675826774817-fe983ceb0475?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+      blur: sm
+      saturate: 100
+      brightness: 50
+      opacity: 100
+
+    theme: dark
+    color: slate
+
+    useEqualHeights: true
+
+    statusStyle: dot
+
+    layout:
+      Infrastructure:
+        style: row
+        columns: 4
+      Networking:
+        style: row
+        columns: 3
+  custom.css: |
+    #information-widgets-right {
+      justify-content: space-between !important;
+    }
+  custom.js: ''
+  bookmarks.yaml: ''
+  services.yaml: |
+    - Infrastructure:
+        - Proxmox:
+            icon: proxmox.svg
+            href: https://pve1.home.mordex.io
+            description: pve1
+            widget:
+              type: proxmox
+              url: https://pve1.home.mordex.io
+              username: {{HOMEPAGE_VAR_PROXMOX_USER}}
+              password: {{HOMEPAGE_VAR_PROXMOX_API_KEY}}
+              node: chameleon
+        - Proxmox:
+            icon: proxmox.svg
+            href: https://pve2.home.mordex.io
+            description: pve2
+            widget:
+              type: proxmox
+              url: https://pve2.home.mordex.io
+              username: {{HOMEPAGE_VAR_PROXMOX_USER}}
+              password: {{HOMEPAGE_VAR_PROXMOX_API_KEY}}
+              node: komodo
+        - Proxmox:
+            icon: proxmox.svg
+            href: https://pve3.home.mordex.io
+            description: pve3
+            widget:
+              type: proxmox
+              url: https://pve3.home.mordex.io
+              username: {{HOMEPAGE_VAR_PROXMOX_USER}}
+              password: {{HOMEPAGE_VAR_PROXMOX_API_KEY}}
+              node: basilisk
+        - Proxmox:
+            icon: proxmox.svg
+            href: https://pve4.home.mordex.io
+            description: pve4
+            widget:
+              type: proxmox
+              url: https://pve4.home.mordex.io
+              username: {{HOMEPAGE_VAR_PROXMOX_USER}}
+              password: {{HOMEPAGE_VAR_PROXMOX_API_KEY}}
+              node: uromastyx
+    - Networking:
+        - Pi-Hole:
+            icon: pi-hole.svg
+            href: http://pihole.home.mordex.io/admin
+            description: Pi-Hole
+            siteMonitor: http://pihole.home.mordex.io
+            widget:
+              type: pihole
+              url: http://pihole.home.mordex.io
+              key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
+        - Unifi:
+            icon: unifi-controller.png
+            href: https://unifi.home.mordex.io/network
+            description: Unifi Network
+            siteMonitor: https://unifi.home.mordex.io/network
+            widget:
+              type: unifi
+              url: https://unifi.home.mordex.io
+              username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+              password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+        - OPNSense:
+            icon: opnsense.svg
+            href: https://router.home.mordex.io
+            description: OPNSense
+            siteMonitor: https://router.home.mordex.io
+            widget:
+              type: opnsense
+              url: https://router.home.mordex.io
+              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+  widgets.yaml: |
+    - openmeteo:
+        label: {{HOMEPAGE_VAR_OPENMETEO_LABEL}}
+        latitude: {{HOMEPAGE_VAR_OPENMETEO_LAT}}
+        longitude: {{HOMEPAGE_VAR_OPENMETEO_LONG}}
+        timezone: America/Chicago
+        units: imperial
+        cache: 5
+    - datetime:
+        text_size: 2xl
+        format:
+          timeStyle: short
+          hour12: true
+  docker.yaml: ''
