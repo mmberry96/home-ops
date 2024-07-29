@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
 includes:
-  flux: .taskfiles/Flux
+  flux: .taskfiles/Bootstrap
   sops: .taskfiles/Sops
 
 vars:
@@ -14,8 +15,8 @@ vars:
   KUBECONFIG_FILE: '{{.ROOT_DIR}}/kubeconfig'
   SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
 
-dotenv:
-  - '.env'
+env:
+  SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
 
 tasks:
   default: task -l

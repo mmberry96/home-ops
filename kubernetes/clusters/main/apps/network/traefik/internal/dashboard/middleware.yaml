@@ -1,0 +1,9 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-internal-dashboard-basicauth
+  namespace: network
+spec:
+  basicAuth:
+    secret: traefik-internal-dashboard-auth

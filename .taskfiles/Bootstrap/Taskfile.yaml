@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+  kubernetes:
+    desc: Bootstrap a Kubernetes cluster backed by flux, sops
+    prompt: Bootstrap a Kubernetes cluster...continue?
+    summary: |
+      CLUSTER: Cluster to run command against (default: main)
+    vars: &vars
+      CLUSTER: '{{.CLUSTER | default "main"}}'
+    cmds:
+      - { task: apps, vars: *vars }
+      - { task: flux, vars: *vars }
+
+  apps:
+    internal: true
+    cmds:
+      - helmfile --quiet --kube-context {{.CLUSTER}} --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-dff-on-install --suppress-diff
+    preconditions:
+      - msg: Missing helmfile.yaml
+        sh: test -f {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml
+
+  flux:
+    internal: true
+    cmds:
+      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/bootstrap
+      - cat {{.SOPS_AGE_KEY_FILE}} | kubectl --context {{.CLUSTER}} -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
+      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/github-deploy-key.secret.sops.yaml | kubectl --context {{.CLUSTER}} apply --server-side --filename -
+      - sops --decrypt {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/vars/cluster-secrets.secret.sops.yaml | kubectl --context {{.CLUSTER}} apply --server-side --filename -
+      - kubectl --context {{.CLUSTER}} apply --server-side --filename {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/vars/cluster-settings.yaml
+      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/config
+    preconditions:
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
+      - msg: Missing Sops key file
+        sh: test -f {{.SOPS_AGE_KEY_FILE}}
+      - msg: Missing cluster secrets file
+        sh: test -f {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/vars/cluster-secrets.secret.sops.yaml
+      - msg: Missing cluster settings
+        sh: test -f {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/vars/cluster-settings.yaml
+      - sops filestatus {{.KUBERNETES_DIR}}/bootstrap/github-deploy-key.secret.sops.yaml | jq --exit-status '.encrypted'
+      - sops filestatus {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/flux/vars/cluster-secrets.secret.sops.yaml | jq --exit-status '.encrypted'

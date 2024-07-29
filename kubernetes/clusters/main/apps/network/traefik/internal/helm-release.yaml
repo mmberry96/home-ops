@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik-internal
+  namespace: network
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: traefik
+      version: 'v30.0.0'
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    deployment:
+      replicas: 3
+
+    providers:
+      kubernetesCRD:
+        ingressClass: traefik-internal
+
+    globalArguments:
+      - '--global.sendanonymoususage=false'
+      - '--global.checknewversion=false'
+
+    additionalArguments:
+      - '--serverstransport.insecureskipverify=true'
+
+    ports:
+      web:
+        redirectTo:
+          port: websecure
+          priority: 10
+      websecure:
+        http3:
+          enabled: true
+        advertisedPort: 4443
+
+    service:
+      spec:
+        loadBalancerIP: 10.30.0.100

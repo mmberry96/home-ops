@@ -1,6 +1,4 @@
-.env
-
-# k8s
 kubeconfig
 .decrypted~*.yaml
 *.key
+*.pub

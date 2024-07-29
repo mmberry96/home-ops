@@ -1,17 +1,20 @@
 {
   "cSpell.words": [
     "agekey",
-    "crds",
     "datetime",
-    "dotenv",
-    "keygen",
+    "filestatus",
     "fluxcd",
+    "helmfile",
+    "jetstack",
+    "keygen",
     "letsencrypt",
-    "opnsense",
     "openmeteo",
+    "opnsense",
     "pihole",
+    "stakater",
     "taskfiles",
     "traefik",
+    "truenas",
     "unifi",
     "websecure"
   ],
@@ -20,8 +23,11 @@
     "renovate.jsonc": "renovate"
   },
   "material-icon-theme.folders.associations": {
+    "cert-manager": "guard",
     "default": "home",
-    "flux-system": "pipe"
+    "flux": "pipe",
+    "flux-system": "pipe",
+    "network": "connection"
   },
   "sops.defaults.ageKeyFile": "age.key",
   "yaml.schemaStore.enable": true,
