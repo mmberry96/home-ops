@@ -4,6 +4,7 @@ version: '3'
 
 includes:
   bootstrap: .taskfiles/Bootstrap
+  flux: .taskfiles/Flux
   sops: .taskfiles/Sops
 
 vars:

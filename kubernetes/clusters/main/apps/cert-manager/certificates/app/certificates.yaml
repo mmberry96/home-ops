@@ -12,4 +12,4 @@ spec:
   commonName: '*.home.mordex.io'
   dnsNames:
     - 'home.mordex.io'
-    - '*home.mordex.io'
+    - '*.home.mordex.io'
