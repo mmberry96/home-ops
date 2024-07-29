@@ -11,13 +11,13 @@ tasks:
     vars: &vars
       CLUSTER: '{{.CLUSTER | default "main"}}'
     cmds:
-      - { task: apps, vars: *vars }
+      # - { task: apps, vars: *vars }
       - { task: flux, vars: *vars }
 
   apps:
     internal: true
     cmds:
-      - helmfile --quiet --kube-context {{.CLUSTER}} --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-dff-on-install --suppress-diff
+      - helmfile --quiet --kube-context {{.CLUSTER}} --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
     preconditions:
       - msg: Missing helmfile.yaml
         sh: test -f {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml
