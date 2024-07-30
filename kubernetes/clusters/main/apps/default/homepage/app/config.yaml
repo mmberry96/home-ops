@@ -123,6 +123,12 @@ data:
               url: https://truenas.home.mordex.io
               key: {{HOMEPAGE_VAR_TRUENAS_API_KEY}}
               enablePools: true
+    - Media
+        - Plex
+            icon: plex.svg
+            href: https://plex.home.mordex.io
+            description: Plex
+            siteMonitor: https://plex.home.mordex.io
   widgets.yaml: |
     - openmeteo:
         label: {{HOMEPAGE_VAR_OPENMETEO_LABEL}}
