@@ -29,6 +29,7 @@ spec:
 
     providers:
       kubernetesCRD:
+        allowCrossNamespace: true
         ingressClass: traefik-internal
 
     globalArguments:

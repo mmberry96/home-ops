@@ -6,7 +6,7 @@ metadata:
   name: &app certificates
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: cert-manager
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
