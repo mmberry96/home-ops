@@ -123,8 +123,8 @@ data:
               url: https://truenas.home.mordex.io
               key: {{HOMEPAGE_VAR_TRUENAS_API_KEY}}
               enablePools: true
-    - Media
-        - Plex
+    - Media:
+        - Plex:
             icon: plex.svg
             href: https://plex.home.mordex.io
             description: Plex
