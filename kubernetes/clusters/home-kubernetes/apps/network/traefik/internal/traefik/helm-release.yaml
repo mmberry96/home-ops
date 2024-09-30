@@ -38,6 +38,7 @@ spec:
 
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
+      - '--api-insecure=true'
       - '--log.level=DEBUG'
 
     ports:
