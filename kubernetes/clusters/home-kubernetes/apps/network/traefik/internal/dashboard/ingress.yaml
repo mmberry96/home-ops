@@ -18,5 +18,5 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-  # tls:
-  #   secretName: home-mordex-io-tls
+  tls:
+    secretName: home-mordex-io-tls
