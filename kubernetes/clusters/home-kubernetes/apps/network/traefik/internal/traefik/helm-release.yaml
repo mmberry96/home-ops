@@ -28,12 +28,12 @@ spec:
       replicas: 3
 
     ingressClass:
-      enabled: false
+      name: traefik-internal
 
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
-        ingressClass: traefik-internal
+        # ingressClass: traefik-internal
 
     globalArguments:
       - '--global.sendanonymoususage=false'
