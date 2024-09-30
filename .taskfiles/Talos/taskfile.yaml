@@ -33,6 +33,7 @@ tasks:
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
       - { task: fetch-kubeconfig, vars: { CLUSTER: '{{.CLUSTER}}' } }
       - { task: install-helm-apps, vars: { CLUSTER: '{{.CLUSTER}}' } }
+      - talosctl --talosconfig {{.TALOSCONFIG_FILE}} health --server=false
     vars: *vars
     requires:
       vars: [CLUSTER]

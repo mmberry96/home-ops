@@ -20,4 +20,4 @@ spec:
               secure: true
               sameSite: none
   tls:
-    secretName: cert-manager/home-mordex-io-tls
+    secretName: home-mordex-io-tls
