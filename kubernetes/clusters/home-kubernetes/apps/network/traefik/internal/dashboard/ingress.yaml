@@ -3,7 +3,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
-  namespace: default
+  namespace: network
   annotations:
     kubernetes.io/ingress.class: traefik-internal
 spec:
@@ -18,5 +18,5 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-  tls:
-    secretName: home-mordex-io-tls
+  # tls:
+  #   secretName: home-mordex-io-tls
