@@ -27,6 +27,9 @@ spec:
     deployment:
       replicas: 3
 
+    ingressClass:
+      enabled: false
+
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
