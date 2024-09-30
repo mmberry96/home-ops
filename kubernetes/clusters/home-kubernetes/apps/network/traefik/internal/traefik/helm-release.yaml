@@ -41,7 +41,7 @@ spec:
 
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
-      - '--api.insecure=true'
+      - '--providers.kubernetesingress.ingressclass=traefik-internal'
       - '--log.level=DEBUG'
 
     ports:
