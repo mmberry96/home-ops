@@ -1,0 +1,3 @@
+---
+providerRegex: ^anole\d{2}$
+bypassDnsResolution: true

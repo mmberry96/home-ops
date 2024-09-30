@@ -1,0 +1,125 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+x-vars: &vars
+  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos/clusterconfig'
+  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos/talsecret.sops.yaml'
+  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos/talconfig.yaml'
+  HELMFILE_FILE: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/helmfile.yaml'
+  TALOSCONFIG_FILE: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
+  # TALOS_VERSION:
+  #   sh: yq 'select(document_index == 1).spec.postBuild.substitute.TALOS_VERSION' {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
+  # TALOS_SCHEMATIC_ID:
+  #   sh: yq 'select(document_index == 1).spec.postBuild.substitute.TALOS_SCHEMATIC_ID' {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
+  # KUBERNETES_VERSION:
+  #   sh: yq 'select(document_index == 1).spec.postBuild.substitute.KUBERNETES_VERSION' {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/apps/system-upgrade/system-upgrade-controller/ks.yaml
+  # CONTROLLER:
+  #   sh: talosctl --context {{.CLUSTER}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+
+tasks:
+  bootstrap:
+    desc: Bootstrap the Talos cluster
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmds:
+      - |
+        if [ ! -f '{{.TALHELPER_SECRET_FILE}}' ]; then
+            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
+            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
+        fi
+      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+      # - talosctl config merge {{.TALOSCONFIG_FILE}} # TODO: force overwrite?
+      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags='--insecure' | bash
+      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
+      - { task: fetch-kubeconfig, vars: { CLUSTER: '{{.CLUSTER}}' } }
+      - { task: install-helm-apps, vars: { CLUSTER: '{{.CLUSTER}}' } }
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    status:
+      - test -f {{.TALOSCONFIG_FILE}}
+      - test $(talosctl --talosconfig {{.TALOSCONFIG_FILE}} health --server=false 2>&1 | egrep -c 'OK|SKIP') -eq 16
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing Sops config file
+        sh: test -f {{.SOPS_CONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
+
+  fetch-kubeconfig:
+    desc: Fetch kubeconfig
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmd: until talhelper gencommand kubeconfig --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags='{{.ROOT_DIR}} --force --force-context-name {{.CLUSTER}}' | bash; do sleep 10; done
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+
+  install-helm-apps:
+    desc: Bootstrap core apps needed for Talos
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmds:
+      - until kubectl --context {{.CLUSTER}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
+      - helmfile --quiet --kube-context {{.CLUSTER}} --file {{.HELMFILE_FILE}} apply --skip-diff-on-install --suppress-diff
+      - until kubectl --context {{.CLUSTER}} wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - msg: Missing helmfile.yaml
+        sh: test -f {{.HELMFILE_FILE}}
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
+
+  upgrade:
+    desc: Upgrade Talos on a node
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmds:
+      - until kubectl --context {{.CLUSTER}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
+      - talosctl --context {{.CLUSTER}} --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" --wait=true --timeout=10m --preserve=true
+      - talosctl --context {{.CLUSTER}} --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
+    vars: *vars
+    requires:
+      vars: [CLUSTER, HOSTNAME]
+    preconditions:
+      - msg: Missing talosconfig
+        sh: test -f {{TALOSCONFIG_FILE}}
+      - msg: Unable to retrieve Talos config
+        sh: talosctl --context {{.CLUSTER}} config info >/dev/null 2>&1
+      - msg: Node not found
+        sh: talosctl --context {{.CLUSTER}} --nodes {{.HOSTNAME}} get machineconfig >/dev/null 2>&1
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes
+    cmds:
+      - until kubectl --context {{.CLUSTER}} wait --timeout=5m --for=condition=Complete jobs --all --all-namespaces; do sleep 10; done
+      - talosctl --context {{.CLUSTER}} --nodes {{.CONTROLLER}} upgrade-k8s --to {{.KUBERNETES_VERSION}}
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - msg: Missing talosconfig
+        sh: test -f {{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos/talosconfig
+      - msg: Unable to retrieve Talos config
+        sh: talosctl --context {{.CLUSTER}} config info >/dev/null 2>&1
+      - msg: Node not found
+        sh: talosctl --context {{.CLUSTER}} --nodes {{.CONTROLLER}} get machineconfig >/dev/null 2>&1
+
+  soft-nuke:
+    desc: Resets nodes back to maintenance mode so you can re-deploy again straight after
+    prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmd: talhelper gencommand reset --extra-flags '--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false' | bash
+    requires:
+      vars: [CLUSTER]
+
+  hard-nuke:
+    desc: Resets nodes back completely and reboots them
+    prompt: This will destroy your cluster and reset the nodes... continue?
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmd: talhelper gencommand reset --extra-flags '--reboot --graceful=false --wait=false' | bash
+    requires:
+      vars: [CLUSTER]

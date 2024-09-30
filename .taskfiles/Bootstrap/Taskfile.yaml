@@ -2,25 +2,28 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+includes:
+  talos:
+    taskfile: ../Talos
+    internal: true
+
 tasks:
   kubernetes:
-    desc: Bootstrap a Kubernetes cluster backed by flux, sops
+    desc: Bootstrap a Kubernetes cluster backed by flux, sops, and rook
     prompt: Bootstrap a Kubernetes cluster...continue?
     summary: |
-      CLUSTER: Cluster to run command against (default: main)
+      CLUSTER: Cluster to run command against (default: home-kubernetes)
+      NODES: Nodes in the cluster to reset Rook on (required, comma delimited)
+      DISK: Disk to reset Rook on (required, e.g. /dev/nvme0n1)
     vars: &vars
-      CLUSTER: '{{.CLUSTER | default "main"}}'
+      CLUSTER: '{{.CLUSTER | default "home-kubernetes"}}'
+      # NODES: '{{.NODES}}'
+      # DISK: '{{.DISK}}'
     cmds:
-      # - { task: apps, vars: *vars }
+      - { task: talos:bootstrap, vars: *vars }
       - { task: flux, vars: *vars }
-
-  apps:
-    internal: true
-    cmds:
-      - helmfile --quiet --kube-context {{.CLUSTER}} --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-    preconditions:
-      - msg: Missing helmfile.yaml
-        sh: test -f {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml
+    # requires:
+    #   vars: [NODES, DISK]
 
   flux:
     internal: true
