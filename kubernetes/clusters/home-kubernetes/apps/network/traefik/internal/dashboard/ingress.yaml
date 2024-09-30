@@ -19,4 +19,4 @@ spec:
         - name: api@internal
           kind: TraefikService
   tls:
-    secretName: cert-manager/home-mordex-io-tls
+    secretName: home-mordex-io-tls
