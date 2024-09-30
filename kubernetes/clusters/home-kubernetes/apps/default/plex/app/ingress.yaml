@@ -14,5 +14,5 @@ spec:
       services:
         - name: plex
           port: 32400
-  tls:
-    secretName: home-mordex-io-tls
+  # tls:
+  #   secretName: home-mordex-io-tls
