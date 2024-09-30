@@ -33,7 +33,7 @@ spec:
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
-        # ingressClass: traefik-internal
+        ingressClass: traefik-internal
 
     globalArguments:
       - '--global.sendanonymoususage=false'
@@ -41,7 +41,6 @@ spec:
 
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
-      - '--providers.kubernetesingress.ingressclass=traefik-internal'
       - '--log.level=DEBUG'
 
     ports:
