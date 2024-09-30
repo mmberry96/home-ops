@@ -30,14 +30,6 @@ spec:
     ingressClass:
       name: traefik-internal
 
-    ingressRoute:
-      dashboard:
-        enabled: true
-        matchRule: Host(`traefik.home.mordex.io`)
-        entryPoints: ['websecure']
-        middlewares:
-          - name: traefik-internal-dashboard-basicauth
-
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
