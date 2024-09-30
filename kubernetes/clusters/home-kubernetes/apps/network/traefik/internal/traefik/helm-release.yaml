@@ -16,7 +16,6 @@ spec:
         name: traefik
         namespace: flux-system
   install:
-    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
