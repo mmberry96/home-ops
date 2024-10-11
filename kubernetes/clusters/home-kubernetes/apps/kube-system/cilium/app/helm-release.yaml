@@ -51,7 +51,7 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: traefik-internal
-          className: internal
+          className: traefik-internal
           hosts: ['hubble.home.mordex.io']
     # operator:
     #   dashboards:
