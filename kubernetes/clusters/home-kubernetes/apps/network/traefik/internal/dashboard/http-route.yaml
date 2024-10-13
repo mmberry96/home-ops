@@ -10,11 +10,11 @@ spec:
       namespace: network
   hostnames:
     - traefik.home.mordex.io
-  # rules:
-  #   - matches:
-  #       - path:
-  #           type: PathPrefix
-  #           value: /dashboard
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /dashboard
   #     backendRefs:
   #       - name: traefik-internal
   #         namespace: network
