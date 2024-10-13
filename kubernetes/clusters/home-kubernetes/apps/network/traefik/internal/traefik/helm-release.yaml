@@ -60,7 +60,6 @@ spec:
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
       - '--log.level=DEBUG'
-      - '--providers.kubernetesGateway.experimentalChannel=true'
 
     ports:
       # web:
