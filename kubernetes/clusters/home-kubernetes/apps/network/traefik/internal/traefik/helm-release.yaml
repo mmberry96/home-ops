@@ -41,13 +41,7 @@ spec:
               namespace: cert-manager
           mode: Terminate
 
-    ingressClass:
-      name: traefik-internal
-
     providers:
-      kubernetesCRD:
-        allowCrossNamespace: true
-        ingressClass: traefik-internal
       kubernetesIngress:
         enabled: false
       kubernetesGateway:
@@ -57,9 +51,8 @@ spec:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
 
-    additionalArguments:
-      - '--serverstransport.insecureskipverify=true'
-      - '--log.level=DEBUG'
+    # additionalArguments:
+    #   - '--serverstransport.insecureskipverify=true'
 
     ports:
       web:

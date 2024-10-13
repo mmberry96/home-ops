@@ -7,5 +7,4 @@ resources:
   - ./deployment.yaml
   - ./config.yaml
   - ./service.yaml
-  # - ./ingress.yaml
   - ./http-route.yaml
