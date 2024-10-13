@@ -53,10 +53,10 @@ spec:
       - '--log.level=DEBUG'
 
     ports:
-      web:
-        redirectTo:
-          port: websecure
-          priority: 10
+      # web:
+      #   redirectTo:
+      #     port: websecure
+      #     priority: 10
       websecure:
         http3:
           enabled: true
