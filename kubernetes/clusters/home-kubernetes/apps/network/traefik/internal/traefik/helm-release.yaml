@@ -63,10 +63,10 @@ spec:
       - '--providers.kubernetesGateway.experimentalChannel=true'
 
     ports:
-      web:
-        redirectTo:
-          port: websecure
-          priority: 10
+      # web:
+      #   redirectTo:
+      #     port: websecure
+      #     priority: 10
       websecure:
         http3:
           enabled: true
