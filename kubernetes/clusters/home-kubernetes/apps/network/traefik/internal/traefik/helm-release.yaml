@@ -31,6 +31,8 @@ spec:
       listeners:
         web:
           namespacePolicy: All
+        websecure:
+          namespacePolicy: All
 
     ingressClass:
       name: traefik-internal
