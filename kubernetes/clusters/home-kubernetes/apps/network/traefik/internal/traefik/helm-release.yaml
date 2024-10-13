@@ -51,9 +51,6 @@ spec:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
 
-    # additionalArguments:
-    #   - '--serverstransport.insecureskipverify=true'
-
     ports:
       web:
         redirectTo:
