@@ -34,6 +34,10 @@ spec:
       kubernetesCRD:
         allowCrossNamespace: true
         ingressClass: traefik-internal
+      kubernetesIngress:
+        enabled: false
+      kubernetesGateway:
+        enabled: true
 
     globalArguments:
       - '--global.sendanonymoususage=false'
@@ -41,7 +45,6 @@ spec:
 
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
-      - '--log.level=DEBUG'
 
     ports:
       web:
