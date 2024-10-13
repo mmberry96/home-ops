@@ -5,6 +5,9 @@ metadata:
   name: traefik-dashboard
   namespace: network
 spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: network
   hostnames:
     - traefik.home.mordex.io
   rules:
@@ -16,3 +19,9 @@ spec:
         - name: api@internal
           kind: TraefikService
           namespace: network
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: traefik-internal-dashboard-basicauth
