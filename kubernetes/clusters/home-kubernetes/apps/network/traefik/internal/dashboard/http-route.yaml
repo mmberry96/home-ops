@@ -16,8 +16,7 @@ spec:
             type: PathPrefix
             value: /dashboard
       backendRefs:
-        - name: traefik-api
-          kind: TraefikService
+        - name: traefik-internal
           namespace: network
       filters:
         - type: ExtensionRef
