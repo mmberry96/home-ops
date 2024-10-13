@@ -10,18 +10,18 @@ spec:
       namespace: network
   hostnames:
     - traefik.home.mordex.io
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /dashboard
-      backendRefs:
-        - name: traefik-internal
-          namespace: network
-          port: 8080
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: traefik-internal-dashboard-basicauth
+  # rules:
+  #   - matches:
+  #       - path:
+  #           type: PathPrefix
+  #           value: /dashboard
+  #     backendRefs:
+  #       - name: traefik-internal
+  #         namespace: network
+  #         port: 8080
+  #     filters:
+  #       - type: ExtensionRef
+  #         extensionRef:
+  #           group: traefik.io
+  #           kind: Middleware
+  #           name: traefik-internal-dashboard-basicauth
