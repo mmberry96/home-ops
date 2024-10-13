@@ -36,9 +36,9 @@ spec:
           port: 8443
           protocol: HTTPS
           certificateRefs:
-            kind: Secret
-            name: home-mordex-io-tls
-            namespace: cert-manager
+            - kind: Secret
+              name: home-mordex-io-tls
+              namespace: cert-manager
           mode: Passthrough
 
     ingressClass:
