@@ -39,7 +39,7 @@ spec:
             - kind: Secret
               name: home-mordex-io-tls
               namespace: cert-manager
-          mode: Passthrough
+          mode: Terminate
 
     ingressClass:
       name: traefik-internal
