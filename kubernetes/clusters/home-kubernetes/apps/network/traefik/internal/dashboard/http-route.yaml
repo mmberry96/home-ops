@@ -18,6 +18,7 @@ spec:
       backendRefs:
         - name: traefik-internal
           namespace: network
+          port: 443
       filters:
         - type: ExtensionRef
           extensionRef:
