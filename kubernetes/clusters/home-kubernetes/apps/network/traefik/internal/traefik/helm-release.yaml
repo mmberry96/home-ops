@@ -33,6 +33,9 @@ spec:
           namespacePolicy: All
         websecure:
           namespacePolicy: All
+          certificateRefs:
+            name: home-mordex-io-tls
+            namespace: cert-manager
 
     ingressClass:
       name: traefik-internal
@@ -55,10 +58,10 @@ spec:
       - '--log.level=DEBUG'
 
     ports:
-      # web:
-      #   redirectTo:
-      #     port: websecure
-      #     priority: 10
+      web:
+        redirectTo:
+          port: websecure
+          priority: 10
       websecure:
         http3:
           enabled: true

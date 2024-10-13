@@ -14,3 +14,18 @@ spec:
   dnsNames:
     - 'home.mordex.io'
     - '*.home.mordex.io'
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: home-mordex-io
+  namespace: cert-manager
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      namespace: network
+  to:
+    - group: ''
+      kind: Secret
+      name: home-mordex-io-tls
