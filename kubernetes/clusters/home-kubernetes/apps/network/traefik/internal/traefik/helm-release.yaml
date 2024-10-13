@@ -35,11 +35,11 @@ spec:
           namespacePolicy: All
           port: 8443
           protocol: HTTPS
-          certificateRefs:
-            kind: Secret
-            name: home-mordex-io-tls
-            namespace: cert-manager
-          mode: Terminate
+          # certificateRefs:
+          #   kind: Secret
+          #   name: home-mordex-io-tls
+          #   namespace: cert-manager
+          mode: Passthrough
 
     ingressClass:
       name: traefik-internal
@@ -60,6 +60,7 @@ spec:
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
       - '--log.level=DEBUG'
+      - '--providers.kubernetesGateway.experimentalChannel=true'
 
     ports:
       web:
