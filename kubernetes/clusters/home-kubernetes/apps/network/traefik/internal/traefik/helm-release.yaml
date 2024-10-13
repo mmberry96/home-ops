@@ -34,6 +34,7 @@ spec:
         websecure:
           namespacePolicy: All
           port: 8443
+          protocol: HTTPS
           certificateRefs:
             kind: Secret
             name: home-mordex-io-tls
