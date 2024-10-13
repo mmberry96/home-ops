@@ -16,7 +16,7 @@ spec:
             type: PathPrefix
             value: /dashboard
       backendRefs:
-        - name: api@internal
+        - name: traefik-api
           kind: TraefikService
           namespace: network
       filters:
