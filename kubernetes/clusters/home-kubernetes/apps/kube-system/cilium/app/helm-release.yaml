@@ -44,7 +44,7 @@ spec:
       relay:
         enabled: true
         rollOutPods: true
-      ui:
+      ui: # TODO: move to HTTPRoute
         enabled: true
         rollOutPods: true
         ingress:

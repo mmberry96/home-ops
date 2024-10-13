@@ -9,5 +9,5 @@ resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
-  # - ./node-feature-discovery/ks.yaml
-  # - ./reloader/ks.yaml
+  - ./node-feature-discovery/ks.yaml
+  - ./reloader/ks.yaml
