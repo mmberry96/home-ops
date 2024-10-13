@@ -36,6 +36,7 @@ spec:
           certificateRefs:
             name: home-mordex-io-tls
             namespace: cert-manager
+          mode: Terminate
 
     ingressClass:
       name: traefik-internal
