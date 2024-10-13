@@ -33,6 +33,7 @@ spec:
           namespacePolicy: All
         websecure:
           namespacePolicy: All
+          port: 8443
           certificateRefs:
             kind: Secret
             name: home-mordex-io-tls
