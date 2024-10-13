@@ -27,6 +27,11 @@ spec:
     deployment:
       replicas: 3
 
+    gateway:
+      listeners:
+        web:
+          namespacePolicy: All
+
     ingressClass:
       name: traefik-internal
 
