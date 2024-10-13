@@ -45,6 +45,7 @@ spec:
 
     additionalArguments:
       - '--serverstransport.insecureskipverify=true'
+      - '--log.level=DEBUG'
 
     ports:
       web:
