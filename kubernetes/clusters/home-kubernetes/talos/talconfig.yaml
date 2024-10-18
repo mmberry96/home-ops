@@ -123,7 +123,7 @@ patches:
   - |-
     machine:
       kubelet:
-        extraMount:
+        extraMounts:
           - destination: /var/openebs/local
             type: bind
             source: /var/openebs/local
