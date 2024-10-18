@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager-issuers
+    - name: traefik-internal
   path: ./kubernetes/clusters/home-kubernetes/apps/cert-manager/certificates/app
   prune: false
   sourceRef:
