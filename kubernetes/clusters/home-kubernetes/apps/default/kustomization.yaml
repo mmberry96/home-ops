@@ -16,5 +16,5 @@ patches:
           name: traefik-internal
     target:
       kind: Kustomization
-      group: kustomize.toolkit.fluxcd.io/v1
+      group: kustomize.toolkit.fluxcd.io
       namespace: flux-system
