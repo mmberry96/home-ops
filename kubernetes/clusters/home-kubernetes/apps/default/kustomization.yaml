@@ -8,13 +8,3 @@ resources:
   # Flux-Kustomizations
   - ./homepage/ks.yaml
   - ./plex/ks.yaml
-patches:
-  - patch: |
-      - op: add
-        path: /spec/dependsOn/-
-        value:
-          name: traefik-internal
-    target:
-      kind: Kustomization
-      group: kustomize.toolkit.fluxcd.io
-      namespace: flux-system
