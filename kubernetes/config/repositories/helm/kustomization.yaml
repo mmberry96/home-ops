@@ -8,6 +8,7 @@ resources:
   - ./coredns.yaml
   - ./jetstack.yaml
   - ./node-feature-discovery.yaml
+  - ./openebs.yaml
   - ./postfinance.yaml
   - ./stakater.yaml
   - ./traefik.yaml

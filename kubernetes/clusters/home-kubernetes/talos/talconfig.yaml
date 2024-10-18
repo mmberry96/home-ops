@@ -119,18 +119,18 @@ patches:
           validSubnets:
             - 10.30.0.0/16
 
-  #   # Mount openebs-hostpath in kubelet
-  #   - |-
-  #     machine:
-  #       kubelet:
-  #         extraMount:
-  #           - destination: /var/openebs/local
-  #             type: bind
-  #             source: /var/openebs/local
-  #             options:
-  #               - bind
-  #               - rshared
-  #               - rw
+  # Mount openebs-hostpath in kubelet
+  - |-
+    machine:
+      kubelet:
+        extraMount:
+          - destination: /var/openebs/local
+            type: bind
+            source: /var/openebs/local
+            options:
+              - bind
+              - rshared
+              - rw
 
   # # Custom sysctl settings
   # - |-
@@ -174,11 +174,11 @@ controlPlane:
       - op: remove
         path: /cluster/apiServer/admissionControl
 
-    # # etcd configuration TODO: this broke stuff
-    # - |-
-    #   cluster:
-    #     etcd:
-    #       extraArgs:
-    #         listen-metrics-urls: http://0.0.0.0/2381
-    #       advertisedSubnets:
-    #         - 10.30.0.0/16
+    # etcd configuration
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
+            - 10.30.0.0/16
