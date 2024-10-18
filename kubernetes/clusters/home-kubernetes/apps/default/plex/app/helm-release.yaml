@@ -45,5 +45,3 @@ spec:
     persistence:
       config:
         existingClaim: plex
-        globalMounts:
-          - path: /config
