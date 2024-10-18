@@ -23,6 +23,9 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    defaultPodOptions:
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: 'true'
     controllers:
       plex:
         containers:
@@ -39,3 +42,6 @@ spec:
         ports:
           http:
             port: 32400
+    persistence:
+      config:
+        existingClaim: plex
