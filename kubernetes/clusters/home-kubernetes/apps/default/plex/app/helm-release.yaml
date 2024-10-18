@@ -35,6 +35,7 @@ spec:
               tag: 1.40.4
             env:
               TZ: America/Chicago
+              PLEX_CLAIM: claim-HPyzmZynfiguuo56wZ9c
     service:
       plex:
         controller: plex
