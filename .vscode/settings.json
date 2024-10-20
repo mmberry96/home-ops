@@ -36,6 +36,7 @@
     "traefik",
     "truenas",
     "unifi",
+    "volsync",
     "websecure"
   ],
   "material-icon-theme.files.associations": {
