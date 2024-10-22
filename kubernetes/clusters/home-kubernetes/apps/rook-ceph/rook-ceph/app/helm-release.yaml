@@ -26,3 +26,12 @@ spec:
   dependsOn:
     - name: snapshot-controller
       namespace: volsync-system
+  values:
+    resources:
+      csi:
+        cephFSKernelMountOptions: ms_mode=prefer-crc
+        enableLiveness: true
+      requests:
+        cpu: 100m #unchangeable
+        memory: 128Mi #unchangeable
+      limits: {}
