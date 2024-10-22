@@ -19,6 +19,7 @@
     "letsencrypt",
     "machineconfig",
     "nvme",
+    "onedr0p",
     "openebs",
     "openmeteo",
     "opnsense",
