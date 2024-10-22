@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: intel-device-plugin-operator
+      chart: intel-device-plugins-operator
       version: 0.31.1
       sourceRef:
         kind: HelmRepository
