@@ -87,6 +87,8 @@ spec:
       plex:
         controller: plex
         type: ClusterIP
+        annotations:
+          lbipam.cilium.io/ips: 10.30.0.101
         ports:
           http:
             port: 32400
