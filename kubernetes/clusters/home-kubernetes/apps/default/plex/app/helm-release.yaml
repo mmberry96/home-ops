@@ -91,6 +91,23 @@ spec:
         ports:
           http:
             port: 32400
+    route:
+      plex:
+        enabled: true
+        kind: HTTPRoute
+        parentRefs:
+          - name: traefik-gateway
+            namespace: network
+        hostnames:
+          - plex.home.mordex.io
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: plex
+                port: 32400
     persistence:
       config:
         existingClaim: plex
