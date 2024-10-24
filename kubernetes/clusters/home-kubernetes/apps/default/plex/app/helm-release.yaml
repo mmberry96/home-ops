@@ -85,7 +85,7 @@ spec:
     service:
       plex:
         controller: plex
-        type: ClusterIP
+        type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.30.0.101
         ports:
