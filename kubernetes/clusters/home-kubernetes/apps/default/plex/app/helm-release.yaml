@@ -92,11 +92,11 @@ spec:
           http:
             port: 32400
     route:
-      plex-http:
+      http:
         kind: HTTPRoute
         parentRefs:
           - name: traefik-gateway
-            sectionName: http
+            sectionName: web
             namespace: network
         hostnames:
           - plex.home.mordex.io
@@ -105,11 +105,11 @@ spec:
               - type: RequestRedirect
                 requestRedirect:
                   scheme: https
-      plex-https:
+      https:
         kind: HTTPRoute
         parentRefs:
           - name: traefik-gateway
-            sectionName: https
+            sectionName: websecure
             namespace: network
         hostnames:
           - plex.home.mordex.io
