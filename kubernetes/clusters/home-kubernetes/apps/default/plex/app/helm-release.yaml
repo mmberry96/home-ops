@@ -92,11 +92,24 @@ spec:
           http:
             port: 32400
     route:
-      plex:
-        enabled: true
+      plex-http:
         kind: HTTPRoute
         parentRefs:
           - name: traefik-gateway
+            sectionName: http
+            namespace: network
+        hostnames:
+          - plex.home.mordex.io
+        rules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  scheme: https
+      plex-https:
+        kind: HTTPRoute
+        parentRefs:
+          - name: traefik-gateway
+            sectionName: https
             namespace: network
         hostnames:
           - plex.home.mordex.io
