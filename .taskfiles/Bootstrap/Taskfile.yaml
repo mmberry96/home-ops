@@ -2,10 +2,8 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
-includes:
-  talos:
-    taskfile: ../Talos
-    internal: true
+vars:
+  BOOTSTRAP_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/Bootstrap/resources'
 
 tasks:
   kubernetes:
@@ -13,17 +11,73 @@ tasks:
     prompt: Bootstrap a Kubernetes cluster...continue?
     summary: |
       CLUSTER: Cluster to run command against (default: home-kubernetes)
-      NODES: Nodes in the cluster to reset Rook on (required, comma delimited)
-      DISK: Disk to reset Rook on (required, e.g. /dev/nvme0n1)
+      NODES: Nodes in the cluster (default: anole01,anole02,anole03)
+      ROOK_DISKS: Automatically determined based on 'talosctl disks'
     vars: &vars
       CLUSTER: '{{.CLUSTER | default "home-kubernetes"}}'
-      # NODES: '{{.NODES}}'
-      # DISK: '{{.DISK}}'
+      NODES: '{{.NODES | default "anole01,anole02,anole03"}}'
+      ROOK_DISKS:
+        sh: IFS=',' read -r array <<< {{.NODES}}; for node in "${array[@]}"; do talosctl disks -n $node | grep WD_ | awk {'print $2'}; done | paste -s -d, -
     cmds:
-      - { task: talos:bootstrap, vars: *vars }
+      - { task: rook, vars: *vars }
       - { task: flux, vars: *vars }
-    # requires:
-    #   vars: [NODES, DISK]
+
+  rook:
+    internal: true
+    vars: &vars
+      CLUSTER: '{{.CLUSTER}}'
+      NODE: '{{index (splitList "," .NODES) (.ITEM | int)}}'
+      ROOK_DISK: '{{index (splitList "," .ROOK_DISKS) (.ITEM | int)}}'
+      LIST: '{{(until (splitList "," .NODES | len) | join ",")}}'
+    cmds:
+      - for: { var: LIST, split: ',' }
+        task: rook-data
+        vars: *vars
+      - for: { var: LIST, split: ',' }
+        task: rook-disk
+        vars: *vars
+
+  rook-disk:
+    internal: true
+    cmds:
+      - >
+        minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.BOOTSTRAP_RESOURCES_DIR}}/rook-disk-job.yaml.j2
+        | kubectl apply --server-side --filename -
+      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
+      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=5m
+      - kubectl --namespace {{.NS}} logs job/{{.JOB}}
+      - kubectl --namespace {{.NS}} delete job {{.JOB}}
+    vars:
+      JOB: wipe-disk-{{.NODE}}
+      NS: '{{.NS | default "default"}}'
+    env:
+      ROOK_DISK: '{{.ROOK_DISK}}'
+      JOB: '{{.JOB}}'
+      NODE: '{{.NODE}}'
+      NS: '{{.NS}}'
+    preconditions:
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-disk-job.yaml.j2
+
+  rook-data:
+    internal: true
+    cmds:
+      - >
+        minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.yaml.j2
+        | kubectl apply --server-side --filename -
+      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
+      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=5m
+      - kubectl --namespace {{.NS}} logs job/{{.JOB}}
+      - kubectl --namespace {{.NS}} delete job {{.JOB}}
+    vars:
+      JOB: wipe-data-{{.NODE}}
+      NS: '{{.NS | default "default"}}'
+    env:
+      ROOK_DISK: '{{.ROOK_DISK}}'
+      JOB: '{{.JOB}}'
+      NODE: '{{.NODE}}'
+      NS: '{{.NS}}'
+    preconditions:
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.yaml.j2
 
   flux:
     internal: true
