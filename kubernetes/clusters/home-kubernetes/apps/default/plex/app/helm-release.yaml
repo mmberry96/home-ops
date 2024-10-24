@@ -91,6 +91,8 @@ spec:
         ports:
           http:
             port: 32400
+          https:
+            port: 32400
     route:
       plex-http:
         kind: HTTPRoute
