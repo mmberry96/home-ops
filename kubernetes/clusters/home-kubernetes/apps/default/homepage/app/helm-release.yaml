@@ -74,7 +74,7 @@ spec:
                   type: PathPrefix
                   value: /
             backendRefs:
-              - name: plex
+              - name: homepage
                 port: 3000
     persistence:
       custom-js:
