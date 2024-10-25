@@ -123,8 +123,8 @@ spec:
         type: configMap
         name: homepage-configmap
         globalMounts:
-          - path: /app/config/settings.yaml
-            subPath: settings.yaml
+          - path: /app/config/widgets.yaml
+            subPath: widgets.yaml
       logs:
         type: emptyDir
         globalMounts:
