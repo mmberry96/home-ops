@@ -48,6 +48,38 @@ tasks:
       - msg: Missing Sops Age key file
         sh: test -f {{.AGE_FILE}}
 
+  gen-config:
+    desc: Generate talos configs
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmds:
+      - |
+        if [ ! -f '{{.TALHELPER_SECRET_FILE}}' ]; then
+            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
+            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
+        fi
+      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing Sops config file
+        sh: test -f {{.SOPS_CONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
+
+  apply-config:
+    desc: Apply a talos config to the cluster. Cluster must have been configured before
+    dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'
+    cmd: talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash
+    vars: *vars
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+
   fetch-kubeconfig:
     desc: Fetch kubeconfig
     dir: '{{.KUBERNETES_DIR}}/clusters/{{.CLUSTER}}/talos'

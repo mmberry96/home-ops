@@ -8,5 +8,5 @@ tasks:
     summary: |
       CLUSTER: Cluster to run command against (default: main)
     vars:
-      CLUSTER: '{{.CLUSTER | default "home-kubernetes"}}'
+      CLUSTER: '{{.CLUSTER | default "main"}}'
     cmd: flux --context {{.CLUSTER}} reconcile --namespace flux-system kustomization cluster --with-source

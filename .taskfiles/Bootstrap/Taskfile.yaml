@@ -10,11 +10,11 @@ tasks:
     desc: Bootstrap a Kubernetes cluster backed by flux, sops, and rook
     prompt: Bootstrap a Kubernetes cluster...continue?
     summary: |
-      CLUSTER: Cluster to run command against (default: home-kubernetes)
+      CLUSTER: Cluster to run command against (default: main)
       NODES: Nodes in the cluster (default: anole01,anole02,anole03)
       ROOK_DISKS: Automatically determined based on 'talosctl disks'
     vars: &vars
-      CLUSTER: '{{.CLUSTER | default "home-kubernetes"}}'
+      CLUSTER: '{{.CLUSTER | default "main"}}'
       NODES: '{{.NODES | default "anole01,anole02,anole03"}}'
       ROOK_DISKS:
         sh: IFS=',' read -r array <<< {{.NODES}}; for node in "${array[@]}"; do talosctl disks -n $node | grep WD_ | awk {'print $2'}; done | paste -s -d, -
