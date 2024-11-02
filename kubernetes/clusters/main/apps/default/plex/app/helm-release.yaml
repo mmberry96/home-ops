@@ -90,16 +90,7 @@ spec:
             image:
               repository: ghcr.io/debridmediamanager/zurg-testing
               tag: v0.9.3-final
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-              fsGroup: 0
-              allowPrivilegedEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - 'ALL'
+            securityContext: {}
           rclone:
             image:
               repository: rclone/rclone
