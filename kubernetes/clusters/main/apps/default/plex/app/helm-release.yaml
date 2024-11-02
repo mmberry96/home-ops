@@ -90,7 +90,7 @@ spec:
             image:
               repository: ghcr.io/debridmediamanager/zurg-testing
               tag: v0.9.3-final
-            args: ['chown -R root:root ./zurg']
+            args: ['chmod 777 ./zurg']
             securityContext:
               runAsNonRoot: false
               runAsUser: 0
