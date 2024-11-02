@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: &app zurg-configmap
+  labels:
+    app.kubernetes.io/name: *app
+data:
+  zurg:
+    zurg: v1
+    token: SECRET_TOKEN
+    api_rate_limit_per_minute: 60
+    torrents_rate_limit_per_minute: 25
+    concurrent_workers: 32
+    check_for_changes_every_secs: 10
+    ignore_renames: true
+    retain_rd_torrent_name: true
+    enable_repair: false
+    auto_delete_rar_torrents: false
+    get_torrents_count: 5000
+    serve_from_rclone: true
+    directories:
+      torrents:
+        group: 1
+        filters:
+          - regex: /.*/
+  rclone: |
+    [zurg]
+    type = webdav
+    url = http://zurg.default.svc.cluster.local:9999/dav
+    vendor = other
+    pacer_min_sleep = 0

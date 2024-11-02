@@ -3,5 +3,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./debrid.secret.sops.yaml
+  - ./zurg-config.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
+replacements:
+  - source:
+      kind: Secret
+      name: debrid-secret
+      fieldPath: stringData.API_TOKEN
+    targets:
+      - select:
+          name: zurg-configmap
+          kind: ConfigMap
+        fieldPaths:
+          - data.zurg.token
