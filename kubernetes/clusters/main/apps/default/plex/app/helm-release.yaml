@@ -184,7 +184,11 @@ spec:
           zurg:
             zurg:
               - path: /app/config.yml
-                subPath: zurg
+      rclone-config:
+        type: configMap
+        name: rclone-configmap
+        advancedMounts:
+          zurg:
             rclone:
               - path: /config/rclone/rclone.conf
                 subPath: rclone

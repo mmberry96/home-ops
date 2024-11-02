@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Configmap
+metadata:
+  name: &app rclone-configmap
+  labels:
+    app.kubernetes.io/name: *app
+data:
+  rclone: |
+    [zurg]
+    type = webdav
+    url = http://zurg.default.svc.cluster.local:9999/dav
+    vendor = other
+    pacer_min_sleep = 0

@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./debrid.secret.sops.yaml
   - ./zurg-config.yaml
+  - ./rclone-config.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
 replacements:
@@ -17,4 +18,4 @@ replacements:
           name: zurg-configmap
           kind: ConfigMap
         fieldPaths:
-          - data.zurg.token
+          - data.token
