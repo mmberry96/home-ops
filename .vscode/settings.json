@@ -7,7 +7,6 @@
     "coredns",
     "crds",
     "datetime",
-    "debrid",
     "filestatus",
     "fluxcd",
     "gencommand",
@@ -26,7 +25,6 @@
     "opnsense",
     "pihole",
     "postfinance",
-    "rclone",
     "siderolabs",
     "stakater",
     "talconfig",
@@ -40,8 +38,7 @@
     "truenas",
     "unifi",
     "volsync",
-    "websecure",
-    "zurg"
+    "websecure"
   ],
   "material-icon-theme.files.associations": {
     "talsecret.sops.yaml": "lock",

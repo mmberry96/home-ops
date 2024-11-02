@@ -82,34 +82,6 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
-      zurg:
-        annotations:
-          reloader.stakater.com/auto: 'true'
-        containers:
-          zurg:
-            image:
-              repository: ghcr.io/debridmediamanager/zurg-testing
-              tag: v0.9.3-final
-            args: ['chmod 777 ./zurg']
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-              fsGroup: 0
-          rclone:
-            image:
-              repository: rclone/rclone
-              tag: latest
-            env:
-              TZ: America/Chicago
-            securityContext:
-              allowPrivilegedEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - 'ALL'
-            dependsOn:
-              - zurg
     service:
       plex:
         controller: plex
@@ -119,12 +91,6 @@ spec:
         ports:
           http:
             port: 32400
-      zurg:
-        controller: zurg
-        type: ClusterIP
-        ports:
-          http:
-            port: 9999
     route:
       http:
         kind: HTTPRoute
@@ -158,37 +124,16 @@ spec:
     persistence:
       config:
         existingClaim: plex
-        advancedMounts:
-          plex:
-            plex:
-              - path: /config/Library/Application Support/Plex Media Server
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server
       logs:
         type: emptyDir
-        advancedMounts:
-          plex:
-            plex:
-              - path: /config/Library/Application Support/Plex Media Server/Logs
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs
       media:
         type: nfs
         server: truenas.home.mordex.io
         path: /mnt/storage0/media
-        advancedMounts:
-          plex:
-            plex:
-              - path: /media
-                readOnly: true
-      zurg-config:
-        type: configMap
-        name: zurg-configmap
-        advancedMounts:
-          zurg:
-            zurg:
-              - path: /app/
-      rclone-config:
-        type: configMap
-        name: rclone-configmap
-        advancedMounts:
-          zurg:
-            rclone:
-              - path: /config/rclone/rclone.conf
-                subPath: rclone
+        globalMounts:
+          - path: /media
+            readOnly: true
