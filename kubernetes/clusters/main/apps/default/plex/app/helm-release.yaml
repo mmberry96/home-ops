@@ -90,12 +90,12 @@ spec:
             image:
               repository: ghcr.io/debridmediamanager/zurg-testing
               tag: v0.9.3-final
-            # securityContext:
-            #   allowPrivilegedEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities:
-            #     drop:
-            #       - 'ALL'
+            securityContext:
+              allowPrivilegedEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - 'ALL'
           rclone:
             image:
               repository: rclone/rclone
@@ -183,7 +183,7 @@ spec:
         advancedMounts:
           zurg:
             zurg:
-              - path: /app/config.yml
+              - path: /app/
       rclone-config:
         type: configMap
         name: rclone-configmap
