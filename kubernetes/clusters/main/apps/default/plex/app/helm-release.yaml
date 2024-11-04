@@ -194,15 +194,15 @@ spec:
             plex:
               - path: /media
                 readOnly: true
-      torrents:
-        existingClaim: plex-torrents
-        advancedMounts:
-          plex:
-            plex:
-              - path: /torrents
-                readOnly: true
-          zurg:
-            zurg:
-              - path: /app/data
-            rclone:
-              - path: /data
+      # torrents:
+      #   existingClaim: plex-torrents
+      #   advancedMounts:
+      #     plex:
+      #       plex:
+      #         - path: /torrents
+      #           readOnly: true
+      #     zurg:
+      #       zurg:
+      #         - path: /app/data
+      #       rclone:
+      #         - path: /data
