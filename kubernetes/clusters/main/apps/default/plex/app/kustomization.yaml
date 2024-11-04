@@ -18,6 +18,7 @@ replacements:
   - source:
       kind: Secret
       name: debrid-api-token
+      fieldPath: stringData.DEBRID_API_TOKEN
     targets:
       - select:
           kind: ConfigMap
