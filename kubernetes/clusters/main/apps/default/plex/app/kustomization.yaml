@@ -13,3 +13,13 @@ resources:
 #       - rclone.conf=./configs/rclone.conf
 #     options:
 #       disableNameSuffixHash: true
+replacements:
+  - source:
+      kind: Secret
+      name: debrid-api-token
+    targets:
+      - select:
+          kind: ConfigMap
+          name: zurg-configmap
+        fieldPaths:
+          - data.zurg
