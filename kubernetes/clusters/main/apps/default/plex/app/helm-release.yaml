@@ -92,9 +92,7 @@ spec:
               - secretRef:
                   name: debrid-api-token
             args: # TODO: verify this
-              [
-                'sed -i s/_DEBRID_API_TOKEN_/"$DEBRID_API_TOKEN"/g /app/config.yml'
-              ]
+              - 'sed -i s/_DEBRID_API_TOKEN_/"$DEBRID_API_TOKEN"/g /app/config.yml'
             securityContext:
               allowPrivilegedEscalation: false
               readOnlyRootFilesystem: true
