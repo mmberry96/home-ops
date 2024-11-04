@@ -20,6 +20,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   postBuild:
+    substitute:
+      DEBRID_API_TOKEN: test-token
     substituteFrom:
       - kind: Secret
         name: debrid-api-token
