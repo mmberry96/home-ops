@@ -82,6 +82,39 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
+      zurg:
+        containers:
+          zurg:
+            image:
+              repository: ghcr.io/mmberry96/zurg
+              tag: 0.1.0@sha256:1efedc0b0c691001ca4aa2170cf61787cee0d6e7b4c942ec2973f302292199cb
+            envFrom:
+              - secretRef:
+                  name: debrid-api-token
+            args: # TODO: verify this
+              [
+                'sed -i s/_DEBRID_API_TOKEN_/"$DEBRID_API_TOKEN"/g /app/config.yml'
+              ]
+            securityContext:
+              allowPrivilegedEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - 'ALL'
+          rclone:
+            image:
+              repository: ghcr.io/mmberry96/rclone
+              tag: 0.1.0@sha256:18492c3bf5d8b956835b49dfbc4209e0b429e0f0c2e94b8694c39c4704533cda
+            args:
+              - 'mount zurg: /data --allow-non-empty --allow-other --uid=65534 --gid=65534 --umask=002 --dir-cache-time 10s'
+            dependsOn:
+              - zurg
+            securityContext:
+              allowPrivilegedEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - 'ALL'
     service:
       plex:
         controller: plex
@@ -91,6 +124,12 @@ spec:
         ports:
           http:
             port: 32400
+      zurg:
+        controller: zurg
+        type: ClusterIP
+        ports:
+          http:
+            port: 9999
     route:
       http:
         kind: HTTPRoute
@@ -124,16 +163,48 @@ spec:
     persistence:
       config:
         existingClaim: plex
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server
+        advancedMounts:
+          plex:
+            plex:
+              - path: /config/Library/Application Support/Plex Media Server
+      zurgConfig:
+        type: configMap
+        name: zurg-configmap
+        advancedMounts:
+          zurg:
+            zurg:
+              - path: /app/config.yml
+                subPath: zurg
+            rclone:
+              - path: /config/rclone/rclone.conf
+                subPath: rclone
       logs:
         type: emptyDir
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
+        advancedMounts:
+          plex:
+            plex:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+          zurg:
+            zurg:
+              - path: /app/logs
       media:
         type: nfs
         server: truenas.home.mordex.io
         path: /mnt/storage0/media
-        globalMounts:
-          - path: /media
-            readOnly: true
+        advancedMounts:
+          plex:
+            plex:
+              - path: /media
+                readOnly: true
+      torrents:
+        existingClaim: plex-torrents
+        advancedMounts:
+          plex:
+            plex:
+              - path: /torrents
+                readOnly: true
+          zurg:
+            zurg:
+              - path: /app/data
+            rclone:
+              - path: /data
