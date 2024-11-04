@@ -87,12 +87,10 @@ spec:
           zurg:
             image:
               repository: ghcr.io/mmberry96/zurg
-              tag: 0.1.0@sha256:1efedc0b0c691001ca4aa2170cf61787cee0d6e7b4c942ec2973f302292199cb
+              tag: 0.1.1@sha256:09a10b94bafbb8eb4ae912ff308fb98702ef5a21f34d97e41cbf1051c8cd5943
             envFrom:
               - secretRef:
                   name: debrid-api-token
-            args: # TODO: verify this
-              - 'sed -i s/_DEBRID_API_TOKEN_/"$DEBRID_API_TOKEN"/g /app/config.yml'
             securityContext:
               allowPrivilegedEscalation: false
               readOnlyRootFilesystem: true
