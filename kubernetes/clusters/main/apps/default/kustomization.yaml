@@ -7,4 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./homepage/ks.yaml
+  - ./plex/debrid.secret.sops.yaml # Secret created here to avoid targetNamespace from ks.yaml to get secret into flux-system namespace
   - ./plex/ks.yaml
