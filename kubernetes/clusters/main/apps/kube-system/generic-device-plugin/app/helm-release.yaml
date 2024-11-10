@@ -48,7 +48,7 @@ spec:
                   - paths:
                     - path: /dev/fuse
             securityContext:
-              allowPrivilegedEscalation: false
+              # allowPrivilegedEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
