@@ -23,15 +23,15 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 65534
+    #     runAsGroup: 65534
+    #     fsGroup: 65534
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     seccompProfile:
+    #       type: RuntimeDefault
     controllers:
       generic-device-plugin:
         containers:
@@ -46,12 +46,12 @@ spec:
                 groups:
                   - paths:
                     - path: /dev/fuse
-            securityContext:
-              allowPrivilegedEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - 'ALL'
+            # securityContext:
+            #   # allowPrivilegedEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities:
+            #     drop:
+            #       - 'ALL'
     persistence:
       device-plugin:
         type: hostPath
