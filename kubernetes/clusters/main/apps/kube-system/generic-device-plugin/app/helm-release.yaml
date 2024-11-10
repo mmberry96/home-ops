@@ -34,6 +34,7 @@ spec:
     #       type: RuntimeDefault
     controllers:
       generic-device-plugin:
+        type: daemonset
         containers:
           app:
             image:
