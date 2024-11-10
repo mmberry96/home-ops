@@ -43,9 +43,7 @@ spec:
     persistence:
       device-plugin:
         type: hostPath
-        globalMounts:
-          - /var/lib/kubelet/device-plugins
+        hostPath: /var/lib/kubelet/device-plugins
       dev:
         type: hostPath
-        globalMounts:
-          - /dev
+        hostPath: /dev
