@@ -40,3 +40,12 @@ spec:
                 groups:
                   - paths:
                     - path: /dev/fuse
+    persistence:
+      device-plugin:
+        type: hostPath
+        globalMounts:
+          - /var/lib/kubelet/device-plugins
+      dev:
+        type: hostPath
+        globalMounts:
+          - /dev
