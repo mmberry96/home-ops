@@ -55,18 +55,18 @@ spec:
               # PLEX_ADVERTISE_URL: https://plex.mordex.io:443,http://10.30.0.100:32400
               PLEX_NO_AUTH_NETWORKS: 10.10.0.0/24
             probes:
-              liveness: &probes
+              liveness: &plex-probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /identity
                     port: 32400
-                  initialDelaySeconds:
+                  initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
+              readiness: *plex-probes
               startup:
                 enabled: true
                 spec:
@@ -89,23 +89,52 @@ spec:
           zurg:
             image:
               repository: ghcr.io/mmberry96/zurg
-              tag: 0.1.2@sha256:3a62c196de6beedfa48e53e628375e6e9e3597c1081bb942c24f7c2accccfda1
+              tag: 0.1.7@sha256:8e6163eba5799bc2ad80bf917a1760b0982678c7a4b03f071a2130b9b0281d65
             envFrom:
               - secretRef:
                   name: debrid-api-token
+            probes:
+              liveness: &zurg-probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /dav/version.txt
+                    port: 9999
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *zurg-probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
-              runAsNonRoot: true
               allowPrivilegedEscalation: false
               capabilities:
                 drop:
                   - 'ALL'
           rclone:
             image:
-              repository: ghcr.io/mmberry96/rclone
-              tag: 0.1.1@sha256:be7bedd4cff6b8e70caf681f33110504184e9fa85a49d2522b55148268f6191b
+              repository: rclone/rclone
+              tag: 1.68.1
             args:
-              - 'mount'
-            #   - 'mount zurg:/ /data --allow-non-empty --allow-other --uid=65534 --gid=65534 --umask=002 --dir-cache-time 10s'
+              - mount
+              - 'zurg:'
+              - '/data'
+              - --allow-non-empty
+              - --allow-other
+              - --uid=65534
+              - --gid=65534
+              - --umask=002
+              - --dir-cache-time
+              - 10s
+              - --vfs-cache-mode
+              - writes
+            env:
+              RCLONE_CONFIG: /config/rclone/rclone.conf
             dependsOn:
               - zurg
             securityContext:
@@ -177,7 +206,7 @@ spec:
         advancedMounts:
           zurg:
             zurg:
-              - path: /app/config.yml
+              - path: /app/zurg_template.yml
                 subPath: zurg
             rclone:
               - path: /config/rclone/rclone.conf
@@ -200,15 +229,19 @@ spec:
             plex:
               - path: /media
                 readOnly: true
-      # torrents:
-      #   existingClaim: plex-torrents
-      #   advancedMounts:
-      #     plex:
-      #       plex:
-      #         - path: /torrents
-      #           readOnly: true
-      #     zurg:
-      #       zurg:
-      #         - path: /app/data
-      #       rclone:
-      #         - path: /data
+      zurg-data:
+        existingClaim: zurg-data
+        advancedMounts:
+          zurg:
+            zurg:
+              - path: /data
+      torrents:
+        existingClaim: plex-torrents
+        advancedMounts:
+          # plex:
+          #   plex:
+          #     - path: /debrid
+          #       readOnly: true
+          zurg:
+            rclone:
+              - path: /data
