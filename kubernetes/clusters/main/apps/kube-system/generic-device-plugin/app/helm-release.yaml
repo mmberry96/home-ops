@@ -23,15 +23,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    defaultPodOptions:
-      securityContext:
-        # runAsNonRoot: true
-        # runAsUser: 65534
-        # runAsGroup: 65534
-        # fsGroup: 65534
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
     controllers:
       generic-device-plugin:
         type: daemonset
