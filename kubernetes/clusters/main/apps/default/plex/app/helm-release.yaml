@@ -95,7 +95,6 @@ spec:
                   name: debrid-api-token
             securityContext:
               allowPrivilegedEscalation: false
-              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - 'ALL'
