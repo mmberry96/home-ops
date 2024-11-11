@@ -95,9 +95,6 @@ spec:
                   name: debrid-api-token
             securityContext:
               runAsNonRoot: true
-              runAsUser: 65534
-              runAsGroup: 65534
-              fsGroup: 65534
               allowPrivilegedEscalation: false
               capabilities:
                 drop:
@@ -106,7 +103,8 @@ spec:
             image:
               repository: ghcr.io/mmberry96/rclone
               tag: 0.1.1@sha256:be7bedd4cff6b8e70caf681f33110504184e9fa85a49d2522b55148268f6191b
-            # args:
+            args:
+              - 'mount'
             #   - 'mount zurg:/ /data --allow-non-empty --allow-other --uid=65534 --gid=65534 --umask=002 --dir-cache-time 10s'
             dependsOn:
               - zurg
