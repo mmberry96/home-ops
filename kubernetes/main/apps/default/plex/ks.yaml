@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/clusters/main/apps/default/plex/app
+  path: ./kubernetes/main/apps/default/plex/app
   prune: true
   sourceRef:
     kind: GitRepository

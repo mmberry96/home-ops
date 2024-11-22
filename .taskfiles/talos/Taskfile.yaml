@@ -2,6 +2,11 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+vars:
+  TALHELPER_CONFIG_FILE: '{{.CLUSTER_DIR}}/talos/talconfig.yaml'
+  TALHELPER_SECRET_FILE: '{{.CLUSTER_DIR}}/talos/talsecret.sops.yaml'
+  TALHELPER_CLUSTER_DIR: '{{.CLUSTER_DIR}}/talos/clusterconfig'
+
 tasks:
   gen-config:
     desc: Generate the config files for a Talos cluster [CLUSTER=main]
@@ -13,10 +18,6 @@ tasks:
         fi
       - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
       # - talosctl config merge {{.TALHELPER_CLUSTER_DIR}}/talosconfig # TODO: force overwrite?
-    vars:
-      TALHELPER_CONFIG_FILE: '{{.CLUSTER_DIR}}/talos/talconfig.yaml'
-      TALHELPER_SECRET_FILE: '{{.CLUSTER_DIR}}/talos/talsecret.sops.yaml'
-      TALHELPER_CLUSTER_DIR: '{{.CLUSTER_DIR}}/talos/clusterconfig'
     requires:
       vars: [CLUSTER]
     preconditions:
@@ -103,19 +104,15 @@ tasks:
       - which talosctl
 
   reset-cluster:
-    desc: Reset Talos across the whole cluster [CLUSTER=main]
+    desc: Resets nodes back to maintenance mode [CLUSTER=main]
     prompt: Reset the Talos cluster '{{.CLUSTER}}' ... continue?
-    cmd: talosctl --context {{.CLUSTER}} reset --nodes {{.HOSTNAMES}} --graceful=false
-    vars:
-      HOSTNAMES:
-        sh: talosctl --context {{.CLUSTER}} config info --output json | jq --join-output '[.nodes[]] | join (",")'
+    dir: '{{.CLUSTER_DIR}}/talos'
+    cmd: talhelper gencommand reset --extra-flags '--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false' | bash
     requires:
       vars: [CLUSTER]
     preconditions:
-      - talosctl --context {{.CLUSTER}} --nodes {{.HOSTNAMES}} get machineconfig
-      - talosctl --context {{.CLUSTER}} config info
-      - test -f {{.ROOT_DIR}}/talosconfig
-      - which jq talosctl
+      - test -f '{{.CLUSTER_DIR}}/talos/talconfig.yaml'
+      - which talhelper
 
   kubeconfig:
     desc: Generate the kubeconfig for a Talos cluster [CLUSTER=main]

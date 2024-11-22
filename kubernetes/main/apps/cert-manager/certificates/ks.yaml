@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager-issuers
     - name: traefik-internal
-  path: ./kubernetes/clusters/main/apps/cert-manager/certificates/app
+  path: ./kubernetes/main/apps/cert-manager/certificates/app
   prune: false
   sourceRef:
     kind: GitRepository

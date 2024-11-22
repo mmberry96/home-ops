@@ -13,7 +13,7 @@ stringData:
   identity: |
     {{ ENV.FLUX_GITHUB_DEPLOY_KEY | indent(4) }}
   known_hosts: |
-    {{ ENV.FLUX_GITHUB_KNOWNS_HOSTS | indent(4) }}
+    {{ ENV.FLUX_GITHUB_PUBLIC_KEYS | indent(4) }}
 ---
 apiVersion: v1
 kind: Secret

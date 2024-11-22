@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager-issuers
-  path: ./kubernetes/clusters/main/apps/network/traefik/internal/traefik
+  path: ./kubernetes/main/apps/network/traefik/internal/traefik
   prune: false
   sourceRef:
     kind: GitRepository
@@ -35,7 +35,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: traefik-internal
-  path: ./kubernetes/clusters/main/apps/network/traefik/internal/dashboard
+  path: ./kubernetes/main/apps/network/traefik/internal/dashboard
   prune: false
   sourceRef:
     kind: GitRepository
