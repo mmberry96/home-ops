@@ -1,5 +1,8 @@
-kubeconfig
-talosconfig
-.decrypted~*.yaml
+/.task/
+*.secret.yaml
 *.key
 *.pub
+.decrypted~*
+Brewfile.lock.json
+kubeconfig
+talosconfig

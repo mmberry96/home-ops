@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # - ./debrid.secret.sops.yaml
+  - ./pvc.yaml
+  - ./helm-release.yaml
+configMapGenerator:
+  - name: zurg-configmap
+    files:
+      - zurg=./configs/config.yaml
+      - rclone=./configs/rclone.conf
+    options:
+      disableNameSuffixHash: true

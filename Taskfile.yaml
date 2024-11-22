@@ -3,22 +3,24 @@
 version: '3'
 
 includes:
-  bootstrap: .taskfiles/Bootstrap
-  flux: .taskfiles/Flux
-  sops: .taskfiles/Sops
-  talos: .taskfiles/Talos
+  bootstrap: .taskfiles/bootstrap
+  flux: .taskfiles/flux
+  kubernetes: .taskfiles/kubernetes
+  sops: .taskfiles/sops
+  talos: .taskfiles/talos
+  workstation: .taskfiles/workstation
 
 vars:
-  # Directories
-  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
-  # Files
-  AGE_FILE: '{{.ROOT_DIR}}/age.key'
-  CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
-  KUBECONFIG_FILE: '{{.ROOT_DIR}}/kubeconfig'
-  SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
+  CLUSTER: '{{.CLUSTER | default "main"}}'
+  CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes/{{.CLUSTER}}'
 
 env:
+  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
+  MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
+  TALOSCONFIG: '{{.ROOT_DIR}}/talosconfig'
 
 tasks:
-  default: task -l
+  default:
+    cmd: task --list
+    silent: true

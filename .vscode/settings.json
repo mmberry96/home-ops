@@ -8,7 +8,8 @@
     "crds",
     "datetime",
     "debrid",
-    "filestatus",
+    "dotenv",
+    "externalsecret",
     "fluxcd",
     "gencommand",
     "genconfig",
@@ -19,8 +20,10 @@
     "kubelet",
     "letsencrypt",
     "machineconfig",
+    "minijinja",
     "nvme",
     "onedr0p",
+    "onepassword",
     "openebs",
     "openmeteo",
     "opnsense",
@@ -51,13 +54,20 @@
   "material-icon-theme.folders.associations": {
     "cert-manager": "guard",
     "default": "home",
+    "external-secrets": "secure",
     "flux": "pipe",
     "flux-system": "pipe",
-    "network": "connection"
+    "kube-system": "kubernetes",
+    "network": "connection",
+    "rook-ceph": "base"
   },
   "sops.defaults.ageKeyFile": "age.key",
+  "vs-kubernetes": {
+    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"]
+  },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
-    "kubernetes": "./kubernetes/*.yaml"
+    "kubernetes": "./kubernetes/**/*.yaml"
   }
 }

@@ -3,7 +3,6 @@
     "ms-kubernetes-tools.vscode-kubernetes-tools",
     "pkief.material-icon-theme",
     "redhat.vscode-yaml",
-    "signageos.signageos-vscode-sops",
-    "timonwong.shellcheck"
+    "signageos.signageos-vscode-sops"
   ]
 }

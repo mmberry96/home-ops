@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
+  AGE_FILE: '{{.ROOT_DIR}}/age.key'
+
+tasks:
+  age-keygen:
+    desc: Initialize Age Key for SOPS
+    cmds:
+      - age-keygen --output {{.AGE_FILE}}
+      - echo Make sure to add public key to .sops.yaml file
+    status: ['test -f {{.AGE_FILE}} ']
+    preconditions:
+      - which age-keygen
+
+  encrypt:
+    desc: Encrypt all Kubernetes SOPS secrets for a cluster [CLUSTER=main]
+    cmds:
+      - for: { var: FILE }
+        task: .encrypt-file
+        vars:
+          FILE: '{{.ITEM}}'
+    vars:
+      FILE:
+        sh: find '{{.CLUSTER_DIR}}' -type f -name '*.sops.*' -exec grep -L 'ENC\[AES256_GCM' {} \;
+    requires:
+      vars: [CLUSTER]
+
+  .encrypt-file:
+    internal: true
+    cmd: sops --encrypt --in-place {{.FILE}}
+    requires:
+      vars: [FILE]
+    preconditions:
+      - msg: Missing Sops config file
+        sh: test -f {{.SOPS_CONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
+      - which sops
