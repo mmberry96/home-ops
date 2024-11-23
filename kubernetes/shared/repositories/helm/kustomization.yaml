@@ -6,8 +6,10 @@ resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
   - ./coredns.yaml
+  - ./external-secrets.yaml
   - ./jetstack.yaml
   - ./node-feature-discovery.yaml
+  - ./onepassword.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
   - ./stakater.yaml
