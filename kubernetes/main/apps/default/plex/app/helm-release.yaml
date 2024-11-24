@@ -222,8 +222,6 @@ spec:
           zurg:
             zurg:
               - path: /app/logs
-            blackhole:
-              - path: /app/logs
       media:
         type: nfs
         server: truenas.home.mordex.io
@@ -242,10 +240,10 @@ spec:
       torrents:
         existingClaim: plex-torrents
         advancedMounts:
-          # plex:
-          #   plex:
-          #     - path: /debrid
-          #       readOnly: true
+          plex:
+            plex:
+              - path: /debrid
+                readOnly: true
           zurg:
             rclone:
               - path: /data
