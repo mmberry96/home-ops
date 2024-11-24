@@ -11,7 +11,22 @@ enable_repair: false
 auto_delete_rar_torrents: false
 get_torrents_count: 5000
 directories:
-  torrents:
-    group: 1
+  anime:
+    group: media
+    group_order: 10
+    filters:
+      - and:
+          - has_episodes: true
+          - any_file_inside_regex: /^\[/ # usually anime starts with [ e.g. [SubsPlease]
+          - any_file_inside_not_regex: /s\d\de\d\d/i # and usually anime doesn't use SxxExx
+  shows:
+    group: media
+    group_order: 20
+    filters:
+      - has_episodes: true
+  movies:
+    group: media
+    group_order: 30
+    only_show_the_biggest_file: true # let's not show the other files besides the movie itself
     filters:
       - regex: /.*/
