@@ -140,7 +140,7 @@ spec:
             dependsOn:
               - zurg
             securityContext:
-              allowPrivilegedEscalation: false
+              allowPrivilegedEscalation: true
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
@@ -244,6 +244,8 @@ spec:
             app:
               - path: /debrid
                 readOnly: true
+                mountPropagation: HostToContainer
           zurg:
             rclone:
               - path: /data
+                mountPropagation: Bidirectional
