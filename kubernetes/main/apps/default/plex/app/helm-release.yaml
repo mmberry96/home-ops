@@ -244,8 +244,8 @@ spec:
             app:
               - path: /debrid
                 readOnly: true
-                mountPropagation: bidirectional
+                mountPropagation: Bidirectional
           zurg:
             rclone:
               - path: /data
-                mountPropagation: bidirectional
+                mountPropagation: Bidirectional
