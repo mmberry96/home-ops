@@ -91,7 +91,7 @@ spec:
           zurg:
             image:
               repository: ghcr.io/mmberry96/zurg
-              tag: 0.1.7@sha256:8e6163eba5799bc2ad80bf917a1760b0982678c7a4b03f071a2130b9b0281d65
+              tag: 0.1.8@sha256:0f577fd0a462c1771f5f26b15a6d164511e6a95eaf493b7cd12459c42280bd3f
             envFrom:
               - secretRef:
                   name: debrid-api-token
@@ -150,21 +150,6 @@ spec:
             resources:
               limits:
                 squat.ai/fuse: 1
-          # blackhole:
-          #   image:
-          #     repository: ghcr.io/westsurname/scripts/blackhole
-          #     tag: v1.4.5@sha256:789cec82b900a99c09246c4c42e68b9c03bb10162f3e6951506c87e1b69dea42
-          #   envFrom:
-          #     - secretRef:
-          #         name: blackhole-config
-          #   dependsOn:
-          #     - rclone
-          #   securityContext:
-          #     allowPrivilegedEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop:
-          #         - "ALL"
     service:
       plex:
         controller: plex
