@@ -91,7 +91,7 @@ spec:
           zurg:
             image:
               repository: ghcr.io/mmberry96/zurg
-              tag: 0.1.8@sha256:0f577fd0a462c1771f5f26b15a6d164511e6a95eaf493b7cd12459c42280bd3f
+              tag: 0.1.9@sha256:4063adf52782b8b74fa3c250ca637908b6ccc5b297710489ebf44bc3b17cbd0e
             envFrom:
               - secretRef:
                   name: debrid-api-token
