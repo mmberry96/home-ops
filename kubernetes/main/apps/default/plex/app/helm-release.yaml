@@ -225,11 +225,11 @@ spec:
       media:
         type: nfs
         server: truenas.home.mordex.io
-        path: /mnt/storage0/media/movies
+        path: /mnt/storage0/media
         advancedMounts:
           plex:
-            plex:
-              - path: /media/movies
+            app:
+              - path: /media
                 readOnly: true
       zurg-data:
         existingClaim: zurg-data
