@@ -141,6 +141,7 @@ spec:
               - zurg
             securityContext:
               privileged: true
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - 'ALL'
@@ -221,6 +222,12 @@ spec:
           zurg:
             zurg:
               - path: /app/logs
+      cache:
+        type: emptyDir
+        advancedMounts:
+          zurg:
+            rclone:
+              - path: /.cache
       media:
         type: nfs
         server: truenas.home.mordex.io
