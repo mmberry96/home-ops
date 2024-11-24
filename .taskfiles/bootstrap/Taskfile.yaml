@@ -72,3 +72,21 @@ tasks:
     preconditions:
       - op user get --me
       - which curl flux kubectl ls op jq
+
+  recreate-secrets:
+    desc: Recreate bootstrap secrets [CLUSTER=main]
+    cmds:
+      - for: { var: TEMPLATES }
+        cmd: op run --env-file {{.CLUSTER_DIR}}/bootstrap/bootstrap.env --no-masking -- minijinja-cli {{.ITEM}} | kubectl --context {{.CLUSTER}} apply --server-side --filename -
+    vars:
+      TEMPLATES:
+        sh: ls {{.CLUSTER_DIR}}/bootstrap/apps/*.j2
+    env:
+      VAULT: '{{if eq .CLUSTER "main"}}kubernetes{{else}}{{.CLUSTER}}{{end}}'
+      FLUX_GITHUB_PUBLIC_KEYS:
+        sh: curl -fsSl https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - op user get --me
+      - which curl flux kubectl ls op jq
