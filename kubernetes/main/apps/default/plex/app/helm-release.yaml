@@ -249,4 +249,3 @@ spec:
           zurg:
             rclone:
               - path: /data
-                mountPropagation: Bidirectional
