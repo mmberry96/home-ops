@@ -26,8 +26,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: plex-torrents
 spec:
-  accessModes: [ReadWriteOnce]
+  accessModes: [ReadWriteMany]
   resources:
     requests:
       storage: 2Gi
-  storageClassName: ceph-block
+  storageClassName: ceph-filesystem
