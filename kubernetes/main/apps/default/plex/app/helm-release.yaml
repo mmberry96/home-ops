@@ -236,7 +236,7 @@ spec:
         advancedMounts:
           zurg:
             zurg:
-              - path: /data
+              - path: /app/data
       torrents:
         existingClaim: plex-torrents
         advancedMounts:
