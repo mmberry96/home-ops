@@ -54,7 +54,6 @@ spec:
               TZ: America/Chicago
               # PLEX_ADVERTISE_URL: https://plex.mordex.io:443,http://10.30.0.100:32400
               PLEX_NO_AUTH_NETWORKS: 10.10.0.0/24
-              PLEX_CLAIM: claim-6A_REtFrq98e9Q-kxrQm
             probes:
               liveness: &plex-probes
                 enabled: true
