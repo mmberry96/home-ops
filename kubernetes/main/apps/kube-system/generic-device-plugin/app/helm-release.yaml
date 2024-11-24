@@ -39,11 +39,11 @@ spec:
                   - paths:
                     - path: /dev/fuse
             securityContext:
-              allowPrivilegedEscalation: false
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
-                  - "ALL"
+                  - 'ALL'
     persistence:
       device-plugin:
         type: hostPath

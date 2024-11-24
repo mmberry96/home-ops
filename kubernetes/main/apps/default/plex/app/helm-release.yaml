@@ -73,7 +73,7 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
             securityContext:
-              allowPrivilegedEscalation: false
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
@@ -114,7 +114,7 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
             securityContext:
-              allowPrivilegedEscalation: false
+              allowPrivilegeEscalation: false
               capabilities:
                 drop:
                   - 'ALL'
@@ -140,7 +140,7 @@ spec:
             dependsOn:
               - zurg
             securityContext:
-              allowPrivilegedEscalation: true
+              privileged: true
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
@@ -248,3 +248,4 @@ spec:
           zurg:
             rclone:
               - path: /data
+                mountPropagation: Bidirectional
