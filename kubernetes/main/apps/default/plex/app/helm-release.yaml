@@ -241,7 +241,7 @@ spec:
         existingClaim: plex-torrents
         advancedMounts:
           plex:
-            plex:
+            app:
               - path: /debrid
                 readOnly: true
           zurg:
