@@ -31,6 +31,16 @@ spec:
       namespace: rook-ceph
   values:
     defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: 'true'
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            # Ensure that Plex and Zurg pods run on same node
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: plex
+              topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -39,12 +49,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: 'true'
     controllers:
       plex:
-        annotations:
-          reloader.stakater.com/auto: 'true'
+        pod:
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: 'true'
         containers:
           app:
             image:
@@ -85,8 +94,6 @@ spec:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
       zurg:
-        annotations:
-          reloader.stakater.com/auto: 'true'
         containers:
           zurg:
             image:

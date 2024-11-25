@@ -20,18 +20,19 @@ tasks:
       - test -f {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
       - which flux kubectl yq
 
-  browse-pvc:
-    desc: Mount a PVC to a temp container [CLUSTER=main] [NS=default] [CLAIM=required]
-    interactive: true
-    cmd: kubectl --context {{.CLUSTER}} browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
-    vars:
-      NS: '{{.NS | default "default"}}'
-    requires:
-      vars: [CLUSTER, CLAIM]
-    preconditions:
-      - kubectl --context {{.CLUSTER}} --namespace {{.NS}} get persistentvolumeclaim {{.CLAIM}}
-      - kubectl --context {{.CLUSTER}} browse-pvc --version
-      - which kubectl
+  # needs additional kubectl plugins
+  # browse-pvc:
+  #   desc: Mount a PVC to a temp container [CLUSTER=main] [NS=default] [CLAIM=required]
+  #   interactive: true
+  #   cmd: kubectl --context {{.CLUSTER}} browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
+  #   vars:
+  #     NS: '{{.NS | default "default"}}'
+  #   requires:
+  #     vars: [CLUSTER, CLAIM]
+  #   preconditions:
+  #     - kubectl --context {{.CLUSTER}} --namespace {{.NS}} get persistentvolumeclaim {{.CLAIM}}
+  #     - kubectl --context {{.CLUSTER}} browse-pvc --version
+  #     - which kubectl
 
   sync-secrets:
     desc: Sync all ExternalSecrets [CLUSTER=main]
