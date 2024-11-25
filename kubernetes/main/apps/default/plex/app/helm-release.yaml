@@ -135,6 +135,7 @@ spec:
               - 10s
               - --vfs-cache-mode
               - writes
+              - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
             dependsOn:
