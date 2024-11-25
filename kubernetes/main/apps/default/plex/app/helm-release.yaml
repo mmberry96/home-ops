@@ -245,7 +245,8 @@ spec:
             zurg:
               - path: /app/data
       torrents:
-        existingClaim: plex-torrents
+        # existingClaim: plex-torrents
+        type: emptyDir
         advancedMounts:
           plex:
             app:
