@@ -126,6 +126,7 @@ spec:
               - mount
               - 'zurg:'
               - '/data'
+              - --allow-non-empty
               - --allow-other
               - --uid=65534
               - --gid=65534
