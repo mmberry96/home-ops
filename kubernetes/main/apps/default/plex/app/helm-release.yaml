@@ -125,7 +125,7 @@ spec:
             args:
               - mount
               - 'zurg:'
-              - '/data'
+              - '/data/debrid'
               - --allow-non-empty
               - --allow-other
               - --uid=65534
