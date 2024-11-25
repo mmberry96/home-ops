@@ -210,6 +210,12 @@ spec:
           plex:
             app:
               - path: /config/Library/Application Support/Plex Media Server
+      transcode:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /transcode
       zurg-config:
         type: configMap
         name: zurg-configmap
