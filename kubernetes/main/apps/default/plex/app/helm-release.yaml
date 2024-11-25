@@ -123,10 +123,9 @@ spec:
               repository: rclone/rclone
               tag: 1.68.1
             args:
-              - 'mkdir debrid &&'
               - mount
               - 'zurg:'
-              - '/data/debrid'
+              - '/data'
               - --allow-non-empty
               - --allow-other
               - --uid=65534
