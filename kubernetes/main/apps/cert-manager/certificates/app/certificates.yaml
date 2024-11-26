@@ -8,7 +8,7 @@ metadata:
 spec:
   secretName: home-mordex-io-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: '*.home.mordex.io'
   dnsNames:
