@@ -39,13 +39,21 @@ spec:
               name: home-mordex-io-tls
               namespace: cert-manager
           mode: Terminate
+        traefik:
+          port: 8080
+          protocol: HTTPS
+          certificateRefs:
+            - kind: Secret
+              name: home-mordex-io-tls
+              namespace: cert-manager
+          mode: Terminate
 
     providers:
-      kubernetesCRD:
-        enabled: true
-        ingressClass: traefik-internal
-      # kubernetesIngress:
-      #   enabled: false
+      # kubernetesCRD:
+      #   enabled: true
+      #   ingressClass: traefik-internal
+      kubernetesIngress:
+        enabled: false
       kubernetesGateway:
         enabled: true
 
@@ -58,6 +66,8 @@ spec:
       - '--global.checknewversion=false'
 
     ports:
+      traefik:
+        port: 8080
       web:
         redirectTo:
           port: websecure
