@@ -41,8 +41,8 @@ spec:
           mode: Terminate
 
     providers:
-      kubernetesIngress:
-        enabled: false
+      # kubernetesIngress:
+      #   enabled: false
       kubernetesGateway:
         enabled: true
 
