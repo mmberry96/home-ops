@@ -25,7 +25,8 @@ spec:
   values:
     deployment:
       replicas: 3
-
+    ingressClass:
+      enabled: false
     gateway:
       listeners:
         web:
@@ -39,27 +40,24 @@ spec:
               name: home-mordex-io-tls
               namespace: cert-manager
           mode: Terminate
-
     providers:
       kubernetesIngress:
         enabled: false
       kubernetesGateway:
         enabled: true
-
     logs:
       general:
         level: 'DEBUG'
-
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
-
+    additionalArguments:
+      - '--serversTransport.insecureSkipVerify=true'
     ports:
       web:
         redirectTo:
           port: websecure
           priority: 10
-
     service:
       annotations:
         lbipam.cilium.io/ips: 10.30.0.100
