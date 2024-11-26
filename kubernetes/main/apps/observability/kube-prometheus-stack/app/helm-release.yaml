@@ -87,11 +87,10 @@ spec:
               namespace: network
           hostnames:
             - prometheus.home.mordex.io
-          additionalRules:
-            - filters:
-                - type: RequestRedirect
-                  requestRedirect:
-                    scheme: https
+          filters:
+            - type: RequestRedirect
+              requestRedirect:
+                scheme: https
         https:
           enabled: true
           kind: HTTPRoute
@@ -101,14 +100,6 @@ spec:
               namespace: network
           hostnames:
             - prometheus.home.mordex.io
-          additionalRules:
-            - matches:
-                - path:
-                    type: PathPrefix
-                    value: /
-              backendRefs:
-                - name: kube-prometheus-stack-prometheus
-                  port: 9090
     prometheus-node-exporter:
       prometheus:
         monitor:
