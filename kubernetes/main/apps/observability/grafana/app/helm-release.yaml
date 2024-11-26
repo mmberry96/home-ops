@@ -131,6 +131,10 @@ spec:
           gnetId: 19105
           revision: 5
           datasource: Prometheus
+        traefik:
+          gnetId: 17346
+          revision: 0
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
