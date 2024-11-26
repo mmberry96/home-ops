@@ -77,29 +77,6 @@ spec:
               resources:
                 requests:
                   storage: 55Gi
-      # route:
-      #   http:
-      #     enabled: true
-      #     kind: HTTPRoute
-      #     parentRefs:
-      #       - name: traefik-gateway
-      #         sectionName: web
-      #         namespace: network
-      #     hostnames:
-      #       - prometheus.home.mordex.io
-      #     filters:
-      #       - type: RequestRedirect
-      #         requestRedirect:
-      #           scheme: https
-      #   https:
-      #     enabled: true
-      #     kind: HTTPRoute
-      #     parentRefs:
-      #       - name: traefik-gateway
-      #         sectionName: websecure
-      #         namespace: network
-      #     hostnames:
-      #       - prometheus.home.mordex.io
     prometheus-node-exporter:
       prometheus:
         monitor:

@@ -37,13 +37,16 @@ spec:
           - port-distribution
           - icmp
           - http
-      #   serviceMonitor:
-      #     enabled: true
-      #   dashboards:
-      #     enabled: true
+        serviceMonitor:
+          enabled: true
+        dashboards:
+          enabled: true
       relay:
         enabled: true
         rollOutPods: true
+        prometheus:
+          serviceMonitor:
+            enabled: true
       ui: # TODO: move to HTTPRoute
         enabled: true
         rollOutPods: true
@@ -53,8 +56,17 @@ spec:
             kubernetes.io/ingress.class: traefik-internal
           className: traefik-internal
           hosts: ['hubble.home.mordex.io']
-    # operator:
-    #   dashboards:
-    #     enabled: true
-    # dashboards:
-    #   enabled: true
+    operator:
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    dashboards:
+      enabled: true

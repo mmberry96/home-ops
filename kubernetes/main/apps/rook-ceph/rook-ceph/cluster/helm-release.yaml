@@ -34,6 +34,9 @@ spec:
     configOverride: |
       [global]
       osd_class_update_on_start = false
+    monitoring:
+      enabled: true
+      createPrometheusRules: true
     cephClusterSpec:
       crashCollector:
         disable: false
@@ -41,6 +44,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
+        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
         modules:
           - name: pg_autoscaler
