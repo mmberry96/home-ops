@@ -55,6 +55,9 @@ spec:
       - '--global.checknewversion=false'
 
     ports:
+      traefiK:
+        expose:
+          default: true
       web:
         redirectTo:
           port: websecure
