@@ -41,6 +41,9 @@ spec:
           mode: Terminate
 
     providers:
+      kubernetesCRD:
+        enabled: true
+        ingressClass: traefik-internal
       # kubernetesIngress:
       #   enabled: false
       kubernetesGateway:
