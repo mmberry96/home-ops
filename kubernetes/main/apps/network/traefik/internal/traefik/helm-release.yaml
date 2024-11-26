@@ -55,20 +55,10 @@ spec:
       - '--global.checknewversion=false'
 
     ports:
-      traefik:
-        expose:
-          default: true
       web:
         redirectTo:
           port: websecure
           priority: 10
-      websecure:
-        http3:
-          enabled: true
-          advertisedPort: 4443
-      metrics:
-        expose:
-          default: true
 
     service:
       annotations:

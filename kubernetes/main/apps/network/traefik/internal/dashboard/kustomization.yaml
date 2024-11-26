@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./dashboard-auth.secret.sops.yaml
   - ./middleware.yaml
-  # - ./ingress.yaml
-  - ./routes.yaml
+  - ./ingress.yaml
+  # - ./routes.yaml
