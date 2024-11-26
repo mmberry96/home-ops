@@ -9,7 +9,7 @@ spec:
       sectionName: web
       namespace: network
   hostnames:
-    - hubble.home.mordex.io
+    - traefik.home.mordex.io
   rules:
     - filters:
         - type: RequestRedirect
@@ -32,7 +32,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /dashboard
+            value: /
       backendRefs:
         - name: traefik-internal
           port: 80
