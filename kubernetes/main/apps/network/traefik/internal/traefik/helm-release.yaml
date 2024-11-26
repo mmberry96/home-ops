@@ -66,6 +66,9 @@ spec:
         http3:
           enabled: true
           advertisedPort: 4443
+      metrics:
+        expose:
+          default: true
 
     service:
       annotations:
