@@ -55,7 +55,7 @@ spec:
       - '--global.checknewversion=false'
 
     ports:
-      traefiK:
+      traefik:
         expose:
           default: true
       web:
