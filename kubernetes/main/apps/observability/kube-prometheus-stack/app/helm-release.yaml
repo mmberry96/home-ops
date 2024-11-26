@@ -87,7 +87,7 @@ spec:
               namespace: network
           hostnames:
             - prometheus.home.mordex.io
-          rules:
+          additionalRules:
             - filters:
                 - type: RequestRedirect
                   requestRedirect:
@@ -101,7 +101,7 @@ spec:
               namespace: network
           hostnames:
             - prometheus.home.mordex.io
-          rules:
+          additionalRules:
             - matches:
                 - path:
                     type: PathPrefix
