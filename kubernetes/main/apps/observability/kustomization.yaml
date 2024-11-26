@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./grafana/ks.yaml
-  - ./kube-prometheus-operator/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
