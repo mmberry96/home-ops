@@ -1,13 +1,30 @@
 ---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-http
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      sectionName: web
+      namespace: network
+  hostnames:
+    - hubble.home.mordex.io
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+---
 # TODO: fix
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: traefik-dashboard
-  namespace: network
+  name: traefik-https
 spec:
   parentRefs:
     - name: traefik-gateway
+      sectionName: websecure
       namespace: network
   hostnames:
     - traefik.home.mordex.io
@@ -16,10 +33,9 @@ spec:
         - path:
             type: PathPrefix
             value: /dashboard
-  #     backendRefs:
-  #       - name: traefik-internal
-  #         namespace: network
-  #         port: 8080
+      backendRefs:
+        - name: traefik-internal
+          port: 80
   #     filters:
   #       - type: ExtensionRef
   #         extensionRef:

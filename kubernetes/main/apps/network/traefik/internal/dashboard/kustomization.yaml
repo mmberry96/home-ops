@@ -6,4 +6,4 @@ resources:
   - ./dashboard-auth.secret.sops.yaml
   - ./middleware.yaml
   # - ./ingress.yaml
-  - ./http-route.yaml
+  - ./routes.yaml
