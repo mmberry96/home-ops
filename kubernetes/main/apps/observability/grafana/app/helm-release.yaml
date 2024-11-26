@@ -149,6 +149,7 @@ spec:
       enabled: true
     route:
       http:
+        enabled: true
         kind: HTTPRoute
         parentRefs:
           - name: traefik-gateway
@@ -162,6 +163,7 @@ spec:
                 requestRedirect:
                   scheme: https
       https:
+        enabled: true
         kind: HTTPRoute
         parentRefs:
           - name: traefik-gateway

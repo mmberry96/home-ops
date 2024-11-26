@@ -79,6 +79,7 @@ spec:
                   storage: 55Gi
       route:
         http:
+          enabled: true
           kind: HTTPRoute
           parentRefs:
             - name: traefik-gateway
@@ -92,6 +93,7 @@ spec:
                   requestRedirect:
                     scheme: https
         https:
+          enabled: true
           kind: HTTPRoute
           parentRefs:
             - name: traefik-gateway
