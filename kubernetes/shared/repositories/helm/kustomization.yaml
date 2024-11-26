@@ -8,6 +8,7 @@ resources:
   - ./coredns.yaml
   - ./external-secrets.yaml
   - ./jetstack.yaml
+  - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./onepassword.yaml
   - ./openebs.yaml
