@@ -32,10 +32,10 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
+            value: /dashboard
       backendRefs:
-        - name: traefik-internal
-          port: 443
+        - name: api@internal
+          port: 8080
   #     filters:
   #       - type: ExtensionRef
   #         extensionRef:
