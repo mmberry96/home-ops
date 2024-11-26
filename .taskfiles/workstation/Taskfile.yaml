@@ -17,3 +17,12 @@ tasks:
     preconditions:
       - which brew
       - test -f {{.WORKSTATION_RESOURCES_DIR}}/Brewfile
+
+  krew:
+    desc: Set up Krew tools
+    deps: [brew]
+    cmds:
+      - kubectl krew install browse-pvc cert-manager df-pv rook-ceph view-secret
+    preconditions:
+      - kubectl krew version
+      - which kubectl

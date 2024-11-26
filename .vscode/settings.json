@@ -17,6 +17,7 @@
     "helmfile",
     "jetstack",
     "keygen",
+    "krew",
     "kubelet",
     "letsencrypt",
     "machineconfig",
