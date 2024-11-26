@@ -147,38 +147,38 @@ spec:
     plugins: []
     serviceMonitor:
       enabled: true
-    route:
-      http:
-        enabled: true
-        kind: HTTPRoute
-        parentRefs:
-          - name: traefik-gateway
-            sectionName: web
-            namespace: network
-        hostnames:
-          - grafana.home.mordex.io
-        rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-      https:
-        enabled: true
-        kind: HTTPRoute
-        parentRefs:
-          - name: traefik-gateway
-            sectionName: websecure
-            namespace: network
-        hostnames:
-          - grafana.home.mordex.io
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: prometheus
-                port: 3000
+    # route:
+    #   http:
+    #     enabled: true
+    #     kind: HTTPRoute
+    #     parentRefs:
+    #       - name: traefik-gateway
+    #         sectionName: web
+    #         namespace: network
+    #     hostnames:
+    #       - grafana.home.mordex.io
+    #     rules:
+    #       - filters:
+    #           - type: RequestRedirect
+    #             requestRedirect:
+    #               scheme: https
+    #   https:
+    #     enabled: true
+    #     kind: HTTPRoute
+    #     parentRefs:
+    #       - name: traefik-gateway
+    #         sectionName: websecure
+    #         namespace: network
+    #     hostnames:
+    #       - grafana.home.mordex.io
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /
+    #         backendRefs:
+    #           - name: prometheus
+    #             port: 3000
     persistence:
       enabled: false
     testFramework:
