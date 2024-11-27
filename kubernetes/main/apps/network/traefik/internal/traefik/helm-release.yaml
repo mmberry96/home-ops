@@ -60,6 +60,9 @@ spec:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
     ports:
+      traefik:
+        expose:
+          default: true
       web:
         redirectTo:
           port: websecure
