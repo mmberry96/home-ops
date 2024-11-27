@@ -34,8 +34,9 @@ spec:
             type: PathPrefix
             value: /dashboard
       backendRefs:
-        - name: traefik-internal
-          port: 8080
+        - name: api@internal
+          group: traefik.io
+          kind: TraefikService
       # filters:
       #   - type: ExtensionRef
       #     extensionRef:
