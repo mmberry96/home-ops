@@ -143,6 +143,8 @@ spec:
               - --vfs-cache-mode
               - writes
               - --vfs-refresh
+              - --user-agent
+              - plex
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
             dependsOn:
