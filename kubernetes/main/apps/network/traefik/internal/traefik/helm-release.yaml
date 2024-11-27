@@ -29,8 +29,6 @@ spec:
       enabled: false
     gateway:
       listeners:
-        traefik:
-          port: 9000
         web:
           namespacePolicy: All
         websecure:
