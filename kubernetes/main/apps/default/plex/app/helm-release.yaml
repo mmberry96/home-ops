@@ -143,8 +143,6 @@ spec:
               - --vfs-cache-mode
               - writes
               - --vfs-refresh
-              - --buffer-size
-              - 64Mi
               - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
