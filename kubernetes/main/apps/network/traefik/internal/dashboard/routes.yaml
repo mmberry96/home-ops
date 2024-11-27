@@ -24,7 +24,7 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-gateway
-      # sectionName: traefik
+      sectionName: traefik
       namespace: network
   hostnames:
     - traefik.home.mordex.io
