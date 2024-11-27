@@ -31,6 +31,7 @@ spec:
       listeners:
         traefik:
           port: 9000
+          protocol: HTTPS
         web:
           namespacePolicy: All
         websecure:
