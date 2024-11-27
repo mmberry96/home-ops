@@ -32,6 +32,11 @@ spec:
         traefik:
           port: 9000
           protocol: HTTPS
+          certificateRefs:
+            - kind: Secret
+              name: home-mordex-io-tls
+              namespace: cert-manager
+          mode: Terminate
         web:
           namespacePolicy: All
         websecure:
