@@ -144,7 +144,6 @@ spec:
               - --user-agent=plex
               - --buffer-size=64Mi
               - --rc
-              - --log-level=INFO
               - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
