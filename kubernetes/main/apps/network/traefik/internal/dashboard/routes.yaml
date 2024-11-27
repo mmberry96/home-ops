@@ -35,7 +35,7 @@ spec:
             value: /dashboard
       backendRefs:
         - name: traefik-internal
-          port: 443
+          port: 9000
   #     filters:
   #       - type: ExtensionRef
   #         extensionRef:

@@ -51,8 +51,6 @@ spec:
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
-    additionalArguments:
-      - '--serversTransport.insecureSkipVerify=true'
     ports:
       web:
         redirectTo:
