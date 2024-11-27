@@ -138,15 +138,13 @@ spec:
               - --uid=65534
               - --gid=65534
               - --umask=002
-              - --dir-cache-time
-              - 1m0s
-              - --vfs-cache-mode
-              - writes
+              - --vfs-cache-mode=full
+              - --vfs-cache-max-size=50G
               - --vfs-refresh
-              - --user-agent
-              - plex
-              - --buffer-size
-              - 64Mi
+              - --user-agent=plex
+              - --buffer-size=64Mi
+              - --rc
+              - --log-level=INFO
               - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
