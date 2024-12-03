@@ -77,10 +77,10 @@ spec:
                   failureThreshold: 3
               readiness: *zurg-probes
               startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+                enabled: false
+                # spec:
+                #   failureThreshold: 30
+                #   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
