@@ -56,6 +56,7 @@ spec:
             intel.feature.node.kubernetes.io/gpu: 'true'
         initContainers:
           zurg:
+            restartPolicy: Always
             image:
               repository: ghcr.io/mmberry96/zurg
               tag: 0.1.9@sha256:4063adf52782b8b74fa3c250ca637908b6ccc5b297710489ebf44bc3b17cbd0e
