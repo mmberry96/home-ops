@@ -77,8 +77,6 @@ spec:
               - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
-            dependsOn:
-              - zurg
             securityContext:
               privileged: true
               capabilities:
