@@ -77,16 +77,18 @@ spec:
                   failureThreshold: 3
               readiness: *zurg-probes
               startup:
-                enabled: false
-                # spec:
-                #   failureThreshold: 30
-                #   periodSeconds: 10
+                enabled: true
+                port: 9999
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
                 drop:
                   - 'ALL'
           rclone:
+            restartPolicy: Always
             image:
               repository: rclone/rclone
               tag: 1.68.1
@@ -168,12 +170,9 @@ spec:
         ports:
           http:
             port: 32400
-      zurg:
-        controller: plex
-        type: ClusterIP
-        ports:
-          http:
+          zurg:
             port: 9999
+            primary: false
     route:
       http:
         kind: HTTPRoute
