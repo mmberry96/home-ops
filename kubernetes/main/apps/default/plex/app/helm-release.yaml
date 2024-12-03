@@ -54,6 +54,41 @@ spec:
         pod:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: 'true'
+        initContainers:
+          rclone:
+            image:
+              repository: rclone/rclone
+              tag: 1.68.1
+            args:
+              - mount
+              - 'zurg:'
+              - '/data'
+              - --allow-non-empty
+              - --allow-other
+              - --uid=65534
+              - --gid=65534
+              - --umask=002
+              - --vfs-cache-mode=full
+              - --vfs-cache-max-size=50G
+              - --vfs-refresh
+              - --user-agent=plex
+              - --buffer-size=64Mi
+              - --rc
+              - -vv
+            env:
+              RCLONE_CONFIG: /config/rclone/rclone.conf
+            dependsOn:
+              - zurg
+            securityContext:
+              privileged: true
+              capabilities:
+                drop:
+                  - 'ALL'
+                add:
+                  - 'SYS_ADMIN'
+            resources:
+              limits:
+                squat.ai/fuse: 1
         containers:
           app:
             image:
@@ -125,40 +160,40 @@ spec:
               capabilities:
                 drop:
                   - 'ALL'
-          rclone:
-            image:
-              repository: rclone/rclone
-              tag: 1.68.1
-            args:
-              - mount
-              - 'zurg:'
-              - '/data'
-              - --allow-non-empty
-              - --allow-other
-              - --uid=65534
-              - --gid=65534
-              - --umask=002
-              - --vfs-cache-mode=full
-              - --vfs-cache-max-size=50G
-              - --vfs-refresh
-              - --user-agent=plex
-              - --buffer-size=64Mi
-              - --rc
-              - -vv
-            env:
-              RCLONE_CONFIG: /config/rclone/rclone.conf
-            dependsOn:
-              - zurg
-            securityContext:
-              privileged: true
-              capabilities:
-                drop:
-                  - 'ALL'
-                add:
-                  - 'SYS_ADMIN'
-            resources:
-              limits:
-                squat.ai/fuse: 1
+          # rclone:
+          #   image:
+          #     repository: rclone/rclone
+          #     tag: 1.68.1
+          #   args:
+          #     - mount
+          #     - 'zurg:'
+          #     - '/data'
+          #     - --allow-non-empty
+          #     - --allow-other
+          #     - --uid=65534
+          #     - --gid=65534
+          #     - --umask=002
+          #     - --vfs-cache-mode=full
+          #     - --vfs-cache-max-size=50G
+          #     - --vfs-refresh
+          #     - --user-agent=plex
+          #     - --buffer-size=64Mi
+          #     - --rc
+          #     - -vv
+          #   env:
+          #     RCLONE_CONFIG: /config/rclone/rclone.conf
+          #   dependsOn:
+          #     - zurg
+          #   securityContext:
+          #     privileged: true
+          #     capabilities:
+          #       drop:
+          #         - 'ALL'
+          #       add:
+          #         - 'SYS_ADMIN'
+          #   resources:
+          #     limits:
+          #       squat.ai/fuse: 1
     service:
       plex:
         controller: plex
@@ -221,13 +256,14 @@ spec:
         type: configMap
         name: zurg-configmap
         advancedMounts:
+          plex:
+            rclone:
+              - path: /config/rclone/rclone.conf
+                subPath: rclone
           zurg:
             zurg:
               - path: /app/zurg_template.yml
                 subPath: zurg
-            rclone:
-              - path: /config/rclone/rclone.conf
-                subPath: rclone
       logs:
         type: emptyDir
         advancedMounts:
@@ -240,7 +276,7 @@ spec:
       cache:
         type: emptyDir
         advancedMounts:
-          zurg:
+          plex:
             rclone:
               - path: /.cache
       media:
@@ -266,7 +302,6 @@ spec:
               - path: /debrid
                 readOnly: true
                 mountPropagation: HostToContainer
-          zurg:
             rclone:
               - path: /data
                 mountPropagation: Bidirectional
