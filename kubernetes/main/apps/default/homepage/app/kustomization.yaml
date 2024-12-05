@@ -4,18 +4,18 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./external-secret.yaml
-  - ./config.yaml
+  # - ./config.yaml
   - ./helm-release.yaml
-# configMapGenerator:
-#   - name: homepage-configmap
-#     files:
-#       - ./resources/bookmarks.yaml
-#       - ./resources/custom.css
-#       - ./resources/custom.js
-#       - ./resources/docker.yaml
-#       - ./resources/kubernetes.yaml
-#       - ./resources/services.yaml
-#       - ./resources/settings.yaml
-#       - ./resources/widgets.yaml
-#     options:
-#       disableNameSuffixHash: true
+configMapGenerator:
+  - name: homepage-configmap
+    files:
+      - ./resources/bookmarks.yaml
+      - ./resources/custom.css
+      - ./resources/custom.js
+      - ./resources/docker.yaml
+      - ./resources/kubernetes.yaml
+      - ./resources/services.yaml
+      - ./resources/settings.yaml
+      - ./resources/widgets.yaml
+    options:
+      disableNameSuffixHash: true
