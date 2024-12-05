@@ -6,8 +6,10 @@
         widget:
           type: proxmox
           url: https://pve1.home.mordex.io
-          username: '{{ PROXMOX_USER }}'
-          password: '{{ PROXMOX_API_KEY }}'
+          username: |
+            {{ PROXMOX_USER }}
+          password: |
+            {{ PROXMOX_API_KEY }}
           node: chameleon
     - Proxmox:
         icon: proxmox.svg
@@ -16,8 +18,10 @@
         widget:
           type: proxmox
           url: https://pve2.home.mordex.io
-          username: '{{ PROXMOX_USER }}'
-          password: '{{ PROXMOX_API_KEY }}'
+          username: |
+            {{ PROXMOX_USER }}
+          password: |
+            {{ PROXMOX_API_KEY }}
           node: komodo
     - Proxmox:
         icon: proxmox.svg
@@ -26,8 +30,10 @@
         widget:
           type: proxmox
           url: https://pve3.home.mordex.io
-          username: '{{ PROXMOX_USER }}'
-          password: '{{ PROXMOX_API_KEY }}'
+          username: |
+            {{ PROXMOX_USER }}
+          password: |
+            {{ PROXMOX_API_KEY }}
           node: basilisk
     - Proxmox:
         icon: proxmox.svg
@@ -36,8 +42,10 @@
         widget:
           type: proxmox
           url: https://pve4.home.mordex.io
-          username: '{{ PROXMOX_USER }}'
-          password: '{{ PROXMOX_API_KEY }}'
+          username: |
+            {{ PROXMOX_USER }}
+          password: |
+            {{ PROXMOX_API_KEY }}
           node: uromastyx
 - Networking:
     - Pi-Hole:
@@ -48,7 +56,8 @@
         widget:
           type: pihole
           url: http://pihole.home.mordex.io
-          key: '{{ PIHOLE_API_KEY }}'
+          key: |
+            {{ PIHOLE_API_KEY }}
     - Unifi:
         icon: unifi-controller.png
         href: https://unifi.home.mordex.io/network
@@ -57,8 +66,10 @@
         widget:
           type: unifi
           url: https://unifi.home.mordex.io
-          username: '{{ UNIFI_USERNAME }}'
-          password: '{{ UNIFI_PASSWORD }}'
+          username: |
+            {{ UNIFI_USERNAME }}
+          password: |
+            {{ UNIFI_PASSWORD }}
     - OPNSense:
         icon: opnsense.svg
         href: https://router.home.mordex.io
@@ -67,8 +78,10 @@
         widget:
           type: opnsense
           url: https://router.home.mordex.io
-          username: '{{ OPNSENSE_USERNAME }}'
-          password: '{{ OPNSENSE_PASSWORD }}'
+          username: |
+            {{ OPNSENSE_USERNAME }}
+          password: |
+            {{ OPNSENSE_PASSWORD }}
 - Storage:
     - TrueNAS:
         icon: truenas.svg
@@ -78,7 +91,8 @@
         widget:
           type: truenas
           url: https://truenas.home.mordex.io
-          key: '{{ TRUENAS_API_KEY }}'
+          key: |
+            {{ TRUENAS_API_KEY }}
           enablePools: true
 - Media:
     - Plex:
