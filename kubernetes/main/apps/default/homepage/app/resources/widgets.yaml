@@ -1,0 +1,12 @@
+- openmeteo:
+    label: { { OPENMETEO_LABEL } }
+    latitude: { { OPENMETEO_LAT } }
+    longitude: { { OPENMETEO_LONG } }
+    timezone: America/Chicago
+    units: imperial
+    cache: 5
+- datetime:
+    text_size: 2xl
+    format:
+      timeStyle: short
+      hour12: true
