@@ -7,9 +7,9 @@
           type: proxmox
           url: https://pve1.home.mordex.io
           username: |
-            {{ PROXMOX_USER }}
+            {{PROXMOX_USER}}
           password: |
-            {{ PROXMOX_API_KEY }}
+            {{PROXMOX_API_KEY}}
           node: chameleon
     - Proxmox:
         icon: proxmox.svg
@@ -19,9 +19,9 @@
           type: proxmox
           url: https://pve2.home.mordex.io
           username: |
-            {{ PROXMOX_USER }}
+            {{PROXMOX_USER}}
           password: |
-            {{ PROXMOX_API_KEY }}
+            {{PROXMOX_API_KEY}}
           node: komodo
     - Proxmox:
         icon: proxmox.svg
@@ -31,9 +31,9 @@
           type: proxmox
           url: https://pve3.home.mordex.io
           username: |
-            {{ PROXMOX_USER }}
+            {{PROXMOX_USER}}
           password: |
-            {{ PROXMOX_API_KEY }}
+            {{PROXMOX_API_KEY}}
           node: basilisk
     - Proxmox:
         icon: proxmox.svg
@@ -43,9 +43,9 @@
           type: proxmox
           url: https://pve4.home.mordex.io
           username: |
-            {{ PROXMOX_USER }}
+            {{PROXMOX_USER}}
           password: |
-            {{ PROXMOX_API_KEY }}
+            {{PROXMOX_API_KEY}}
           node: uromastyx
 - Networking:
     - Pi-Hole:
@@ -57,7 +57,7 @@
           type: pihole
           url: http://pihole.home.mordex.io
           key: |
-            {{ PIHOLE_API_KEY }}
+            {{PIHOLE_API_KEY}}
     - Unifi:
         icon: unifi-controller.png
         href: https://unifi.home.mordex.io/network
@@ -67,9 +67,9 @@
           type: unifi
           url: https://unifi.home.mordex.io
           username: |
-            {{ UNIFI_USERNAME }}
+            {{UNIFI_USERNAME}}
           password: |
-            {{ UNIFI_PASSWORD }}
+            {{UNIFI_PASSWORD}}
     - OPNSense:
         icon: opnsense.svg
         href: https://router.home.mordex.io
@@ -79,9 +79,9 @@
           type: opnsense
           url: https://router.home.mordex.io
           username: |
-            {{ OPNSENSE_USERNAME }}
+            {{OPNSENSE_USERNAME}}
           password: |
-            {{ OPNSENSE_PASSWORD }}
+            {{OPNSENSE_PASSWORD}}
 - Storage:
     - TrueNAS:
         icon: truenas.svg
@@ -92,7 +92,7 @@
           type: truenas
           url: https://truenas.home.mordex.io
           key: |
-            {{ TRUENAS_API_KEY }}
+            {{TRUENAS_API_KEY}}
           enablePools: true
 - Media:
     - Plex:

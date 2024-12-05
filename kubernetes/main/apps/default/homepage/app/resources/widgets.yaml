@@ -1,10 +1,10 @@
 - openmeteo:
     label: |
-      {{ OPENMETEO_LABEL }}
+      {{OPENMETEO_LABEL}}
     latitude: |
-      {{ OPENMETEO_LAT }}
+      {{OPENMETEO_LAT}}
     longitude: |
-      {{ OPENMETEO_LONG }}
+      {{OPENMETEO_LONG}}
     timezone: America/Chicago
     units: imperial
     cache: 5
