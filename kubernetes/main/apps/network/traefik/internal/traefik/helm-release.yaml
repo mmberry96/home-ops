@@ -37,8 +37,8 @@ spec:
           protocol: HTTPS
           certificateRefs:
             - kind: Secret
-              name: home-mordex-io-tls
-              namespace: cert-manager
+              name: mordex-io-tls
+              namespace: network
           mode: Terminate
     providers:
       kubernetesIngress:
