@@ -41,47 +41,47 @@ data:
   custom.js: ''
   bookmarks.yaml: ''
   services.yaml: |
-    - Infrastructure:
-        - Proxmox:
-            icon: proxmox.svg
-            href: https://pve1.home.mordex.io
-            description: pve1
-            widget:
-              type: proxmox
-              url: https://pve1.home.mordex.io
-              username: {{PROXMOX_USER}}
-              password: {{PROXMOX_API_KEY}}
-              node: chameleon
-        - Proxmox:
-            icon: proxmox.svg
-            href: https://pve2.home.mordex.io
-            description: pve2
-            widget:
-              type: proxmox
-              url: https://pve2.home.mordex.io
-              username: {{PROXMOX_USER}}
-              password: {{PROXMOX_API_KEY}}
-              node: komodo
-        - Proxmox:
-            icon: proxmox.svg
-            href: https://pve3.home.mordex.io
-            description: pve3
-            widget:
-              type: proxmox
-              url: https://pve3.home.mordex.io
-              username: {{PROXMOX_USER}}
-              password: {{PROXMOX_API_KEY}}
-              node: basilisk
-        - Proxmox:
-            icon: proxmox.svg
-            href: https://pve4.home.mordex.io
-            description: pve4
-            widget:
-              type: proxmox
-              url: https://pve4.home.mordex.io
-              username: {{PROXMOX_USER}}
-              password: {{PROXMOX_API_KEY}}
-              node: uromastyx
+    # - Infrastructure:
+    #     - Proxmox:
+    #         icon: proxmox.svg
+    #         href: https://pve1.home.mordex.io
+    #         description: pve1
+    #         widget:
+    #           type: proxmox
+    #           url: https://pve1.home.mordex.io
+    #           username: {{PROXMOX_USER}}
+    #           password: {{PROXMOX_API_KEY}}
+    #           node: chameleon
+    #     - Proxmox:
+    #         icon: proxmox.svg
+    #         href: https://pve2.home.mordex.io
+    #         description: pve2
+    #         widget:
+    #           type: proxmox
+    #           url: https://pve2.home.mordex.io
+    #           username: {{PROXMOX_USER}}
+    #           password: {{PROXMOX_API_KEY}}
+    #           node: komodo
+    #     - Proxmox:
+    #         icon: proxmox.svg
+    #         href: https://pve3.home.mordex.io
+    #         description: pve3
+    #         widget:
+    #           type: proxmox
+    #           url: https://pve3.home.mordex.io
+    #           username: {{PROXMOX_USER}}
+    #           password: {{PROXMOX_API_KEY}}
+    #           node: basilisk
+    #     - Proxmox:
+    #         icon: proxmox.svg
+    #         href: https://pve4.home.mordex.io
+    #         description: pve4
+    #         widget:
+    #           type: proxmox
+    #           url: https://pve4.home.mordex.io
+    #           username: {{PROXMOX_USER}}
+    #           password: {{PROXMOX_API_KEY}}
+    #           node: uromastyx
     - Networking:
         - Pi-Hole:
             icon: pi-hole.svg
