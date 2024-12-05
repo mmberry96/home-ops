@@ -9,7 +9,7 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: mordex.io
+  commonName: '*.mordex.io'
   dnsNames:
     - mordex.io
     - '*.mordex.io'
