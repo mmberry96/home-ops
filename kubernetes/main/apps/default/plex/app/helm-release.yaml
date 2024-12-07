@@ -60,9 +60,12 @@ spec:
             image:
               repository: ghcr.io/mmberry96/zurg
               tag: 0.1.9@sha256:4063adf52782b8b74fa3c250ca637908b6ccc5b297710489ebf44bc3b17cbd0e
+            env:
+              PLEX_URL: http://plex.default.svc.cluster.local:32400
+              ZURG_MOUNT: /debrid
             envFrom:
               - secretRef:
-                  name: debrid-api-token
+                  name: plex-secret
             probes:
               liveness: &zurg-probes
                 enabled: true
@@ -102,16 +105,9 @@ spec:
               - --gid=65534
               - --umask=002
               - --vfs-cache-mode=full
-              - --vfs-cache-max-size=50G
               - --vfs-refresh
-              - --user-agent=plex
-              - --buffer-size=64Mi
-              - --rc
-              - -vv
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
-            dependsOn:
-              - zurg
             securityContext:
               privileged: true
               capabilities:
@@ -227,6 +223,8 @@ spec:
             zurg:
               - path: /app/zurg_template.yml
                 subPath: zurg
+              - path: /app/plex_update.sh
+                subPath: plex_update
       logs:
         type: emptyDir
         advancedMounts:

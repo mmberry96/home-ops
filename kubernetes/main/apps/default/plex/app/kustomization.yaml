@@ -3,13 +3,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./debrid.secret.sops.yaml
+  - ./external-secret.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
 configMapGenerator:
   - name: zurg-configmap
     files:
-      - zurg=./configs/config.yaml
-      - rclone=./configs/rclone.conf
+      - zurg=./resources/config.yaml
+      - rclone=./resources/rclone.conf
+      - plex_update=./resources/plex_update.sh
     options:
       disableNameSuffixHash: true

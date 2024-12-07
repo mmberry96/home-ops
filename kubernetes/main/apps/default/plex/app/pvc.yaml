@@ -20,14 +20,3 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: ceph-block
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: plex-torrents
-spec:
-  accessModes: [ReadWriteOnce]
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: openebs-hostpath
