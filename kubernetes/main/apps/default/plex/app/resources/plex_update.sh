@@ -24,6 +24,9 @@ zurg_mount="${ZURG_MOUNT:-/mnt/zurg}" # replace with your zurg mount path, ensur
 # Get the list of section IDs
 section_ids=$(curl -sLX GET "$plex_url/library/sections" -H "X-Plex-Token: $token" | xmllint --xpath "//Directory/@key" - | grep -o 'key="[^"]*"' | awk -F'"' '{print $2}')
 
+# Give Zurg + rclone time to update themselves
+sleep 20;
+
 for arg in "$@"
 do
     parsed_arg="${arg//\\}"
