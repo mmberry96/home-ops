@@ -59,7 +59,7 @@ spec:
             restartPolicy: Always
             image:
               repository: ghcr.io/mmberry96/zurg
-              tag: 0.1.9@sha256:4063adf52782b8b74fa3c250ca637908b6ccc5b297710489ebf44bc3b17cbd0e
+              tag: 0.1.10@sha256:df24882c0b3caf78f7d6924bebf1db6cbc04db3e108a6726d17d4ed485f1852b
             env:
               PLEX_URL: http://plex.default.svc.cluster.local:32400
               ZURG_MOUNT: /debrid
