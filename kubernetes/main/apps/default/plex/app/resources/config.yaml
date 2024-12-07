@@ -10,7 +10,7 @@ retain_folder_name_extension: true
 enable_repair: false
 auto_delete_rar_torrents: false
 get_torrents_count: 5000
-on_library_update: sh plex_update.sh "$@"
+on_library_update: bash plex_update.sh "$@"
 directories:
   anime:
     group: media
