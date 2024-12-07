@@ -104,6 +104,7 @@ spec:
               - --uid=65534
               - --gid=65534
               - --umask=002
+              - --poll-interval=10s
               - --vfs-cache-mode=full
               - --vfs-refresh
             env:
