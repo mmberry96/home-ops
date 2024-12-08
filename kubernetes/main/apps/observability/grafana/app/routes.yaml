@@ -9,7 +9,7 @@ spec:
       sectionName: web
       namespace: network
   hostnames:
-    - grafana.home.mordex.io
+    - grafana.mordex.io
   rules:
     - filters:
         - type: RequestRedirect
@@ -26,7 +26,7 @@ spec:
       sectionName: websecure
       namespace: network
   hostnames:
-    - grafana.home.mordex.io
+    - grafana.mordex.io
   rules:
     - matches:
         - path:

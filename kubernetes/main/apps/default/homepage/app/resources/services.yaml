@@ -1,88 +1,88 @@
 - Infrastructure:
     - Proxmox:
         icon: proxmox.svg
-        href: https://pve1.home.mordex.io
+        href: https://pve1.mordex.io
         description: pve1
         widget:
           type: proxmox
-          url: https://pve1.home.mordex.io
+          url: https://pve1.mordex.io
           username: '{{HOMEPAGE_VAR_PROXMOX_USER}}'
           password: '{{HOMEPAGE_VAR_PROXMOX_API_KEY}}'
           node: chameleon
     - Proxmox:
         icon: proxmox.svg
-        href: https://pve2.home.mordex.io
+        href: https://pve2.mordex.io
         description: pve2
         widget:
           type: proxmox
-          url: https://pve2.home.mordex.io
+          url: https://pve2.mordex.io
           username: '{{HOMEPAGE_VAR_PROXMOX_USER}}'
           password: '{{HOMEPAGE_VAR_PROXMOX_API_KEY}}'
           node: komodo
     - Proxmox:
         icon: proxmox.svg
-        href: https://pve3.home.mordex.io
+        href: https://pve3.mordex.io
         description: pve3
         widget:
           type: proxmox
-          url: https://pve3.home.mordex.io
+          url: https://pve3.mordex.io
           username: '{{HOMEPAGE_VAR_PROXMOX_USER}}'
           password: '{{HOMEPAGE_VAR_PROXMOX_API_KEY}}'
           node: basilisk
     - Proxmox:
         icon: proxmox.svg
-        href: https://pve4.home.mordex.io
+        href: https://pve4.mordex.io
         description: pve4
         widget:
           type: proxmox
-          url: https://pve4.home.mordex.io
+          url: https://pve4.mordex.io
           username: '{{HOMEPAGE_VAR_PROXMOX_USER}}'
           password: '{{HOMEPAGE_VAR_PROXMOX_API_KEY}}'
           node: uromastyx
 - Networking:
     - Pi-Hole:
         icon: pi-hole.svg
-        href: http://pihole.home.mordex.io/admin
+        href: http://pihole.mordex.io/admin
         description: Pi-Hole
-        siteMonitor: http://pihole.home.mordex.io
+        siteMonitor: http://pihole.mordex.io
         widget:
           type: pihole
-          url: http://pihole.home.mordex.io
+          url: http://pihole.mordex.io
           key: '{{HOMEPAGE_VAR_PIHOLE_API_KEY}}'
     - Unifi:
         icon: unifi-controller.png
-        href: https://unifi.home.mordex.io/network
+        href: https://unifi.mordex.io/network
         description: Unifi Network
-        siteMonitor: https://unifi.home.mordex.io/network
+        siteMonitor: https://unifi.mordex.io/network
         widget:
           type: unifi
-          url: https://unifi.home.mordex.io
+          url: https://unifi.mordex.io
           username: '{{HOMEPAGE_VAR_UNIFI_USERNAME}}'
           password: '{{HOMEPAGE_VAR_UNIFI_PASSWORD}}'
     - OPNSense:
         icon: opnsense.svg
-        href: https://router.home.mordex.io
+        href: https://router.mordex.io
         description: OPNSense
-        siteMonitor: https://router.home.mordex.io
+        siteMonitor: https://router.mordex.io
         widget:
           type: opnsense
-          url: https://router.home.mordex.io
+          url: https://router.mordex.io
           username: '{{HOMEPAGE_VAR_OPNSENSE_USERNAME}}'
           password: '{{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}'
 - Storage:
     - TrueNAS:
         icon: truenas.svg
-        href: https://truenas.home.mordex.io
+        href: https://truenas.mordex.io
         description: TrueNAS
-        siteMonitor: https://truenas.home.mordex.io
+        siteMonitor: https://truenas.mordex.io
         widget:
           type: truenas
-          url: https://truenas.home.mordex.io
+          url: https://truenas.mordex.io
           key: '{{HOMEPAGE_VAR_TRUENAS_API_KEY}}'
           enablePools: true
 - Media:
     - Plex:
         icon: plex.svg
-        href: https://plex.home.mordex.io
+        href: https://plex.mordex.io
         description: Plex
-        siteMonitor: https://plex.home.mordex.io
+        siteMonitor: https://plex.mordex.io

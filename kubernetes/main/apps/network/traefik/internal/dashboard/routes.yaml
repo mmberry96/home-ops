@@ -9,7 +9,7 @@ spec:
       sectionName: web
       namespace: network
   hostnames:
-    - traefik.home.mordex.io
+    - traefik.mordex.io
   rules:
     - filters:
         - type: RequestRedirect
@@ -27,7 +27,7 @@ spec:
       sectionName: websecure
       namespace: network
   hostnames:
-    - traefik.home.mordex.io
+    - traefik.mordex.io
   rules:
     - matches:
         - path:

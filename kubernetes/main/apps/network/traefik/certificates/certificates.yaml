@@ -9,7 +9,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: '*.home.mordex.io'
+  commonName: mordex.io
   dnsNames:
-    - home.mordex.io
-    - '*.home.mordex.io'
+    - mordex.io
+    - '*.mordex.io'
