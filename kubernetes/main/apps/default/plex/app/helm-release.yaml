@@ -33,14 +33,14 @@ spec:
     defaultPodOptions:
       annotations:
         reloader.stakater.com/auto: 'true'
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            # Ensure that Plex and Zurg pods run on same node
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: plex
-              topologyKey: kubernetes.io/hostname
+      # affinity:
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       # Ensure that Plex and Zurg pods run on same node
+      #       - labelSelector:
+      #           matchLabels:
+      #             app.kubernetes.io/name: plex
+      #         topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -104,7 +104,7 @@ spec:
               - --uid=65534
               - --gid=65534
               - --umask=002
-              - --poll-interval=10s
+              - --dir-cache-time=10s
               - --vfs-cache-mode=full
               - --vfs-refresh
             env:
