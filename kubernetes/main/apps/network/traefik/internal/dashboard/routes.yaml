@@ -24,7 +24,7 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-gateway
-      sectionName: websecure
+      sectionName: traefik
       namespace: network
   hostnames:
     - traefik.mordex.io
@@ -32,11 +32,9 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /dashboard
+            value: /dashboard/
       backendRefs:
-        - name: api@internal
-          group: traefik.io
-          kind: TraefikService
+        - name: traefik-internal
           port: 9000
       # filters:
       #   - type: ExtensionRef

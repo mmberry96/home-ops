@@ -40,6 +40,14 @@ spec:
               name: mordex-io-tls
               namespace: network
           mode: Terminate
+        traefik:
+          port: 9000
+          protocol: HTTPS
+          certificateRefs:
+            - kind: Secret
+              name: mordex-io-tls
+              namespace: network
+          mode: Terminate
     providers:
       kubernetesIngress:
         enabled: false
