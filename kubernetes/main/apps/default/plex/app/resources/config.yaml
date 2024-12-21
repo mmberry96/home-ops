@@ -7,9 +7,12 @@ check_for_changes_every_secs: 10
 ignore_renames: true
 retain_rd_torrent_name: true
 retain_folder_name_extension: true
-enable_repair: false
-auto_delete_rar_torrents: false
+enable_repair: true
+auto_delete_rar_torrents: true
 get_torrents_count: 5000
+enable_download_mount: true
+serve_from_rclone: true
+verify_download_link: true
 on_library_update: bash plex_update.sh "$@"
 directories:
   anime:
