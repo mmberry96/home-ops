@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: traefik-internal
+  name: traefik-external
 spec:
   interval: 30m
   chart:
@@ -28,7 +28,7 @@ spec:
     ingressClass:
       enabled: false
     gateway:
-      name: traefik-internal-gateway
+      name: traefik-external-gateway
       listeners:
         web:
           namespacePolicy: All
@@ -50,28 +50,22 @@ spec:
               namespace: network
           mode: Terminate
     gatewayClass:
-      name: traefik-internal
+      name: traefik-external
     providers:
       kubernetesIngress:
         enabled: false
       kubernetesGateway:
         enabled: true
-    logs:
-      general:
-        level: 'DEBUG'
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
     ports:
-      traefik:
-        expose:
-          default: true
       web:
         redirectTo:
           port: websecure
           priority: 10
     service:
       annotations:
-        lbipam.cilium.io/ips: 10.30.0.100
+        lbipam.cilium.io/ips: 10.30.0.105
       spec:
-        loadBalancerIP: 10.30.0.100
+        loadBalancerIP: 10.30.0.105

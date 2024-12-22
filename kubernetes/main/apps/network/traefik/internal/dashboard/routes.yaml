@@ -2,10 +2,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: traefik-http
+  name: traefik-internal-http
 spec:
   parentRefs:
-    - name: traefik-gateway
+    - name: traefik-internal-gateway
       sectionName: web
       namespace: network
   hostnames:
@@ -20,10 +20,10 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: traefik-https
+  name: traefik-internal-https
 spec:
   parentRefs:
-    - name: traefik-gateway
+    - name: traefik-internal-gateway
       sectionName: traefik
       namespace: network
   hostnames:
@@ -34,7 +34,7 @@ spec:
             type: PathPrefix
             value: /dashboard/
       backendRefs:
-        - name: traefik-internal
+        - name: api@internal
           port: 9000
       # filters:
       #   - type: ExtensionRef
