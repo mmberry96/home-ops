@@ -98,9 +98,7 @@ spec:
               - --umask=002
               - --dir-cache-time=10s
               - --vfs-cache-mode=full
-              - --vfs-cache-max-age=504h # 3 weeks
               - --vfs-cache-max-size=50G
-              # - --vfs-refresh
             env:
               RCLONE_CONFIG: /config/rclone/rclone.conf
             securityContext:
@@ -257,7 +255,6 @@ spec:
           plex:
             app:
               - path: /debrid
-                readOnly: true
                 mountPropagation: HostToContainer
             rclone:
               - path: /data
