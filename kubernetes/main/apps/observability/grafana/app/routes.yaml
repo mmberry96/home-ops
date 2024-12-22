@@ -5,7 +5,7 @@ metadata:
   name: grafana-http
 spec:
   parentRefs:
-    - name: traefik-gateway
+    - name: traefik-internal-gateway
       sectionName: web
       namespace: network
   hostnames:
@@ -22,7 +22,7 @@ metadata:
   name: grafana-https
 spec:
   parentRefs:
-    - name: traefik-gateway
+    - name: traefik-internal-gateway
       sectionName: websecure
       namespace: network
   hostnames:

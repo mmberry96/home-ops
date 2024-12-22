@@ -50,7 +50,7 @@ spec:
       http:
         kind: HTTPRoute
         parentRefs:
-          - name: traefik-gateway
+          - name: traefik-internal-gateway
             sectionName: web
             namespace: network
         hostnames:
@@ -63,7 +63,7 @@ spec:
       https:
         kind: HTTPRoute
         parentRefs:
-          - name: traefik-gateway
+          - name: traefik-internal-gateway
             sectionName: websecure
             namespace: network
         hostnames:
