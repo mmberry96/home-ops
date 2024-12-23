@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: v32.0.0
+      version: v33.2.1
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -31,7 +31,7 @@ spec:
       name: traefik-internal-gateway
       infrastructure:
         labels:
-          mordex.io/gateway-type: internal
+          gateway-type: internal
       listeners:
         web:
           namespacePolicy: All
