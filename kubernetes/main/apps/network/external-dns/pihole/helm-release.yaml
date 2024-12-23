@@ -42,8 +42,6 @@ spec:
     policy: upsert-only
     sources:
       - gateway-httproute
-    txtOwnerId: default
-    txtPrefix: k8s.main.
     domainFilters:
       - mordex.io
     serviceMonitor:
