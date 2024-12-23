@@ -36,8 +36,7 @@ spec:
           secretKeyRef:
             name: &secret external-dns-pihole-secret
             key: *name
-    extraArgs:
-      - --registry=noop
+    registry: noop
     triggerLoopEvent: true
     policy: upsert-only
     sources:
