@@ -29,6 +29,9 @@ spec:
       enabled: false
     gateway:
       name: traefik-internal-gateway
+      infrastructure:
+        labels:
+          gateway-type: internal
       listeners:
         web:
           namespacePolicy: All
@@ -56,9 +59,6 @@ spec:
         enabled: false
       kubernetesGateway:
         enabled: true
-    logs:
-      general:
-        level: 'DEBUG'
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'

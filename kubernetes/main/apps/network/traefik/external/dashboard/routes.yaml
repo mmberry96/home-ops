@@ -1,0 +1,44 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-external-http
+spec:
+  parentRefs:
+    - name: traefik-external-gateway
+      sectionName: web
+      namespace: network
+  hostnames:
+    - traefik-ext.mordex.io
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+---
+# TODO: fix
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-external-https
+spec:
+  parentRefs:
+    - name: traefik-external-gateway
+      sectionName: traefik
+      namespace: network
+  hostnames:
+    - traefik-ext.mordex.io
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /dashboard/
+      backendRefs:
+        - name: api@internal
+          port: 9000
+      # filters:
+      #   - type: ExtensionRef
+      #     extensionRef:
+      #       group: traefik.io
+      #       kind: Middleware
+      #       name: traefik-external-dashboard-basicauth
