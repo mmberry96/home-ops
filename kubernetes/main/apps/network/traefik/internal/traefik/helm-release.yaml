@@ -31,7 +31,7 @@ spec:
       name: traefik-internal-gateway
       infrastructure:
         labels:
-          gateway-type: internal
+          mordex.io/gateway-type: internal
       listeners:
         web:
           namespacePolicy: All
