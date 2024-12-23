@@ -2,7 +2,7 @@ zurg: v1
 token: _DEBRID_API_TOKEN_
 api_rate_limit_per_minute: 60
 torrents_rate_limit_per_minute: 25
-concurrent_workers: 32
+concurrent_workers: 20
 check_for_changes_every_secs: 10
 ignore_renames: true
 retain_rd_torrent_name: true
