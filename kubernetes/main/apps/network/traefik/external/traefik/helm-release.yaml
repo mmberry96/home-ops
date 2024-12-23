@@ -31,7 +31,7 @@ spec:
       name: traefik-external-gateway
       infrastructure:
         labels:
-          gateway-type: external
+          mordex.io/gateway-type: external
       listeners:
         web:
           namespacePolicy: All
