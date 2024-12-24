@@ -23,15 +23,14 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    commonLabels:
+      network-type: internal
     deployment:
       replicas: 3
     ingressClass:
       enabled: false
     gateway:
       name: traefik-internal-gateway
-      infrastructure:
-        labels:
-          mordex.io/gateway-type: internal
       listeners:
         web:
           namespacePolicy: All
