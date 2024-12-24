@@ -16,7 +16,7 @@ spec:
             email: mmberry96@gmail.com
             apiTokenSecretRef:
               name: cloudflare-secret
-              key: CLOUDFLARE_API_KEY
+              key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
             - 'mordex.io'
@@ -38,7 +38,7 @@ spec:
             email: mmberry96@gmail.com
             apiTokenSecretRef:
               name: cloudflare-secret
-              key: CLOUDFLARE_API_KEY
+              key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
             - 'mordex.io'
