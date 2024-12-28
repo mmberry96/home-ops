@@ -50,7 +50,7 @@ spec:
   patches:
     - patch: |
         - op: add
-          path: /spec/infrastructure/labels
+          path: /spec/infrastructure/labels/-
           value:
             network-type: internal
       target:
@@ -110,7 +110,7 @@ spec:
   patches:
     - patch: |
         - op: add
-          path: /spec/infrastructure/labels
+          path: /spec/infrastructure/labels/-
           value:
             network-type: external
       target:
