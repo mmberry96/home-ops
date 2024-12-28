@@ -55,7 +55,7 @@ spec:
             network-type: internal
       target:
         kind: Gateway
-        group: networking.k8s.io
+        group: gateway.networking.k8s.io
         name: traefik-internal-gateway
         namespace: network
 ---
@@ -115,7 +115,7 @@ spec:
             network-type: external
       target:
         kind: Gateway
-        group: networking.k8s.io
+        group: gateway.networking.k8s.io
         name: traefik-external-gateway
         namespace: network
 # ---
