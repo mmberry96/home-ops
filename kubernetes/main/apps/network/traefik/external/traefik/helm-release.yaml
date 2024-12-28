@@ -29,9 +29,6 @@ spec:
       enabled: false
     gateway:
       name: traefik-external-gateway
-      infrastructure:
-        labels:
-          mordex.io/gateway-type: external
       listeners:
         web:
           namespacePolicy: All
