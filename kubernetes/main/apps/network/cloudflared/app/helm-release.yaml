@@ -55,6 +55,8 @@ spec:
               - tunnel
               - --config
               - /etc/cloudflared/config/config.yaml
+              - --loglevel
+              - debug
               - run
               - 9817b2a4-fb20-4322-970a-c771d5e45781
             probes:
