@@ -5,7 +5,7 @@ loki.write "default" {
 }
 
 // System logs
-local.file.match "node_logs" {
+local.file_match "node_logs" {
   path_targets = [{
     // Monitor syslog to scrape node-logs
     __path__  = "/var/log/syslog",
