@@ -29,7 +29,7 @@ spec:
           debrid-media-manager:
             image:
               repository: debridmediamanager/debrid-media-manager
-              tag: latest
+              tag: 4.0.0
             env:
               EXTERNAL_SEARCH_API_HOSTNAME: https://corsproxy.org/?https://debridmediamanager.com
             ports:
