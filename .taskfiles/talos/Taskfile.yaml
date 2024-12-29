@@ -25,9 +25,16 @@ tasks:
       - which talhelper sops talosctl
 
   apply-all:
-    desc: Apply Talos config to all nodes in the cluster [CLUSTER=main]
+    desc: Apply Talos config to all nodes in the cluster [CLUSTER=main] [FLAGS='--insecure']
     cmds:
-      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags='--insecure' | bash
+      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags={{.FLAGS}} | bash
+    requires:
+      vars: [CLUSTER]
+    vars:
+      FLAGS: '{{.FLAGS | default "--insecure" }}'
+    preconditions:
+      - test -f {{.ROOT_DIR}}/talosconfig
+      - which talhelper
 
   apply-node:
     desc: Apply Talos config to a node [CLUSTER=main] [HOSTNAME=required]
