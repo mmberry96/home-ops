@@ -50,7 +50,7 @@ spec:
               TUNNEL_METRICS: 0.0.0.0:8000
               TUNNEL_ORIGIN_ENABLE_HTTPS: true
               TUNNEL_TRANSPORT_PROTOCOL: http2
-              TUNNEL_POST_QUANTUM: true
+              # TUNNEL_POST_QUANTUM: true
             args:
               - tunnel
               - --config
