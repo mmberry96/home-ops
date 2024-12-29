@@ -36,7 +36,7 @@ spec:
               - name: http
                 containerPort: 3000
                 protocol: TCP
-    services:
+    service:
       debrid-media-manager:
         controller: debrid-media-manager
         type: ClusterIP
