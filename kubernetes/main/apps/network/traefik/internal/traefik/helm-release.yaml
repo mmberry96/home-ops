@@ -29,6 +29,9 @@ spec:
       enabled: false
     gateway:
       name: traefik-internal-gateway
+      infrastructure:
+        labels:
+          network-type: internal
       listeners:
         web:
           namespacePolicy: All
