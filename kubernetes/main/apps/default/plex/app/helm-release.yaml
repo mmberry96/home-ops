@@ -165,6 +165,8 @@ spec:
     route:
       http:
         kind: HTTPRoute
+        labels:
+          route-type: internal
         parentRefs:
           - name: traefik-internal-gateway
             sectionName: web
@@ -178,6 +180,8 @@ spec:
                   scheme: https
       https:
         kind: HTTPRoute
+        labels:
+          route-type: internal
         parentRefs:
           - name: traefik-internal-gateway
             sectionName: websecure

@@ -39,15 +39,15 @@ spec:
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-label-filter=gateway-type==external
+      - --label-filter=route-type==external
     triggerLoopEvent: true
     policy: sync
     sources:
-      - 'gateway-httproute'
+      - gateway-httproute
     txtOwnerId: default
     txtPrefix: k8s.
     domainFilters:
-      - 'mordex.io'
+      - mordex.io
     serviceMonitor:
       enabled: true
     podAnnotations:

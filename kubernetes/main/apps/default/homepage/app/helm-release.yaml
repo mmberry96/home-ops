@@ -49,6 +49,8 @@ spec:
     route:
       http:
         kind: HTTPRoute
+        labels:
+          route-type: internal
         parentRefs:
           - name: traefik-internal-gateway
             sectionName: web
@@ -61,6 +63,8 @@ spec:
                 requestRedirect:
                   scheme: https
       https:
+        labels:
+          route-type: internal
         kind: HTTPRoute
         parentRefs:
           - name: traefik-internal-gateway
