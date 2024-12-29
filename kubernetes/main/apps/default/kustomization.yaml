@@ -6,6 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./debrid-media-manager.yaml
+  - ./debrid-media-manager/ks.yaml
   - ./homepage/ks.yaml
   - ./plex/ks.yaml
