@@ -2,7 +2,7 @@
 originRequest:
   originServerName: external.mordex.io
 
-tunnel: 2dc023c4-92d0-4e9d-8843-e15a88c9d5cf
+tunnel: ee8ee12d-9351-4790-b5e3-750a0ecfa840
 
 ingress:
   - hostname: mordex.io
