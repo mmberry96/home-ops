@@ -2,8 +2,6 @@
 originRequest:
   originServerName: external.mordex.io
 
-tunnel: ee8ee12d-9351-4790-b5e3-750a0ecfa840
-
 ingress:
   - hostname: mordex.io
     service: https://traefik-external.network.svc.cluster.local:443
