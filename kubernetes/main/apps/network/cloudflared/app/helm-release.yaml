@@ -47,31 +47,29 @@ spec:
             env:
               NO_AUTOUPDATE: true
               TUNNEL_CRED_FILE: /etc/cloudflared/creds/credentials.json
-              TUNNEL_METRICS: 0.0.0.0:8000
+              TUNNEL_METRICS: 0.0.0.0:8080
               TUNNEL_ORIGIN_ENABLE_HTTPS: true
-              TUNNEL_TRANSPORT_PROTOCOL: http2
-              # TUNNEL_POST_QUANTUM: true
+              TUNNEL_TRANSPORT_PROTOCOL: quic
+              TUNNEL_POST_QUANTUM: true
             args:
               - tunnel
               - --config
               - /etc/cloudflared/config/config.yaml
-              # - --loglevel
-              # - debug
               - run
               - ee8ee12d-9351-4790-b5e3-750a0ecfa840
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /ready
-            #         port: &port 8080
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -88,8 +86,7 @@ spec:
         controller: cloudflared
         ports:
           http:
-            # port: *port
-            port: 8080
+            port: *port
     serviceMonitor:
       app:
         serviceName: cloudflared
