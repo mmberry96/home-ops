@@ -59,19 +59,19 @@ spec:
               # - debug
               - run
               - ee8ee12d-9351-4790-b5e3-750a0ecfa840
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ready
-                    port: &port 8080
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /ready
+            #         port: &port 8080
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -88,7 +88,8 @@ spec:
         controller: cloudflared
         ports:
           http:
-            port: *port
+            # port: *port
+            port: 8080
     serviceMonitor:
       app:
         serviceName: cloudflared
