@@ -9,4 +9,4 @@ spec:
     - dnsName: external.mordex.io
       recordType: CNAME
       targets:
-        - 9817b2a4-fb20-4322-970a-c771d5e45781.cfargotunnel.com
+        - 2dc023c4-92d0-4e9d-8843-e15a88c9d5cf.cfargotunnel.com
