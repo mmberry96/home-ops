@@ -26,6 +26,7 @@ spec:
     - name: traefik-external
       namespace: network
   values:
+    fullnameOverride: *app
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

@@ -40,6 +40,7 @@ spec:
     triggerLoopEvent: true
     policy: upsert-only
     sources:
+      - service
       - gateway-httproute
     domainFilters:
       - mordex.io

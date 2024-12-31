@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     deployment:
-      replicas: 3
+      replicas: 2
     ingressClass:
       enabled: false
     gateway:
@@ -41,34 +41,29 @@ spec:
               name: mordex-io-tls
               namespace: network
           mode: Terminate
-        # traefik:
-        #   port: 9000
-        #   protocol: HTTPS
-        #   certificateRefs:
-        #     - kind: Secret
-        #       name: mordex-io-tls
-        #       namespace: network
-        #   mode: Terminate
     gatewayClass:
       name: traefik-internal
     providers:
+      kubernetesCRD:
+        enabled: false
       kubernetesIngress:
         enabled: false
       kubernetesGateway:
         enabled: true
+        statusAddress:
+          ip: 10.30.0.100
+          hostname: internal.mordex.io
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
     ports:
-      traefik:
-        expose:
-          default: true
       web:
         redirectTo:
           port: websecure
           priority: 10
     service:
       annotations:
+        external-dns.alpha.kubernetes.io/hostname: internal.mordex.io
         lbipam.cilium.io/ips: 10.30.0.100
       spec:
         loadBalancerIP: 10.30.0.100
