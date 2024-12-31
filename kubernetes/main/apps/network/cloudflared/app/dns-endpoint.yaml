@@ -4,8 +4,8 @@ apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
   name: cloudflared
-  label:
-    route-type: external
+labels:
+  route-type: external
 spec:
   endpoints:
     - dnsName: external.mordex.io
