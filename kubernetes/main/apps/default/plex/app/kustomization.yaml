@@ -12,5 +12,11 @@ configMapGenerator:
       - zurg=./resources/config.yaml
       - rclone=./resources/rclone.conf
       - plex_update=./resources/plex_update.sh
+  - name: plex-loki-rules
+    files:
+      - plex.yaml=./resources/loki-rule.yaml
     options:
-      disableNameSuffixHash: true
+      labels:
+        loki_rule: 'true'
+generatorOptions:
+  disableNameSuffixHash: true

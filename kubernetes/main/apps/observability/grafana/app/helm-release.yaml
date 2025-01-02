@@ -68,7 +68,7 @@ spec:
         apiVersion: 1
         providers:
           - name: default
-            orgid: 1
+            orgId: 1
             folder: ''
             type: file
             disableDeletion: false
@@ -83,15 +83,27 @@ spec:
           datasource: Prometheus
         ceph-osd:
           gnetId: 5336
-          revision: 18
+          revision: 9
           datasource: Prometheus
         ceph-pools:
           gnetId: 5342
-          revision: 5
+          revision: 9
           datasource: Prometheus
         cert-manager:
           gnetId: 20842
           revision: 3
+          datasource: Prometheus
+        cloudflared:
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+        external-dns:
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
@@ -121,7 +133,7 @@ spec:
           datasource: Prometheus
         kubernetes-pods:
           gnetId: 15760
-          revision: 32
+          revision: 34
           datasource: Prometheus
         kubernetes-volumes:
           gnetId: 11454
@@ -136,11 +148,11 @@ spec:
           datasource: Prometheus
         prometheus:
           gnetId: 19105
-          revision: 5
+          revision: 6
           datasource: Prometheus
         traefik:
           gnetId: 17346
-          revision: 0
+          revision: 9
           datasource: Prometheus
     sidecar:
       dashboards:
