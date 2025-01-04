@@ -4,22 +4,21 @@ version: '3'
 
 vars:
   BOOTSTRAP_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/bootstrap/resources'
+  TALHELPER_CONFIG_FILE: '{{.CLUSTER_DIR}}/talos/talconfig.yaml'
+  TALHELPER_CLUSTER_DIR: '{{.CLUSTER_DIR}}/talos/clusterconfig'
 
 tasks:
   talos:
     desc: Bootstrap Talos [CLUSTER=main]
     cmds:
-      - until talosctl --context {{.CLUSTER}} --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
+      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
       - talosctl --context {{.CLUSTER}} kubeconfig --nodes {{.TALOS_CONTROLLER}} --merge --force --force-context-name {{.CLUSTER}} {{.ROOT_DIR}}
-    vars:
-      TALOS_CONTROLLER:
-        sh: talosctl --context {{.CLUSTER}} config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
     requires:
       vars: [CLUSTER]
     preconditions:
       - talosctl --context {{.CLUSTER}} config info
       - test -f {{.ROOT_DIR}}/talosconfig
-      - which talosctl jq
+      - which talhelper talosctl
 
   # NOTE: Nodes must all be part of the Ceph cluster and Ceph disks must share the same disk model
   rook:
