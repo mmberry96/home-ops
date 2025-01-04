@@ -58,7 +58,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: nginx-certificates
-  path: ./kubernetes/main/apps/network/nginx/internal
+  path: ./kubernetes/main/apps/network/nginx/external
   prune: false
   sourceRef:
     kind: GitRepository
