@@ -70,7 +70,7 @@ spec:
             args:
               - '--auth=none'
               - '--user-data-dir=/config/.vscode'
-              - '--extensions-dir-/config/.vscode'
+              - '--extensions-dir=/config/.vscode'
               - '--port-12321'
               - '/config'
             resources:
