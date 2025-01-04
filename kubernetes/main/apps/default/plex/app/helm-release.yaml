@@ -162,40 +162,58 @@ spec:
           zurg:
             port: 9999
             primary: false
-    route:
-      http:
-        kind: HTTPRoute
-        labels:
-          route-type: internal
-        parentRefs:
-          - name: traefik-internal-gateway
-            sectionName: web
-            namespace: network
-        hostnames:
-          - plex.mordex.io
-        rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-      https:
-        kind: HTTPRoute
-        labels:
-          route-type: internal
-        parentRefs:
-          - name: traefik-internal-gateway
-            sectionName: websecure
-            namespace: network
-        hostnames:
-          - plex.mordex.io
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: plex
-                port: 32400
+    ingress:
+      plex:
+        annotations:
+          nginx.ingress.kubernetes.io/backend-server: HTTPS
+          nginx.ingress.kubernetes.io/server-snippet: |
+            location ~ ^/library/streams {
+              proxy_set_header        Range "";
+              proxy_pass              http://plex.default.svc.cluster.local:32400;
+              proxy_http_version      1.1;
+            }
+        className: internal
+        hosts:
+          - host: '{{ .Release.Name }}.mordex.io'
+            paths:
+              - path: /
+                service:
+                  identifier: plex
+                  port: http
+    # route:
+    #   http:
+    #     kind: HTTPRoute
+    #     labels:
+    #       route-type: internal
+    #     parentRefs:
+    #       - name: traefik-internal-gateway
+    #         sectionName: web
+    #         namespace: network
+    #     hostnames:
+    #       - plex.mordex.io
+    #     rules:
+    #       - filters:
+    #           - type: RequestRedirect
+    #             requestRedirect:
+    #               scheme: https
+    #   https:
+    #     kind: HTTPRoute
+    #     labels:
+    #       route-type: internal
+    #     parentRefs:
+    #       - name: traefik-internal-gateway
+    #         sectionName: websecure
+    #         namespace: network
+    #     hostnames:
+    #       - plex.mordex.io
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /
+    #         backendRefs:
+    #           - name: plex
+    #             port: 32400
     persistence:
       config:
         existingClaim: plex

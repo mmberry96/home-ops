@@ -139,6 +139,12 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
+        nginx:
+          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+          datasource: Prometheus
+        nginx-request-handling-performance:
+          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+          datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
           revision: 37
@@ -150,10 +156,10 @@ spec:
           gnetId: 19105
           revision: 6
           datasource: Prometheus
-        traefik:
-          gnetId: 17346
-          revision: 9
-          datasource: Prometheus
+        # traefik:
+        #   gnetId: 17346
+        #   revision: 9
+        #   datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
@@ -167,9 +173,17 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ''
-    plugins: []
+    plugins:
+      - grafana-clock-panel
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
     serviceMonitor:
       enabled: true
+    ingress:
+      enabled: true
+      ingressClassName: internal
+      hosts:
+        - grafana.mordex.io
     persistence:
       enabled: false
     testFramework:

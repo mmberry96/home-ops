@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./scrape-config.yaml
-  - ./routes.yaml
+  # - ./routes.yaml

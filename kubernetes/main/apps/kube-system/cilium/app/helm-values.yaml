@@ -35,8 +35,21 @@ loadBalancer:
   mode: snat
 localRedirectPolicy: true
 operator:
-  replicas: 1
+  replicas: 2
   rollOutPods: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+dashboards:
+  enabled: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:

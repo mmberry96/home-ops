@@ -36,12 +36,15 @@ spec:
           secretKeyRef:
             name: &secret external-dns-pihole-secret
             key: *name
+    extraArgs:
+      - --ignore-ingress-tls-spec
     registry: noop
     triggerLoopEvent: true
     policy: upsert-only
     sources:
+      - ingress
       - service
-      - gateway-httproute
+      # - gateway-httproute
     domainFilters:
       - mordex.io
     serviceMonitor:

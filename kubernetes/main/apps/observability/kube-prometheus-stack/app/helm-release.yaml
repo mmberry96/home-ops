@@ -72,6 +72,11 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - prometheus.mordex.io
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         podMonitorSelectorNilUsesHelmValues: false

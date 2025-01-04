@@ -5,8 +5,9 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
+  # - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
   # Flux-Kustomizations
   - ./cloudflared/ks.yaml
   - ./external-dns/ks.yaml
-  - ./traefik/ks.yaml
+  - ./nginx/ks.yaml
+  # - ./traefik/ks.yaml

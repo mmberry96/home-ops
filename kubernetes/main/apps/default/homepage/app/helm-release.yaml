@@ -46,40 +46,50 @@ spec:
         ports:
           http:
             port: 3000
-    route:
-      http:
-        kind: HTTPRoute
-        labels:
-          route-type: internal
-        parentRefs:
-          - name: traefik-internal-gateway
-            sectionName: web
-            namespace: network
-        hostnames:
-          - home.mordex.io
-        rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-      https:
-        labels:
-          route-type: internal
-        kind: HTTPRoute
-        parentRefs:
-          - name: traefik-internal-gateway
-            sectionName: websecure
-            namespace: network
-        hostnames:
-          - home.mordex.io
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: homepage
-                port: 3000
+    ingress:
+      homepage:
+        className: internal
+        hosts:
+          - host: '{{ .Release.Name }}.mordex.io'
+            paths:
+              - path: /
+                service:
+                  identifier: homepage
+                  port: http
+    # route:
+    #   http:
+    #     kind: HTTPRoute
+    #     labels:
+    #       route-type: internal
+    #     parentRefs:
+    #       - name: traefik-internal-gateway
+    #         sectionName: web
+    #         namespace: network
+    #     hostnames:
+    #       - home.mordex.io
+    #     rules:
+    #       - filters:
+    #           - type: RequestRedirect
+    #             requestRedirect:
+    #               scheme: https
+    #   https:
+    #     labels:
+    #       route-type: internal
+    #     kind: HTTPRoute
+    #     parentRefs:
+    #       - name: traefik-internal-gateway
+    #         sectionName: websecure
+    #         namespace: network
+    #     hostnames:
+    #       - home.mordex.io
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /
+    #         backendRefs:
+    #           - name: homepage
+    #             port: 3000
     persistence:
       custom-js:
         type: configMap
