@@ -40,21 +40,21 @@ spec:
                 containerPort: 3000
                 protocol: TCP
     service:
-      homepage:
+      app:
         controller: homepage
         type: ClusterIP
         ports:
           http:
             port: 3000
     ingress:
-      homepage:
+      app:
         className: internal
         hosts:
           - host: home.mordex.io
             paths:
               - path: /
                 service:
-                  identifier: homepage
+                  identifier: app
                   port: http
     # route:
     #   http:
@@ -88,7 +88,7 @@ spec:
     #               type: PathPrefix
     #               value: /
     #         backendRefs:
-    #           - name: homepage
+    #           - name: app
     #             port: 3000
     persistence:
       custom-js:

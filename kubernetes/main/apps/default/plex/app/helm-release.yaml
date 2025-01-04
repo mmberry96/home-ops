@@ -151,7 +151,7 @@ spec:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
     service:
-      plex:
+      app:
         controller: plex
         type: LoadBalancer
         annotations:
@@ -163,7 +163,7 @@ spec:
             port: 9999
             primary: false
     ingress:
-      plex:
+      app:
         annotations:
           nginx.ingress.kubernetes.io/backend-server: HTTPS
           nginx.ingress.kubernetes.io/server-snippet: |
@@ -178,7 +178,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: plex
+                  identifier: app
                   port: http
     # route:
     #   http:
@@ -212,7 +212,7 @@ spec:
     #               type: PathPrefix
     #               value: /
     #         backendRefs:
-    #           - name: plex
+    #           - name: app
     #             port: 32400
     persistence:
       config:

@@ -26,7 +26,7 @@ spec:
     controllers:
       debrid-media-manager:
         containers:
-          debrid-media-manager:
+          app:
             image:
               repository: debridmediamanager/debrid-media-manager
               tag: 4.0.0
@@ -37,21 +37,21 @@ spec:
                 containerPort: 3000
                 protocol: TCP
     service:
-      debrid-media-manager:
+      app:
         controller: debrid-media-manager
         type: ClusterIP
         ports:
           http:
             port: 3000
     ingress:
-      debrid-media-manager:
+      app:
         className: external
         hosts:
           - host: debrid.mordex.io
             paths:
               - path: /
                 service:
-                  identifier: debrid-media-manager
+                  identifier: app
                   port: http
     # route:
     # http:
@@ -85,5 +85,5 @@ spec:
     #             type: PathPrefix
     #             value: /
     #       backendRefs:
-    #         - name: debrid-media-manager
+    #         - name: app
     #           port: 3000
