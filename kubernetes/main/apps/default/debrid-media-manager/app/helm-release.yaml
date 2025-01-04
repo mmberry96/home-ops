@@ -47,12 +47,6 @@ spec:
       debrid-media-manager:
         className: external
         hosts:
-          - host: '{{ .Release.Name }}.mordex.io'
-            paths:
-              - path: /
-                service:
-                  identifier: debrid-media-manager
-                  port: http
           - host: debrid.mordex.io
             paths:
               - path: /

@@ -50,12 +50,6 @@ spec:
       homepage:
         className: internal
         hosts:
-          - host: '{{ .Release.Name }}.mordex.io'
-            paths:
-              - path: /
-                service:
-                  identifier: homepage
-                  port: http
           - host: home.mordex.io
             paths:
               - path: /
