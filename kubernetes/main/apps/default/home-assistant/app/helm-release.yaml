@@ -46,9 +46,8 @@ spec:
               tag: 2025.1.0@sha256:2abed005d6bfd8dbe0605bd1d9eb5380b14b657401c5c3880e4ba4fa20e636a1
             env:
               TZ: America/Chicago
-              # TODO:
-              # HASS_HTTP_TRUSTED_PROXY_1: 1.1.1.1
-              # HASS_HTTP_TRUSTED_PROXY_2: 1.1.1.1
+              HASS_HTTP_TRUSTED_PROXY_1: 10.30.0.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.10.0.0/24
             envFrom:
               - secretRef:
                   name: home-assistant-secret
