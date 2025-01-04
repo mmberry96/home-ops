@@ -121,7 +121,7 @@ spec:
       tts:
         type: emptyDir
         globalMounts:
-          - /config/tts
+          - path: /config/tts
       tmp:
         type: emptyDir
         globalMounts:
