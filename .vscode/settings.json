@@ -17,6 +17,7 @@
     "gencommand",
     "genconfig",
     "gensecret",
+    "hass",
     "helmfile",
     "httproute",
     "jetstack",
