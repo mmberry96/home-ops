@@ -21,6 +21,7 @@
     "helmfile",
     "httproute",
     "jetstack",
+    "kavita",
     "keygen",
     "krew",
     "kubelet",

@@ -9,4 +9,5 @@ resources:
   - ./debrid-media-manager/ks.yaml
   - ./home-assistant/ks.yaml
   - ./homepage/ks.yaml
+  - ./kavita/ks.yaml
   - ./plex/ks.yaml
