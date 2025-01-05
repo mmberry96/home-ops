@@ -74,6 +74,6 @@ spec:
       manga:
         type: nfs
         server: truenas.mordex.io
-        path: /mnt/storage0/media/manga
+        path: /mnt/storage0/media/
         globalMounts:
-          - /manga
+          - /media
