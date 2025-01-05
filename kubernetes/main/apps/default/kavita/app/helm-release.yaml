@@ -71,3 +71,9 @@ spec:
         existingClaim: kavita
         globalMounts:
           - path: /kavita/config
+      manga:
+        type: nfs
+        server: truenas.mordex.io
+        path: /mnt/storage0/media/manga
+        globalMounts:
+          - /manga
