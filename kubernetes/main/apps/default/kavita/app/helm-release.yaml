@@ -77,3 +77,4 @@ spec:
         path: /mnt/storage0/media/manga
         globalMounts:
           - path: /manga
+            readOnly: true
