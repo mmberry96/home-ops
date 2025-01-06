@@ -195,7 +195,7 @@ spec:
                   fieldPath: spec.nodeName
       initContainers:
         - name: install-cni
-          image: ghcr.io/siderolabs/install-cni:v1.8.3 # adapt to your talos version
+          image: ghcr.io/siderolabs/install-cni:v1.8.0 # adapt to your talos version
           command:
             - '/install-cni.sh'
           securityContext:
