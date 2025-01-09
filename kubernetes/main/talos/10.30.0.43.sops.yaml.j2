@@ -1,0 +1,228 @@
+version: v1alpha1
+debug: false
+persist: true
+machine:
+  type: controlplane
+  token: ENC[AES256_GCM,data:JGNLKMFi46YW9Uzd1x4TAOvLUsF8Pds=,iv:x4Od3YCNUbhTxgMU0qy3LO3jv8kI77sxDQvwgczn2kA=,tag:VDIsVXjZKukvp/rbq6EVIw==,type:str]
+  ca:
+    crt: ENC[AES256_GCM,data:VCijDOOES33JrfAKou54sQDNwf0nMi40VyCfFBv7xEJn6IZ/LyuFxgokNB6J49Brn1Yf7aOm9nPKL3H8eLYlC/KhU0umhnvo5vVC9r+MISCmS0JoTKb/8njQGGSawSQZz12nFn5H5W59kCC2695LXheZ+kaG0PJocT/FGxj8cjjoNAnfPhuWryHu/E8xUGIQFvLvEKqhpIPAMQPaQxPagpwIZlrYKOCUSKjwxCgSWDCi0W0limBc2Zns4rzFLyZZ2bZfHaXGb5Feb9YeuVwvfiqhrvPcULrs3nTx+xSXcGhlZ99611UEyuAAvpHgQ8YvzOfwJHQRQMgN4Y6XjYLamslMVFUie0IKKTXizxfz+UIUMJqOJbKoMn0+i2v612vXtot4/J0c6IEPNFzZaPkGfHZBevo5ggnDr/EVOiMXgbXNOt5ccftUZcOSsAPszN3d/4C1lvSYLbd6obgAuxcgWV547aJDrpsu6k8i/clVEUyuFol1DgChEgums5K4dF9ghsewBsthwFrhhD9fWHhV9JXJUC8fBl5YSg7hYB+TMRlWC/cAkPT34g0IXam7pL8N6tHo0PF/qWifirnTgH0YDjIPrJs50LhGVb5avgMad3yfdmKiOo3vT6JB0pRAQSELQ953Ugodzrvj1VQjgOilomZUp0Jhn/Oaw/KfWyxPPnTSQRSdetIIc1AgRnDCaNXBVwaxIcXjycYg5GuoNSymVA5YyDljkPM1UKHq6NxSFMkD+5k0wc9OlDrsHjF3Bi9ha8w1QWjAcungpxkkkEokVIlMOAll4XJ0LdCk4hXaRiaji0Kc3KaO5CQzXaKic7XfztBejUyLoxdNKOtSFMilpGLmLE/ZAgPo6yzqnTsljitXixzM,iv:K4bMLe8xHwZwi0DDSoiCuKPDbSNI8PWgkOU1qcbSYjc=,tag:HWHXsZffgSRQttxDqpEoEg==,type:str]
+    key: ENC[AES256_GCM,data:SF86aPFiKYDwy7Juvw982chKB12zZ55aIdg6CSQNJv+wt4Iz8x/QkSzVIMf1u+vrERfC9a3+3YqtUK/ScUzTLevGGUyZz4n0D5433rLgdENNbi2WVPfIWi1ru8n0E33cFltGvsYmo5DXc06mNeoEGzoXgA+08jxB1DpFPorWlK2XxwD5mrnu5kfudoLEE4/o4IYaekANGnWyuPIjpx+8dhVX8gj2gh7kCIQpql+phTV1rkMS,iv:91FM/34XjxRP3qAg5CseADIQJuhZi1Ay3yv3f4u20aA=,tag:vLCXAFj2f20Kvo3KgW/uNA==,type:str]
+  certSANs: ["127.0.0.1", "10.30.0.40"]
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
+    extraMounts:
+      - destination: /var/openebs/local
+        type: bind
+        source: /var/openebs/local
+        options: ["bind", "rshared", "rw"]
+    defaultRuntimeSeccompProfileEnabled: true
+    nodeIP:
+      validSubnets: ["10.30.0.0/24"]
+    disableManifestsDirectory: true
+  network:
+    hostname: anole03
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: a4:bb:6d:*
+          driver: e1000e
+        mtu: 9000
+        dhcp: true
+        vip:
+          ip: 10.30.0.40
+  install:
+    diskSelector:
+      model: KBG40ZNS256G NVMe KIOXIA 256GB
+    extraKernelArgs:
+      - i915.enable_guc=3                   # Comet Lake CPU / iGPU
+      - apparmor=0                          # Less security, faster puter
+      - init_on_alloc=0                     # Less security, faster puter
+      - init_on_free=0                      # Less security, faster puter
+      - intel_iommu=on                      # PCI Passthrough
+      - iommu=pt                            # PCI Passthrough
+      - mitigations=off                     # Less security, faster puter
+      - security=none                       # Less security, faster puter
+      - sysctl.kernel.kexec_load_disabled=1 # Comet Lake CPU / iGPU
+    # i915, intel-ucode
+    image: factory.talos.dev/installer/4b3cd373a192c8469e859b7a0cfbed3ecc3577c4a2d346a37b0aeff9cd17cdb0:{{ ENV.TALOS_VERSION }}
+    wipe: false
+  files:
+    - op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 0o644
+      content: |
+        [ NFSMount_Global_Options ]
+        nfsvers=4.2
+        hard=True
+        nconnect=16
+        noatime=True
+  sysctls:
+    fs.inotify.max_user_watches: 1048576   # Watchdog
+    fs.inotify.max_user_instances: 8192    # Watchdog
+    net.core.default_qdisc: fq             # 10Gb/s
+    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+    vm.nr_hugepages: 1024                  # Hugepages
+  sysfs:
+    devices.system.cpu.intel_pstate.hwp_dynamic_boost: 1
+    devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
+  features:
+    rbac: true
+    stableHostname: true
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles: ["os:admin"]
+      allowedKubernetesNamespaces: ["kube-system"]
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    kubePrism:
+      enabled: true
+      port: 7445
+    hostDNS:
+      enabled: true
+      resolveMemberNames: true
+      forwardKubeDNSToHost: false
+  udev:
+    rules:
+      - # Intel GPU
+        SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+  kernel:
+    modules:
+      - name: nbd
+  nodeLabels:
+    node.kubernetes.io/exclude-from-external-load-balancers: ""
+    topology.kubernetes.io/region: main
+    topology.kubernetes.io/zone: m
+cluster:
+  id: ENC[AES256_GCM,data:QZKokYvwNb/o9xH4V4hkT7VPwMpT90uFelJLkrRpyyjvcOrEKhpOGjrZwSU=,iv:XHqRGoPaL+jIJVEG6lCFBOvJzaWqSqfwzG42ZYtP2RI=,tag:ISV2ExvZYed9LtRAcqXb6Q==,type:str]
+  secret: ENC[AES256_GCM,data:nLY5VAUhO/Syv7I2diu8gpJLwtzP1YZuspO7aNIxv4E5xzRstcM857cUzYc=,iv:A4ov0wDG+0m9VxoFTC0d3lufKodupOKd1jx+S6gr3Ro=,tag:uep/Zqgfz6yb0Rokpxb95Q==,type:str]
+  controlPlane:
+    endpoint: https://10.30.0.40:6443
+  clusterName: main
+  network:
+    cni:
+      name: none
+    dnsDomain: cluster.local
+    podSubnets: ["10.244.0.0/16"]
+    serviceSubnets: ["10.96.0.0/12"]
+  coreDNS:
+    disabled: true
+  token: ENC[AES256_GCM,data:7Ru3ANfTvkBHfgYNb5EM97/rjSD8LBk=,iv:R47eD+fT0u5xD60hA4fOdbQJn22TpPiLP4QROtntCBQ=,tag:y4ojjdZhFRePiJxtXz2mug==,type:str]
+  secretboxEncryptionSecret: ENC[AES256_GCM,data:/WOTwMiv/PxFdyxkt4ASsLPSnFceN3j2sk/fFKvAwb1rYdzFv/LD59ZKIaQ=,iv:UG0SUHff+kO5aX03ARAXUYCUoz+/rXRwvkllW+5ewkU=,tag:5VH6Lu963XbHJqPpFPo0SA==,type:str]
+  ca:
+    crt: ENC[AES256_GCM,data:6hbxsZa/6b6QAXqAGO+/6pHdUVvSQr2lJKufUiluL/le57EzRcwzg+VsCTIW3TeQ0QGlhxrCLFk0lgmzLC+bS4WOXx5blF7flAVV30eshZgsPB5GguEQ2K6GfvnhdGaDHt6EP4CGs8xnykT8Ngw71OExBpYVQiSvAntxUatHT7X35IzTuKA4R0i4L72RSPLhntvVovwSvEWQi2Uw68w+L4vYdUERavmbkF1Az4d61+47ZR2E8eH7+eTrWCHNjFbTRGExQYUny5FTb7LEyEcyzYHXPanu8N4WR/L6nQkbORVOT0G9pjjPAJLkwIhhrnto0jW0Pl3okPtKkGRvVbNbmj1xbN6kF6iThvmuBvqD0idd9lXGIsrxIu6knHLIPcz7NO/mjUOhs8u/Rf10eVMFmWuBZI1+BLYzQ7dRJj0LDPyu+Eb5sLnTTc2DOyeqRqIGKOLBaDfEDro/9uxcpYy6Va4idii3itgFQru8I3fD0ADc7tCf0b8loWkafKOR5tVBlh12ixp5RybEY/Wy7MSmDbLHlJUKkSsmCqOrO+vTuaoHdLHQVTcbHeC12rNX6LJFRByTdohZm1SshkEyiYcrNMUWJkzP4R1OuqencBYFdkUhqgpafZjNq1ikn4hch6uRwttu7TW0UrxRGu4sfz0RIifims+uvRakRkxa7Ir0yUIdCDOohH8kqqnRiDW+qRm78foaqSfhRDpY141LIyRPPQSjSTowPOXfe9qoEnP086YGE4cSpkWs6ehSQhvJ52GnK3GNIKxQhMnMlLLdqeqhIN3BTCvcebIa5oW8dKCq6iSPerlyQ75xsAAMxSHZBjuUvDFJEKDy0AlBF2a8G720EkX9yFvkLVC4OAhG3XUvhgAZ1sA+/Glnosb4xbxTEbyjsJ7oj3Ob+hiwgBWoacNfxts8IczgSfk4ZKUGO/DAGLZBkcKC3WZmGJTOH7qlXGUsdaVhBRvmJChx3m+jclZk1/otH1+YGJQwboHmLBC3fjY7MtM0QQ0gCH04qjncUpXihG04CufBygMaUiT9CFplEMErJlU2ZgLLb38n4w==,iv:TlsGZnnnnqww+i1kYBSgU5QacpNLvgyF3ZUADaNFCTs=,tag:/pFynBf7X3yJHHpQxoRv8A==,type:str]
+    key: ENC[AES256_GCM,data:2s6sTE0iu4QNmfeBcyeml+AHGJ1E2Xt5YqFJS1jo2hLv8sCTV750AUzq060PS2mYEvLdZ3A/f6FZ6l9HOxrF/TiPtpy3BqQZLtUmV3es7+8CGStC3S3k3v4adG9dfnvuutnjUzvOWqTm3k1Y12ofaG7Um9LOE6OoU5WIoNhll6Wwn99tkd7vLcakpHvBRH+GCyxjqvxVIG4fSOaTvU3J7F+hoVHDjUWildyYUZMGjuRFJUoDbXpBJSPt+DBN0pJXX3rdvuUG2D5LdcYbuN9y0aM3d08TJJTLgm/6VMTeplD72Lcd6jYdEKgQGo6Q8LWHOxgevWSuRgmyAwROH4Dj0SEDa8m4WrkHZg8/35TUXa+CMSCmCmeQcfGuSbbVNMFZO3X9WrdfalupNDzaVUJsSw==,iv:FARFtriQ8q05ST9EgmQxtuBvVRHY+w/SkjAMVkhuiT4=,tag:GZlqj4cyFDDoqHVzM1+3rg==,type:str]
+  aggregatorCA:
+    crt: ENC[AES256_GCM,data:9p1Xgwwf/i/zsEHZdQbHztJjebUJoAfD0sBTLKWh+mknQ/VlCMiu0lhb1tMSshxC7eHaFLsYrjFiQEBHKmzICLfQLW1KAr9ZClMsTx9rNWUk3Y9yf9bABfpVEKiIjp+kLdnNwpyz8EnBzWIWhkCJMpWJBt7T4LGmHJNf8fE+uE0wSNR63G1L7GlToYAmxZhUS5A037In8YufMy2ViI1EIFZzSI2Tnx//NqYs9Ivi5910kL7DAc53qBRS0ON6nggvdWI9Lu1GyAy16B/iPd9ACB8ze0jULoAyWuJOeWvXiHsGG+6XClsHFqbCD7dPobZyB3bGmnA+V2J4FZnwowaMYA5u81ba9IfZzrf4tq1zvbbY9uQEpbXj6RqH/Gk1u7SxcsHV+cf7keHfo9sL1XAAn3AVTx+GlR70BEUc7eVqQtYTtjCOjy9ZagcEOrBk+wZeFbUkh9Y4QMKGJjn2EHUGdjJwF0tnRjOhLXoxbqkLnG8mF5XsLhuwf/nPhEEfjD1VL6TqK7rXL0ZVPZrxoL+IkyorlQ5oM1xssUviCT2lDt+JB2ID7sgRpBDD9y73zv9I061CzzH3h4AdYomeopGuOMUAmpbQeNXkt7oAeLjAa6oZgy1ugzI58OPB0dki7udYLD/dzp6vvcTVQiI7/w6iP1JB7aRwNwCBSRAnMHfqLW1RYOoBcDGo/lnG9uTNLykvYX2dmDZr5wVOnR6pPKYBAE2qimWYP8B135epI23hoL7jzKAMFYSCUMsNfKoOlx1gw0HrAbm1xXf65pw/7zi2V9RO/BGNwTwd8dasstpIHmyz2Va2CeOg9Wc3ZXRfplFAue4MQGEAOL7yMA00tU/LN8R2zDAviZ9LtevuGsD87VRejYVdI2IeVD3UkG6JKw2YjWymK98a3S4oYwMzyyTfB7sCfBWwa5seUQ3LtqjW8qiVoGmYKgxypLBN1UJFowf5,iv:gii/E0RAmg1ScljNn8ydscuXFHLKX7VO1FNNtU8UAf0=,tag:k3t0/l+wPbr06OHUNZXAeg==,type:str]
+    key: ENC[AES256_GCM,data:ChdPg86fILBv2dSC/+jHTGJjzoMp0OW3QJSFOmiCFQdN45K/X9jRPSnbtxOVCb/GbgUNaRj0wyz0bSh6mCj1BNxT0RimsOU2XjJl5PN5trzd6OZjV7nHc68pG9a+/2ETSrsybtOJ6EFd6LjxvvrbQlEp1dKJaeVH+/83NT4E6nkbquLcsB1mCK8wQHdHShwCk6GLcxJZAhwgSFhhEiYPdJCQIA97kVdI5hxFjx6uTksU9l7h4BJHMmCdMMofSp3WGacS7vzcI0Z+h8avPWbT1QYNvGPxAGq0T1z2T+gLLMdcxffcNfGtxa1c+QJeiZwKdsKj48mGsg8QXXoky1XU2myMHYk10BeVmpw56fe5WFJa9GBsOmkQAASqoCLfq+qp1iaMp/lP7v+Tr7Jl6NyA9g==,iv:yZ9gTkhFYY8SCRfjr2F2gt4VH23EPFXCwLmQMXo/dMo=,tag:FZXAexefsbwdlmAEXWNLlw==,type:str]
+  serviceAccount:
+    key: ENC[AES256_GCM,data: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,iv:72Otmj6hHcU76mb1fJwNiCBYFA8u9IVaal4jUfQPlD0=,tag:rK/PpWppx59yQbNujemfWw==,type:str]
+  apiServer:
+    image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
+    certSANs: ["127.0.0.1", "10.30.0.40"]
+    disablePodSecurityPolicy: true
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+          defaults:
+            audit: restricted
+            audit-version: latest
+            enforce: baseline
+            enforce-version: latest
+            warn: restricted
+            warn-version: latest
+          exemptions:
+            namespaces:
+              - kube-system
+            runtimeClasses: []
+            usernames: []
+          kind: PodSecurityConfiguration
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+  controllerManager:
+    image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      bind-address: 0.0.0.0
+  proxy:
+    disabled: true
+  scheduler:
+    image: registry.k8s.io/kube-scheduler:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      bind-address: 0.0.0.0
+    config:
+      apiVersion: kubescheduler.config.k8s.io/v1
+      kind: KubeSchedulerConfiguration
+      profiles:
+        - schedulerName: default-scheduler
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultingType: List
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service: {}
+  etcd:
+    ca:
+      crt: ENC[AES256_GCM,data:loqG9kj7k9T4ERqLtgDk5/77Io4n9gpgvigLyfEtOOmo6tPUeUNKmAGj+gN/XV7pLFRwJKlHhm9g+/DisCfn0PlMSQXS6GdAHZCxlWcob5GoHdL0iL0nl+LHwVL4AeJyALfowfEVptYwRqlUhRdlbyYfg9FFLLtnR+44ecSg1zQgaQUQr+gZKsor7rez33TVIY/Gzc5sUQdatLw73N/c9sSr81kACfDyiWQe6udEn/Oo4btCowvcN0kd1OX19Z5sPzUax1nQgu52NbXVEbjqF+CVnTENMD61kUToglTPhdPeCZoiUhzoTXc8xk5CqPiRLZTj/OdB10Yb9v1hO3ZBxu8sJAz1R614dwsBO6jKT5dseCbJ30dNPzML4vO8N7mJGQCtgHi40ZfnXqdGO5e76p/O8+vmzhxrmHWlXOeY9Cuqsn2v+n/sw3irwIhpjPxtG6ZNkbQkB6eiMif0F8Gr72OlAZWp33GgE3DeszhsURht3l72DGZQtxksP1cEkYcchYQw0ShPjVz+DlgLZH59VBA9KPYBNYK4iFc968sxufQuayDe2JdVKsmkEGdBUPI/OQuZaPzIWxcIfQpqSwM4SWlaXfFoVSO+iTMwe9uuJBpKEQuzqOjRNUYEl7SP6d2SfNvBTM8v8OQreWIfFBRye3zbiQD66HfP3qrMtyGe9jKUqnpmeWRO8nNuOJe6GkELLmosl8c+fZIbziPU0qhS2SXEM+K3xK0JmpzUoigWjyihnJ/+qlxT/KrDd/oH71aZCXgHUWW7e8ocyQzeT5TtSAag3Vq5lEfrvPfdzyw395kILJdQOSCi6niuaNqtRj4q3IccqKW+uveVbzm9Qp8PFS7Ylpezg/nWZgl+KMARoPCKuTySn3XeV4DkHMrCvtpk4exLdIWL6P/OElU8EwzJAjO3VV5EQkqcy6ZIc33VSIdyQHPbYlxU1+vzUSX88Xx1qtwkYFVDRpcr69MugVc5mdkzbkjo7bv4EkJsUIPWz9Q8j4SI9dAmSR4lQC/78Bzc,iv:q+MG6b216iNosel68JV8Yh2qiNvqtqtDc0aFK7Avq/k=,tag:3yvQPqDUO3JJK+y6bR7U4w==,type:str]
+      key: ENC[AES256_GCM,data:4XgPC8NVRetZxM+TwpnDCm1HTqeqj9Yr7wt2eqmE9MgW4sPEFjeLZN3TwiSkZfT5c0adX1Gc2aq8GsOs0PzyrG0JTJR9Lo5AbAUhvG/OGUFy6z+/DkQC6HGvZTCNC94ay+8JPu6OYlbSusxgmObIHUo9ZGra1hXWqpAbk0vvvwY0DCfhL2jun9h1tYQ/ku99T+LXY9sesnCJMzT10DgbTGG4Pyk1jzoaiP29RgtnRyE10gzRBdWsbBn4zZQ+h/QhAJtd6Y19wPvqhZOTZbfTUqzF38BAy6BRSk83iyOt1IjqhXoayG+HO17X1U8vKOgsdYNuRRMg8CSmEt/+p2iXbJmqlQBorhVb7Behi/HqKVMe9RyrcaNyG8O29wka2biEySfgKfzWXpi3FXNbqnq2+w==,iv:ZBH8zhCAyT36kuhoSGPL6AwYJCx3/qiFDUJE2sIdSGY=,tag:QSeGVBJ+nyz289nMfJQ7DA==,type:str]
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+    advertisedSubnets: ["10.30.0.0/24"]
+  allowSchedulingOnControlPlanes: true
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1lz2u75apdq73zpxp039khxngs59jcca5ek8apc8c02eceg25asrq55u5dc
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSByWGUrVXBvQjk0SGNpRXFZ
+        Ly91MXFwZXRYWUIvMzlpQXpPTUhGbnMrdXpBCm5yZTcyM3dGWmZqTXNGejFjbVpL
+        QnZQZVdxUWVmQXk3T3BQcVdxVUI2L2cKLS0tIFRuZi9kemN4ejA4TXZPOXc5QXVL
+        VXVMYS9CYkVZR0lmdzhTV1JiWEIzNTAKMXfIWNIMk43Zrx/Kd4JZ/jHrW1tSf2uP
+        mnyPvBUIlGg9/dvsCqbiHsqXauGg5vZoyG+iXMiYjksL17w8msQ5Eg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-01-09T06:08:29Z"
+  mac: ENC[AES256_GCM,data:QVbiGTjHx0XvJraCXfu3GBM03ZCDDrvxf06UxvPkobzaN3T43P09pU1VuU8kcNfldy0fNqO3oD1kxqYJ9PQxQQWxdCU5gujJ68gNJXqRUd7JWBaMDfnX2/L+dKH+iAJhiqdVlF4SZEdHZvlXFOhZV4ihdD8gpY0AHyk9Yd7HkVY=,iv:Km+7+zi+8N2Z3LeugoTKMwD/j2biYFyzDt5vYW4f9IQ=,tag:e8jdgTKWMQw9lNQ7VZclIg==,type:str]
+  pgp: []
+  encrypted_regex: ^(token|crt|key|id|secret|secretboxEncryptionSecret|ca)$
+  mac_only_encrypted: true
+  version: 3.9.3

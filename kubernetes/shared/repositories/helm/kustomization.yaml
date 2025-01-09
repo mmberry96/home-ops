@@ -8,6 +8,7 @@ resources:
   - ./coredns.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./fluxcd-community.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./jetstack.yaml
@@ -15,7 +16,6 @@ resources:
   - ./node-feature-discovery.yaml
   - ./onepassword.yaml
   - ./openebs.yaml
-  - ./postfinance.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
   # - ./traefik.yaml

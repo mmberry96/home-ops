@@ -4,61 +4,69 @@ version: '3'
 
 vars:
   BOOTSTRAP_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/bootstrap/resources'
-  TALHELPER_CONFIG_FILE: '{{.CLUSTER_DIR}}/talos/talconfig.yaml'
-  TALHELPER_CLUSTER_DIR: '{{.CLUSTER_DIR}}/talos/clusterconfig'
 
 tasks:
   talos:
     desc: Bootstrap Talos [CLUSTER=main]
+    dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
-      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
-      - talosctl --context {{.CLUSTER}} kubeconfig --nodes {{.TALOS_CONTROLLER}} --merge --force --force-context-name {{.CLUSTER}} {{.ROOT_DIR}}
+      - for: { var: TALOS_NODES }
+        cmd: >
+          sops exec-file --input-type yaml --output-type yaml {{.ITEM}} "minijinja-cli {}"
+          | talosctl --nodes {{base .ITEM | replace ".sops.yaml.j2" ""}} apply-config --insecure --file /dev/stdin
+      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name {{.CLUSTER}} {{.CLUSTER_DIR}}
+    vars:
+      TALOS_CONTROLLER:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+      TALOS_NODES:
+        sh: ls {{.CLUSTER_DIR}}/talos/*.j2
     requires:
       vars: [CLUSTER]
     preconditions:
-      - talosctl --context {{.CLUSTER}} config info
-      - test -f {{.ROOT_DIR}}/talosconfig
-      - which talhelper talosctl
+      - talosctl config info
+      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - which jq ls minijinja-cli sops talosctl
+
+  apps:
+    desc: Bootstrap Apps [CLUSTER=main]
+    cmds:
+      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+      - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - until kubectl wait nodes --for=condition=Ready --all --timeout=10m; do sleep 5; done
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - talosctl config info
+      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - test -f {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml
+      - which helmfile kubectl
 
   # NOTE: Nodes must all be part of the Ceph cluster and Ceph disks must share the same disk model
   rook:
     desc: Bootstrap Rook-Ceph [CLUSTER=main] [MODEL=required]
     cmds:
-      - minijinja-cli {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2 | kubectl --context {{.CLUSTER}} apply --server-side --filename -
-      - until kubectl --context {{.CLUSTER}} --namespace default get job/wipe-rook &>/dev/null; do sleep 5; done
-      - kubectl --context {{.CLUSTER}} --namespace default wait job/wipe-rook --for=condition=complete --timeout=5m
-      - stern --context {{.CLUSTER}} --namespace default job/wipe-rook --no-follow
-      - kubectl --context {{.CLUSTER}} --namespace default delete job wipe-rook
+      - minijinja-cli {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl --namespace default get job/wipe-rook &>/dev/null; do sleep 5; done
+      - kubectl --namespace default wait job/wipe-rook --for=condition=complete --timeout=5m
+      - stern --namespace default job/wipe-rook --no-follow
+      - kubectl --namespace default delete job wipe-rook
     env:
       MODEL: '{{.MODEL}}'
       NODE_COUNT:
-        sh: talosctl --context {{.CLUSTER}} config info --output json | jq --raw-output '.nodes | length'
+        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
     requires:
       vars: [CLUSTER, MODEL]
     preconditions:
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2
       - which kubectl minijinja-cli stern talosctl jq
 
-  apps:
-    desc: Bootstrap Apps [CLUSTER=main]
-    cmds:
-      - until kubectl --context {{.CLUSTER}} wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl --context {{.CLUSTER}} wait nodes --for=condition=Ready --all --timeout=10m; do sleep 5; done
-    requires:
-      vars: [CLUSTER]
-    preconditions:
-      - talosctl --context {{.CLUSTER}} config info
-      - test -f {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml
-      - which helmfile kubectl talosctl
-
   flux:
     desc: Bootstrap Flux [CLUSTER=main]
     cmds:
-      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/apps
       - for: { var: TEMPLATES }
-        cmd: op run --env-file {{.CLUSTER_DIR}}/bootstrap/bootstrap.env --no-masking -- minijinja-cli {{.ITEM}} | kubectl --context {{.CLUSTER}} apply --server-side --filename -
-      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
+        cmd: op run --env-file {{.CLUSTER_DIR}}/bootstrap/bootstrap.env --no-masking -- minijinja-cli {{.ITEM}} | kubectl apply --server-side --filename -
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
     vars:
       TEMPLATES:
         sh: ls {{.CLUSTER_DIR}}/bootstrap/apps/*.j2
@@ -76,7 +84,7 @@ tasks:
     desc: Recreate bootstrap secrets [CLUSTER=main]
     cmds:
       - for: { var: TEMPLATES }
-        cmd: op run --env-file {{.CLUSTER_DIR}}/bootstrap/bootstrap.env --no-masking -- minijinja-cli {{.ITEM}} | kubectl --context {{.CLUSTER}} apply --server-side --filename -
+        cmd: op run --env-file {{.CLUSTER_DIR}}/bootstrap/bootstrap.env --no-masking -- minijinja-cli {{.ITEM}} | kubectl apply --server-side --filename -
     vars:
       TEMPLATES:
         sh: ls {{.CLUSTER_DIR}}/bootstrap/apps/*.j2

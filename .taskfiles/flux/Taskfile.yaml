@@ -4,9 +4,7 @@ version: '3'
 
 tasks:
   reconcile:
-    desc: Force update Flux to pull in changes from your Git repository
-    summary: |
-      CLUSTER: Cluster to run command against (default: main)
-    vars:
-      CLUSTER: '{{.CLUSTER | default "main"}}'
-    cmd: flux --context {{.CLUSTER}} reconcile --namespace flux-system kustomization cluster --with-source
+    desc: Force update Flux to pull in changes from your Git repository [CLUSTER=main]
+    requires:
+      vars: [CLUSTER]
+    cmd: flux reconcile --namespace flux-system kustomization cluster --with-source

@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 30m
   path: ./kubernetes/main/apps
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -22,12 +22,6 @@ spec:
         kind: ConfigMap
         optional: true
       - name: cluster-secrets
-        kind: Secret
-        optional: true
-      - name: global-settings
-        kind: ConfigMap
-        optional: true
-      - name: global-secrets
         kind: Secret
         optional: true
   patches:
@@ -48,12 +42,6 @@ spec:
                 optional: true
               - kind: Secret
                 name: cluster-secrets
-                optional: true
-              - kind: ConfigMap
-                name: global-settings
-                optional: true
-              - kind: Secret
-                name: global-secrets
                 optional: true
       target:
         group: kustomize.toolkit.fluxcd.io

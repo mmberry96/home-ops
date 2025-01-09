@@ -39,6 +39,7 @@ spec:
         runAsGroup: 65534
         fsGroup: 65534
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44]
         seccompProfile:
           type: RuntimeDefault
     controllers:

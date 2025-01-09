@@ -31,7 +31,7 @@ tasks:
 
   .encrypt-file:
     internal: true
-    cmd: sops --encrypt --in-place {{.FILE}}
+    cmd: sops --encrypt --in-place --input-type yaml --output-type yaml {{.FILE}}
     requires:
       vars: [FILE]
     preconditions:

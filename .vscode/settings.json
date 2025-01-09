@@ -1,4 +1,5 @@
 {
+  "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": 750,
   "cSpell.words": [
     "agekey",
     "alertmanager",
@@ -40,9 +41,9 @@
     "postfinance",
     "rclone",
     "siderolabs",
+    "spegel",
     "stakater",
     "talconfig",
-    "talhelper",
     "talsecret",
     "talosconfig",
     "talosctl",
@@ -72,8 +73,7 @@
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"]
+    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/main/kubeconfig"]
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {

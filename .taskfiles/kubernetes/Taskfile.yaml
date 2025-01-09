@@ -3,19 +3,20 @@
 version: '3'
 
 tasks:
-  apply-ks:
+  ks-*:
     desc: Apply a Flux KS for a cluster [CLUSTER=main] [PATH=required]
     cmd: >
       flux build --namespace flux-system ks {{base .PATH}}
       --kustomization-file {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
       --path {{.CLUSTER_DIR}}/apps/{{.PATH}}{{if contains .KUSTOMIZATION "not found"}} --dry-run{{end}}
-      | yq 'with(select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization)"); .metadata.namespace = "flux-system")'
-      | kubectl --context {{.CLUSTER}} apply --server-side --field-manager=kustomize-controller --filename -
+      | yq 'with(select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization"); .metadata.namespace = "flux-system")' -
+      | kubectl {{.OPERATION}} {{if eq .OPERATION "apply"}}--server-side  --field-manager=kustomize-controller{{end}} --filename -
     requires:
       vars: [CLUSTER, PATH]
     vars:
+      OPERATION: '{{index .MATCH 0}}'
       KUSTOMIZATION:
-        sh: flux --namespace flux-system get kustomization {{base .PATH}} 2>&1
+        sh: flux --namespace flux-system get kustomizations {{base .PATH}}
     preconditions:
       - test -f {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
       - which flux kubectl yq
@@ -23,24 +24,24 @@ tasks:
   browse-pvc:
     desc: Mount a PVC to a temp container [CLUSTER=main] [NS=default] [CLAIM=required]
     interactive: true
-    cmd: kubectl --context {{.CLUSTER}} browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
+    cmd: kubectl browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
     vars:
       NS: '{{.NS | default "default"}}'
     requires:
       vars: [CLUSTER, CLAIM]
     preconditions:
-      - kubectl --context {{.CLUSTER}} --namespace {{.NS}} get persistentvolumeclaim {{.CLAIM}}
-      - kubectl --context {{.CLUSTER}} browse-pvc --version
+      - kubectl --namespace {{.NS}} get persistentvolumeclaim {{.CLAIM}}
+      - kubectl browse-pvc --version
       - which kubectl
 
   sync-secrets:
     desc: Sync all ExternalSecrets [CLUSTER=main]
     cmds:
-      - for: { var: SECRETS, split :"\n" }
-        cmd: kubectl --context {{.CLUSTER}} --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
+      - for: { var: SECRETS, split: "\n" }
+        cmd: kubectl --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
     vars:
       SECRETS:
-        sh: kubectl --context {{.CLUSTER}} get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
+        sh: kubectl get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
     requires:
       vars: [CLUSTER]
     preconditions:
@@ -52,7 +53,7 @@ tasks:
       - for:
           matrix:
             PHASE: [Failed, Pending, Succeeded]
-        cmd: kubectl --context {{.CLUSTER}} delete pods --all-namespaces --field-selector status.phase={{.ITEM.PHASE}} --ignore-not-found=true
+        cmd: kubectl delete pods --all-namespaces --field-selector status.phase={{.ITEM.PHASE}} --ignore-not-found=true
     requires:
       vars: [CLUSTER]
     preconditions:

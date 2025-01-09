@@ -3,6 +3,5 @@
 *.key
 *.pub
 .decrypted~*
-Brewfile.lock.json
 kubeconfig
 talosconfig
