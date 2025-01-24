@@ -17,7 +17,7 @@ tasks:
       - which age-keygen
 
   encrypt:
-    desc: Encrypt all Kubernetes SOPS secrets for a cluster [CLUSTER=main]
+    desc: Encrypt all Kubernetes SOPS secrets for a cluster
     cmds:
       - for: { var: FILE }
         task: .encrypt-file
@@ -26,8 +26,6 @@ tasks:
     vars:
       FILE:
         sh: find '{{.CLUSTER_DIR}}' -type f -name '*.sops.*' -exec grep -L 'ENC\[AES256_GCM' {} \;
-    requires:
-      vars: [CLUSTER]
 
   .encrypt-file:
     internal: true

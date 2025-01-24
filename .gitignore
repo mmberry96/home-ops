@@ -1,5 +1,4 @@
 /.task/
-*.secret.yaml
 *.key
 *.pub
 .decrypted~*

@@ -7,6 +7,7 @@
     "cloudflared",
     "clusterconfig",
     "containerd",
+    "controlplaneio",
     "coredns",
     "crds",
     "datetime",
@@ -57,8 +58,8 @@
     "zurg"
   ],
   "material-icon-theme.files.associations": {
-    "talsecret.sops.yaml": "lock",
-    "*.secret.sops.yaml": "lock",
+    "talos_secrets.sops.yaml": "lock",
+    "secret.sops.yaml": "lock",
     "renovate.jsonc": "renovate"
   },
   "material-icon-theme.folders.associations": {
@@ -73,7 +74,7 @@
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/main/kubeconfig"]
+    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/kubeconfig"]
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
