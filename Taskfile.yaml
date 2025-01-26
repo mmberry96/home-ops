@@ -15,10 +15,10 @@ vars:
   BOOTSTRAP_DIR: '{{.CLUSTER_DIR}}/bootstrap'
 
 env:
-  KUBECONFIG: '{{.CLUSTER_DIR}}/kubeconfig'
+  KUBECONFIG: '{{.ROOT_DIR}}/kubernetes/kubeconfig'
   MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  TALOSCONFIG: '{{.CLUSTER_DIR}}/talosconfig'
+  TALOSCONFIG: '{{.ROOT_DIR}}/kubernetes/talosconfig'
 
 tasks:
   default:
