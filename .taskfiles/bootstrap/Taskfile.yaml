@@ -36,6 +36,8 @@ tasks:
     env:
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
+      FLUX_GITHUB_PUBLIC_KEYS:
+        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
       ROOK_DISK: '{{.ROOK_DISK}}'
       VAULT: kubernetes
     requires:
@@ -55,6 +57,8 @@ tasks:
     env:
       NODE_COUNT:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
+      FLUX_GITHUB_PUBLIC_KEYS:
+        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
       VAULT: kubernetes
     preconditions:
       - op user get --me

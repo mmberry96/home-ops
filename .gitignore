@@ -1,6 +1,5 @@
 /.task/
 *.key
-*.pub
 .decrypted~*
 kubeconfig
 talosconfig

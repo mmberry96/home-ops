@@ -11,9 +11,10 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: https://gitub.com/mmberry96/home-ops
+    url: ssh://git@gitub.com/mmberry96/home-ops
     ref: refs/heads/main
     path: kubernetes/flux/cluster
+    pullSecret: github-deploy-key
   commonMetadata:
     labels:
       app.kubernetes.io/name: flux
