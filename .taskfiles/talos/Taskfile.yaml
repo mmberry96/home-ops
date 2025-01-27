@@ -9,7 +9,7 @@ tasks:
       - sops exec-file --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}} "talosctl gen config --with-secrets {} --output-types {{.NODE_TYPE}} --output {{.FILENAME}} --with-docs=false --with-examples=false main {{.ENDPOINT}}"
       - sops encrypt --in-place --input-type yaml --output-type yaml {{.FILENAME}}
     vars:
-      FILENAME: '{{BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2'
+      FILENAME: '{{.BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2'
       NODE_TYPE: '{{.NODE_TYPE | default "controlplane"}}'
       TALOS_SECRETS_FILE: '{{.BOOTSTRAP_DIR}}/talos/talos_secrets.sops.yaml'
     requires:
@@ -35,7 +35,7 @@ tasks:
       vars: [IP]
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
-      - test -f {{.BOOTSTRAP_DIR}}/cluster.env
+      - test -f {{.BOOTSTRAP_DIR}}/.cluster.env
       - test -f {{.BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2
       - test -f {{.CLUSTER_DIR}}/talosconfig
       - which minijinja-cli sops talosctl
@@ -107,7 +107,7 @@ tasks:
     preconditions:
       - talosctl --nodes {{.NODES}} get machineconfig
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/cluster.env
+      - test -f {{.CLUSTER_DIR}}/.cluster.env
       - which jq talosctl
 
   reset-node:
@@ -126,7 +126,7 @@ tasks:
 
   reset-cluster:
     desc: Reset Talos across the whole cluster [REBOOT=true]
-    prompt: Reset the Talos cluster ... continue?
+    prompt: Reset the Talos cluster ... This will require generating new secrets to create a new cluster ... continue?
     cmd: talosctl reset --nodes {{.NODES}} --graceful=false --reboot={{.REBOOT}}
     vars:
       NODES:
