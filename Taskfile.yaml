@@ -20,6 +20,8 @@ env:
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
   TALOSCONFIG: '{{.ROOT_DIR}}/kubernetes/talosconfig'
 
+dotenv: ['{{.BOOTSTRAP_DIR}}/.cluster.env']
+
 tasks:
   default:
     cmd: task --list
