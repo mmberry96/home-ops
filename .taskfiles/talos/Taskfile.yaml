@@ -2,23 +2,54 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+vars:
+  TALOS_SECRETS_FILE: '{{.BOOTSTRAP_DIR}}/talos/talos_secrets.sops.yaml'
+
 tasks:
+  gen-secret:
+    desc: Generate a new Talos secret file
+    prompt: Generate a new Talos secret file ... this will invalidate previously created talosconfig and machineconfig files ... continue?
+    cmds:
+      - talosctl gen secrets --force -o {{.TALOS_SECRETS_FILE}}
+      - sops encrypt --in-place --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}}
+      - task: talosconfig
+        vars:
+          TALOS_NODES: '{{.TALOS_NODES}}'
+    preconditions:
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which talosctl sops
+
+  talosconfig:
+    desc: Generate a new talosconfig file from the current Talos secrets file
+    cmds:
+      - sops exec-file --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}} "talosctl gen config --force --with-secrets {} --output-types talosconfig -o {{.CLUSTER_DIR}}/talosconfig main https://not-used:6443"
+      - cmd: echo 'Generated new talosconfig file, endpoints and nodes arrays will need to be manually populated'
+        silent: true
+    preconditions:
+      - test -f {{.TALOS_SECRETS_FILE}}
+      - which talosctl
+
   create-config:
     desc: Generate a new Talos configuration file [IP=required] [ENDPOINT=required] [NODE_TYPE=controlplane]
     cmds:
-      - sops exec-file --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}} "talosctl gen config --with-secrets {} --output-types {{.NODE_TYPE}} --output {{.FILENAME}} --with-docs=false --with-examples=false main {{.ENDPOINT}}"
+      - >
+        sops exec-file --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}}
+        "talosctl gen config --with-secrets {} --config-patch @{{.NODE_PATCH_FILE}}
+        --config-patch-{{if eq .NODE_TYPE "controlplane"}}control-plane{{else}}worker{{end}} @{{.NODE_TYPE_PATCH_FILE}}
+        --output-types {{.NODE_TYPE}} --output {{.FILENAME}} --with-docs=false --with-examples=false --force main {{.ENDPOINT}}"
       - sops encrypt --in-place --input-type yaml --output-type yaml {{.FILENAME}}
     vars:
       FILENAME: '{{.BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2'
       NODE_TYPE: '{{.NODE_TYPE | default "controlplane"}}'
-      TALOS_SECRETS_FILE: '{{.BOOTSTRAP_DIR}}/talos/talos_secrets.sops.yaml'
+      NODE_TYPE_PATCH_FILE: '{{.BOOTSTRAP_DIR}}/talos/patches/{{.NODE_TYPE}}.patch'
+      NODE_PATCH_FILE: '{{.BOOTSTRAP_DIR}}/talos/patches/nodes/{{.IP}}.patch'
     requires:
       vars: [IP, ENDPOINT]
-    status:
-      - test -f {{.FILENAME}}
     preconditions:
       - test -f {{.TALOS_SECRETS_FILE}}
       - test -f {{.CLUSTER_DIR}}/talosconfig
+      - test -f {{.NODE_TYPE_PATCH_FILE}}
+      - test -f {{.NODE_PATCH_FILE}}
       - which sops talosctl
 
   apply-node:

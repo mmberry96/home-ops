@@ -60,7 +60,8 @@
   "material-icon-theme.files.associations": {
     "talos_secrets.sops.yaml": "lock",
     "secret.sops.yaml": "lock",
-    "renovate.jsonc": "renovate"
+    "renovate.jsonc": "renovate",
+    "*.patch": "yaml"
   },
   "material-icon-theme.folders.associations": {
     "cert-manager": "guard",
