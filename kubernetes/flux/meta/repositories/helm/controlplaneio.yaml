@@ -3,8 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: metrics-server
+  name: controlplaneio
   namespace: flux-system
 spec:
-  interval: 12h
-  url: https://kubernetes-sigs.github.io/metrics-server
+  type: oci
+  interval: 30m
+  url: oci://ghcr.io/controlplaneio-fluxcd/charts
