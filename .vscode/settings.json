@@ -57,6 +57,11 @@
     "websecure",
     "zurg"
   ],
+  "files.associations": {
+    "talosconfig": "yaml",
+    "kubeconfig": "yaml",
+    "*.patch": "yaml"
+  },
   "material-icon-theme.files.associations": {
     "talos_secrets.sops.yaml": "lock",
     "secret.sops.yaml": "lock",
@@ -77,7 +82,7 @@
   "vs-kubernetes": {
     "vs-kubernetes.knownKubeconfigs": ["./kubernetes/kubeconfig"]
   },
-  "yaml.schemaStore.enable": true,
+  "yaml.schemaStore.enable": false,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
   }

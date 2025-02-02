@@ -13,8 +13,6 @@ tasks:
       - talosctl gen secrets --force -o {{.TALOS_SECRETS_FILE}}
       - sops encrypt --in-place --input-type yaml --output-type yaml {{.TALOS_SECRETS_FILE}}
       - task: talosconfig
-        vars:
-          TALOS_NODES: '{{.TALOS_NODES}}'
     preconditions:
       - test -f {{.SOPS_AGE_KEY_FILE}}
       - which talosctl sops
