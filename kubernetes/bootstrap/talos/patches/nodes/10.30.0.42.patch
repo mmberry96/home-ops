@@ -3,7 +3,7 @@ machine:
     hostname: anole02
     interfaces:
       - interface: eno2
-        mtu: 9000
+        mtu: 1500
         dhcp: true
         vip:
           ip: 10.30.0.40

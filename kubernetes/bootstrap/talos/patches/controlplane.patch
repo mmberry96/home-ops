@@ -8,20 +8,54 @@ machine:
         source: /var/openebs/local
         options: ['bind', 'rshared', 'rw']
     nodeIP:
-      validSubnets: ['10.30.0.0/16']
+      validSubnets: ['10.30.0.0/24']
+  network:
+    disableSearchDomain: true
+    nameservers: ['10.30.0.10']
   install:
-    # # i915, intel-ucode
-    # image: factory.talos.dev/installer/4b3cd373a192c8469e859b7a0cfbed3ecc3577c4a2d346a37b0aeff9cd17cdb0:{{ ENV.TALOS_VERSION }}
-    # # i915, intel-ucode, mei
-    image: factory.talos.dev/installer/039535a70c3bd1667c355eca78571267704e55c8a24785033d183b8f26e39d82:{{ ENV.TALOS_VERSION }}
+    # prettier-ignore
+    extraKernelArgs:
+      - i915.enable_guc=3                   # Comet Lake CPU / iGPU
+      - apparmor=0                          # Less security, faster 'puter
+      - init_on_alloc=0                     # Less security, faster 'puter
+      - init_on_free=0                      # Less security, faster 'puter
+      - intel_iommu=on                      # PCI Passthrough
+      - iommu=pt                            # PCI Passthrough
+      - mitigations=off                     # Less security, faster 'puter
+      - security=none                       # Less security, faster 'puter
+      - sysctl.kernel.kexec_load_disabled=1 # Bare metal fix: https://github.com/siderolabs/talos/issues/8751#issuecomment-2120141890
+      - talos.auditd.disabled=1             # Less security, faster 'puter
+    # i915, intel-ucode
+    image: factory.talos.dev/installer/4b3cd373a192c8469e859b7a0cfbed3ecc3577c4a2d346a37b0aeff9cd17cdb0:{{ ENV.TALOS_VERSION }}
+  files:
+    - # Spegel
+      op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |-
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
   # prettier-ignore
   sysctls:
     fs.inotify.max_user_instances: 8192   # Watchdog
     fs.inotify.max_user_watches: 1048576  # Watchdog
-    kernel.kexec_load_disabled: 1         # Fix for bare metal: https://github.com/siderolabs/talos/issues/8751#issuecomment-2120141890
-    net.core.rmem_max: 67108864           # Cloudflared / QUIC
-    net.core.wmem_max: 67108864           # Cloudflared / QUIC
+    net.core.rmem_max: 7500000            # Cloudflared / QUIC
+    net.core.wmem_max: 7500000            # Cloudflared / QUIC
+    net.ipv4.tcp_fastopen: 3              # Send and accept data in the opening SYN packet
     vm.nr_hugepages: 1024                 # Hugepages
+  sysfs:
+    devices.system.cpu.intel_pstate.hwp_dynamic_boost: 1
+    devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
   features:
     kubernetesTalosAPIAccess:
       enabled: true
@@ -43,7 +77,9 @@ cluster:
       name: none
   apiServer:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
-    certSANs: ['127.0.0.1']
+    certSANs: ['127.0.0.1'] # Controller vip is added automatically
+    extraArgs:
+      enable-aggregator-routing: true
     admissionControl:
       $patch: delete
   controllerManager:
@@ -78,7 +114,7 @@ cluster:
   etcd:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
-    advertisedSubnets: ['10.30.0.0/16']
+    advertisedSubnets: ['10.30.0.0/24']
   coreDNS:
     disabled: true
   allowSchedulingOnControlPlanes: true
