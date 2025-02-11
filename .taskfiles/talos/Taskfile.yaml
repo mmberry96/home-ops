@@ -136,11 +136,9 @@ tasks:
       - which jq talosctl
 
   reset-node:
-    desc: Reset Talos on a single node [IP=required] [REBOOT=true]
+    desc: Reset Talos on a single node [IP=required]
     prompt: Reset Talos node '{{.IP}}' ... continue?
-    cmd: talosctl reset --nodes {{.IP}} --graceful=false --reboot={{.REBOOT}}
-    vars:
-      REBOOT: '{{.REBOOT | default "true"}}'
+    cmd: talosctl reset --nodes {{.IP}} --graceful=false --reboot
     requires:
       vars: [IP]
     preconditions:
@@ -150,13 +148,12 @@ tasks:
       - which talosctl
 
   reset-cluster:
-    desc: Reset Talos across the whole cluster [REBOOT=true]
+    desc: Reset Talos across the whole cluster
     prompt: Reset the Talos cluster ... This will require generating new secrets to create a new cluster ... continue?
-    cmd: talosctl reset --nodes {{.NODES}} --graceful=false --reboot={{.REBOOT}}
+    cmd: talosctl reset --nodes {{.NODES}} --graceful=false --reboot
     vars:
       NODES:
         sh: talosctl config info --output json | jq --join-output '[.nodes[]] | join(",")'
-      REBOOT: '{{.REBOOT | default "true"}}'
     preconditions:
       - talosctl config info
       - test -f {{.CLUSTER_DIR}}/talosconfig
