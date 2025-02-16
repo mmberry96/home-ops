@@ -110,7 +110,7 @@ function apply_namespaces() {
 function apply_secrets() {
   gum "${LOG_ARGS[@]}" debug "Applying secrets"
 
-  local -r secrets_file="${KUBERNETES_DIR}/bootstrap/apps/resources/secrets.yaml.tpl"
+  local -r secrets_file="${BOOTSTRAP_DIR}/resources/secrets.yaml.tpl"
   local resources
 
   if [[ ! -f "${secrets_file}" ]]; then
