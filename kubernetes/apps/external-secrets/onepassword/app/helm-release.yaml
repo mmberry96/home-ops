@@ -80,7 +80,7 @@ spec:
               XDG_DATA_HOME: *configDir
               OP_HTTP_PORT: &syncPort 8081
               OP_BUS_PORT: 11221
-              OP_BUS_PEERS: 11220
+              OP_BUS_PEERS: localhost:11220
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
