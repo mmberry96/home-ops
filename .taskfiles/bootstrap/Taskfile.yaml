@@ -6,62 +6,37 @@ tasks:
   talos:
     desc: Bootstrap Talos
     cmds:
-      - for: { var: TALOS_NODES }
-        cmd: >
-          sops exec-file --input-type yaml --output-type yaml {{.ITEM}} "minijinja-cli {}"
-          | talosctl --nodes {{base .ITEM | replace ".sops.yaml.j2" ""}} apply-config --insecure --file /dev/stdin
-      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.CLUSTER_DIR}}
+      - for: { var: TALOS_CONTROLLERS }
+        cmd: minijinja-cli {{.TALOS_DIR}}/controlplane.yaml.js | op inject | talosctl --nodes {{.ITEM}} apply-config --config-patch @{{.TALOS_DIR}}/controlplane/{{.ITEM}}.yaml --insecure --file /dev/stdin
+      - until talosctl --nodes {{.RANDOM_CONTROLLER}} bootstrap; do sleep 5; done
+      - talosctl kubeconfig --nodes {{.RANDOM_CONTROLLER}} --force --force-context-name main {{.ROOT_DIR}}
     vars:
-      TALOS_CONTROLLER:
+      RANDOM_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-      TALOS_NODES:
-        sh: ls {{.BOOTSTRAP_DIR}}/talos/*.j2
+      TALOS_CONTROLLERS:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]'
     preconditions:
+      - op user get --me
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - which jq ls minijinja-cli sops talosctl
+      - test -f {{.ROOT_DIR}}/talosconfig
+      - which jq minijinja-cli op talosctl
 
   apps:
     desc: Bootstrap Apps [ROOK_DISK=required]
     summary: |
-      IMPORTANT: All nodes will be used OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. WD_BLACK SN850X)
+      IMPORTANT: ROOK_DISK must be set to the disk model used across all the nodes (e.g. WD_BLACK SN850X)
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
-      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - op run --env-file {{.BOOTSTRAP_DIR}}/apps/.bootstrap.env --no-masking -- minijinja-cli {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
-      - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml destroy --selector name=wipe-rook
+      - bash {{.BOOTSTRAP_DIR}}/resources/prepare.sh
+      - helmfile --file {{.BOOTSTRAP_DIR}}/helmfile.yaml apply --skip-diff-on-install --suppress-diff
     env:
-      NODE_COUNT:
-        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
-      FLUX_GITHUB_PUBLIC_KEYS:
-        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
       ROOK_DISK: '{{.ROOK_DISK}}'
-      VAULT: kubernetes
     requires:
       vars: [ROOK_DISK]
     preconditions:
       - op user get --me
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - test -f {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml
-      - test -f {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2
-      - test -f {{.BOOTSTRAP_DIR}}/apps/templates/wipe-rook.yaml.gotmpl
-      - which curl jq helmfile kubectl op talosctl
-
-  recreate-secrets:
-    desc: Recreate bootstrap secrets
-    cmd: op run --env-file {{.BOOTSTRAP_DIR}}/apps/.bootstrap.env --no-masking -- minijinja-cli {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
-    env:
-      NODE_COUNT:
-        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
-      FLUX_GITHUB_PUBLIC_KEYS:
-        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
-      VAULT: kubernetes
-    preconditions:
-      - op user get --me
-      - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - test -f {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2
-      - which curl jq kubectl op talosctl
+      - test -f {{.ROOT_DIR}}/talosconfig
+      - test -f {{.BOOTSTRAP_DIR}}/helmfile.yaml
+      - test -f {{.BOOTSTRAP_DIR}}/resources/prepare.sh
+      - which helmfile op talosctl

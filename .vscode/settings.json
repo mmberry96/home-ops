@@ -1,5 +1,4 @@
 {
-  "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": 750,
   "cSpell.words": [
     "agekey",
     "alertmanager",
@@ -59,30 +58,37 @@
   ],
   "files.associations": {
     "talosconfig": "yaml",
-    "kubeconfig": "yaml",
-    "*.patch": "yaml"
+    "kubeconfig": "yaml"
   },
   "material-icon-theme.files.associations": {
-    "talos_secrets.sops.yaml": "lock",
-    "secret.sops.yaml": "lock",
-    "renovate.jsonc": "renovate",
-    "*.patch": "yaml"
+    "*.sops.yaml": "lock",
+    "helmfile.yaml": "helm",
+    "kubeconfig": "kubernetes",
+    "talosconfig": "kubernetes"
   },
   "material-icon-theme.folders.associations": {
+    // top level
+    "bootstrap": "seeders",
+    "flux": "pipe",
+    "talos": "linux",
+    // namespaces
     "cert-manager": "guard",
     "default": "home",
     "external-secrets": "secure",
-    "flux": "pipe",
     "flux-system": "pipe",
     "kube-system": "kubernetes",
     "network": "connection",
-    "rook-ceph": "base"
+    "observability": "event",
+    "openebs-system": "base",
+    "rook-ceph": "dump",
+    "volsync-system": "aws"
   },
   "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
-    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/kubeconfig"]
+    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"]
   },
-  "yaml.schemaStore.enable": false,
+  "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
   }

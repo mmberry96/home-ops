@@ -13,16 +13,18 @@ includes:
   workstation: .taskfiles/workstation
 
 vars:
-  CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes'
-  BOOTSTRAP_DIR: '{{.CLUSTER_DIR}}/bootstrap'
+  BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
+  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
+  TALOS_DIR: '{{.ROOT_DIR}}/talos'
 
 env:
-  KUBECONFIG: '{{.ROOT_DIR}}/kubernetes/kubeconfig'
+  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
+  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
   MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  TALOSCONFIG: '{{.ROOT_DIR}}/kubernetes/talosconfig'
+  TALOSCONFIG: '{{.ROOT_DIR}}/talosconfig'
 
-dotenv: ['{{.BOOTSTRAP_DIR}}/.cluster.env']
+dotenv: ['{{.ROOT_DIR}}/.talos.env']
 
 tasks:
   default:
@@ -34,4 +36,4 @@ tasks:
     cmd: flux --namespace flux-system reconcile kustomization flux-system --with-source
     preconditions:
       - test -f {{.KUBECONFIG}}
-      - which
+      - which flux
