@@ -24,6 +24,7 @@ spec:
       retries: 3
   values:
     connect:
+      applicationName: onepassword
       api:
         httpPort: 80
       serviceType: ClusterIP
