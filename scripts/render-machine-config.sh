@@ -25,6 +25,9 @@ function cleanup() {
 trap cleanup ERR EXIT
 
 function main() {
+    # shellcheck disable=SC2034
+    local -r LOG_LEVEL="info"
+
     check_env KUBERNETES_VERSION TALOS_VERSION
     check_cli minijinja-cli op yq
 

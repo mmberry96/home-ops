@@ -44,7 +44,7 @@ function log() {
     if [[ $# -gt 0 ]]; then
         for item in "$@"; do
             if [[ "${item}" == *=* ]]; then
-                data+="\033[1m\033[38;5;236m${item%%=*}=\033[0m\"${item#*=}\" "
+                data+="\033[1m\033[38;5;250m${item%%=*}=\033[0m\"${item#*=}\" "
             else
                 data+="${item} "
             fi
