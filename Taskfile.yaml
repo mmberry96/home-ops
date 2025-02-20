@@ -15,6 +15,7 @@ includes:
 vars:
   BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
   KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
+  SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
   TALOS_DIR: '{{.ROOT_DIR}}/talos'
 
 env:
@@ -24,7 +25,8 @@ env:
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
   TALOSCONFIG: '{{.ROOT_DIR}}/talosconfig'
 
-dotenv: ['{{.ROOT_DIR}}/.talos.env']
+dotenv:
+  - '{{.KUBERNETES_DIR}}/apps/system-upgrade/.env'
 
 tasks:
   default:
