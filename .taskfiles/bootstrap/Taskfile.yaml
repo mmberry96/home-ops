@@ -24,7 +24,7 @@ tasks:
   apps:
     desc: Bootstrap Apps [ROOK_DISK=required]
     summary: |
-      IMPORTANT: ROOK_DISK must be set to the disk model used across all the nodes (e.g. WD_BLACK SN850X)
+      IMPORTANT: ROOK_DISK must be set to the disk model used across all the nodes (e.g. 'WD_BLACK SN850X 1000GB')
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
       - bash {{.BOOTSTRAP_DIR}}/resources/prepare.sh

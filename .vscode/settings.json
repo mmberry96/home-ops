@@ -6,6 +6,7 @@
     "cloudflared",
     "clusterconfig",
     "containerd",
+    "controlplane",
     "controlplaneio",
     "coredns",
     "crds",
