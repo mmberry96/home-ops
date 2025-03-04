@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: home-assistant
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -22,15 +22,17 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       home-assistant:
         annotations:
           reloader.stakater.com/auto: 'true'
-          # k8s.v1.cni.cncf.io/networks: multus-iot
+          # k8s.v1.cni.cncf.io/networks: |
+          #   [{
+          #     "name": "multus-iot",
+          #     "namespace": "network",
+          #     "ips": ["10.20.0.10/24"]
+          #   }]
         containers:
           app:
             image:
@@ -55,7 +57,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.96.4@sha256:f93810f7f6636b3af3b1a750faf612349cddb89fbb6d28d69123a214fc75ee9e
+              tag: 4.97.2@sha256:6ff0e9cf5a553b3961ece200be75e21e8c887ed0ae28a7c28213722dccf74b0c
             # prettier-ignore
             args: [
               '--auth', 'none',

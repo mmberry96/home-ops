@@ -10,11 +10,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -34,11 +35,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   prune: false
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

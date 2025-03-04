@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: intel-device-plugin-gpu
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: intel-device-plugins-gpu
@@ -27,5 +27,5 @@ spec:
       namespace: kube-system
   values:
     name: intel-gpu-plugin
-    shardDevNum: 3
     nodeFeatureRule: false
+    sharedDevNum: 99

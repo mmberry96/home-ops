@@ -11,13 +11,14 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/default/kavita/app
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

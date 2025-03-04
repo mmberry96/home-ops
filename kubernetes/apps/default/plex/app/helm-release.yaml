@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: plex
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: app-template
@@ -146,8 +146,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44]
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: 'true'
     service:
       app:
         controller: plex
