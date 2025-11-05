@@ -19,7 +19,7 @@ spec:
           secretKeyRef:
             name: &secret cloudflare-dns-secret
             key: *name
-      - name: &name CP_ZONE_ID
+      - name: &name CF_ZONE_ID
         valueFrom:
           secretKeyRef:
             name: *secret
