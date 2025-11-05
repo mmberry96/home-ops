@@ -5,26 +5,10 @@ kind: HelmRelease
 metadata:
   name: kavita
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: kavita
   interval: 1h
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       kavita:
@@ -38,7 +22,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ['ALL'] }
+              capabilities: {drop: ['ALL']}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -48,20 +32,19 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: kavita
         ports:
           http:
             port: 5000
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: '{{ .Release.Name }}.mordex.io'
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ['[STATUS] == 200'']
+        hostnames:
+          - '{{ .Release.Name }}.mordex.io'
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config:
         existingClaim: kavita
@@ -69,7 +52,7 @@ spec:
           - path: /kavita/config
       manga:
         type: nfs
-        server: truenas.mordex.io
+        server: komodo.internal
         path: /mnt/storage0/media/manga
         globalMounts:
           - path: /manga

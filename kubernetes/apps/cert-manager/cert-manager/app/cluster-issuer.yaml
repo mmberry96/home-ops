@@ -7,7 +7,6 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: mmberry96@gmail.com
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
@@ -18,7 +17,7 @@ spec:
               key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
-            - 'mordex.io'
+            - mordex.io
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -28,7 +27,6 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: mmberry96@gmail.com
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
@@ -39,4 +37,4 @@ spec:
               key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
-            - 'mordex.io'
+            - mordex.io

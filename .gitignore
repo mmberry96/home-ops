@@ -1,4 +1,7 @@
-/.task/
+.task/
+.venv/
+*.env
+*.iso
 *.key
 .decrypted~*
 kubeconfig

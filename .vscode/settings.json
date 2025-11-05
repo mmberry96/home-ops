@@ -2,6 +2,8 @@
   "cSpell.words": [
     "agekey",
     "alertmanager",
+    "backube",
+    "blackbox",
     "ceph",
     "cloudflared",
     "clusterconfig",
@@ -12,24 +14,30 @@
     "crds",
     "datetime",
     "debrid",
+    "descheduler",
     "dotenv",
+    "envoyproxy",
     "externaldns",
     "externalsecret",
     "fluxcd",
-    "gencommand",
-    "genconfig",
-    "gensecret",
+    "gatus",
+    "gotmpl",
     "hass",
+    "healthz",
     "helmfile",
+    "helmrelease",
     "httproute",
     "jetstack",
+    "justfile",
     "k8snetworkplumbingwg",
     "kavita",
     "keygen",
+    "kopia",
     "krew",
     "kubelet",
     "letsencrypt",
     "machineconfig",
+    "mendhak",
     "minijinja",
     "multus",
     "nvme",
@@ -39,10 +47,13 @@
     "openmeteo",
     "opnsense",
     "pihole",
+    "pikvm",
     "postfinance",
     "powercycle",
     "rclone",
     "siderolabs",
+    "smartctl",
+    "snmp",
     "spegel",
     "stakater",
     "talconfig",
@@ -53,6 +64,7 @@
     "taskfiles",
     "traefik",
     "truenas",
+    "tuppr",
     "unifi",
     "volsync",
     "websecure",
@@ -60,9 +72,12 @@
   ],
   "files.associations": {
     "talosconfig": "yaml",
-    "kubeconfig": "yaml"
+    "kubeconfig": "yaml",
+    "**/*.json5": "json5"
+    // "**/*.yaml.j2": "yaml"
   },
   "material-icon-theme.files.associations": {
+    "*.gotmpl": "smarty",
     "*.sops.yaml": "lock",
     "helmfile.yaml": "helm",
     "kubeconfig": "kubernetes",
@@ -70,10 +85,14 @@
   },
   "material-icon-theme.folders.associations": {
     // top level
+    ".github/workflows": "ci",
+    ".renovate": "robot",
     "bootstrap": "seeders",
+    "bootstrap/helmfile.d": "helm",
     "flux": "pipe",
     "talos": "linux",
     // namespaces
+    "actions-runner-system": "github",
     "cert-manager": "guard",
     "default": "home",
     "external-secrets": "secure",
@@ -83,6 +102,7 @@
     "observability": "event",
     "openebs-system": "base",
     "rook-ceph": "dump",
+    "system-upgrade": "update",
     "volsync-system": "aws"
   },
   "sops.defaults.ageKeyFile": "age.key",
@@ -93,5 +113,8 @@
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "bluebrown.yamlfmt"
   }
 }

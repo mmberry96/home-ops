@@ -6,6 +6,8 @@ resources:
   - ./external-secret.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
+  - ./oci-repository.yaml
+  - ./resource-claim-template.yaml
 configMapGenerator:
   - name: zurg-configmap
     files:

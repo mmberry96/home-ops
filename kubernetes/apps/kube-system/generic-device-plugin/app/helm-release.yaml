@@ -5,23 +5,10 @@ kind: HelmRelease
 metadata:
   name: generic-device-plugin
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: generic-device-plugin
   interval: 1h
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       generic-device-plugin:
@@ -41,7 +28,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ['ALL'] }
+              capabilities: {drop: ['ALL']}
     persistence:
       device-plugin:
         type: hostPath
