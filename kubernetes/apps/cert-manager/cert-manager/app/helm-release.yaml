@@ -16,7 +16,7 @@ spec:
     dns01RecursiveNameserversOnly: true
     prometheus:
       enabled: true
-      serviceMonitor:
+      servicemonitor:
         enabled: true
     webhook:
       replicaCount: 2
