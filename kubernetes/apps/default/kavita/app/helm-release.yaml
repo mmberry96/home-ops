@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kareadita/kavita
-              tag: 0.8.4@sha256:07393ed7d6860e7312c0197b8c1ebcd4d53c52b7cabd542db08613410ff22c69
+              tag: 0.8.8@sha256:22c42f3cc83fb98b98a6d6336200b615faf2cfd2db22dab363136744efda1bb0
             env:
               TZ: America/Chicago
             securityContext:
