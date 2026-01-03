@@ -11,7 +11,7 @@ machine:
     diskQuotaSupport: true
     hostDNS:
       enabled: true
-      forwardKubeDNSToHost: false
+      forwardKubeDNSToHost: true # Requires Cilium socketLB features
       resolveMemberNames: true
     kubePrism:
       enabled: true
@@ -26,7 +26,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -54,8 +53,6 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      featureGates:
-        ImageVolume: true
       serializeImagePulls: false
     extraMounts:
       - destination: /var/openebs/local
@@ -69,20 +66,6 @@ machine:
     nodeIP:
       validSubnets:
         - 10.30.0.0/24
-  network:
-    interfaces:
-      - interface: bond0
-        bond:
-          interfaces:
-            - eno2
-          mode: active-backup
-        dhcp: true
-        mtu: 1500
-        vlans:
-          - # IOT
-            vlanId: 20
-            dhcp: false
-            mtu: 1500
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: 'true'
     topology.kubernetes.io/region: main
@@ -95,10 +78,13 @@ machine:
     net.ipv4.neigh.default.gc_thresh1: '4096'
     net.ipv4.neigh.default.gc_thresh2: '8192'
     net.ipv4.neigh.default.gc_thresh3: '16384'
+    net.ipv4.ping_group_range: 0 2147483647
     net.ipv4.tcp_congestion_control: bbr
     net.ipv4.tcp_fastopen: '3'
     net.ipv4.tcp_mtu_probing: '1'
+    net.ipv4.tcp_notsent_lowat: '131072'
     net.ipv4.tcp_rmem: 4096 87380 33554432 # check
+    net.ipv4.tcp_slow_start_after_idle: '0'
     net.ipv4.tcp_window_scaling: '1'
     net.ipv4.tcp_wmem: 4096 87380 33554432 # check
     sunrpc.tcp_slot_table_entries: '128'
@@ -149,7 +135,7 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: 'true'
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
     image: registry.k8s.io/kube-apiserver:v1.35.0
   controllerManager:
@@ -196,6 +182,30 @@ cluster:
   {% endif %}
 ---
 apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+links:
+  - eno2
+bondMode: active-backup
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: bond0
+clientIdentifier: mac
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.20 # IOT
+vlanID: 20
+parent: bond0
+mtu: 1500
+---
+apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
+---
+apiVersion: v1alpha1
+kind: OOMConfig
+triggerExpression: 'false'
