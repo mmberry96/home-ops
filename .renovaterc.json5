@@ -20,7 +20,7 @@
   ],
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: ['prEditedNotification', 'prIgnoreNotification'],
-  ignorePaths: ['**/*.sops.*', '**/resources/**'],
+  ignorePaths: ['**/resources/**'],
   flux: {
     managerFilePatterns: ['/\\.yaml(?:\\.j2)?$/']
   },

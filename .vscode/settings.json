@@ -78,7 +78,6 @@
   },
   "material-icon-theme.files.associations": {
     "*.gotmpl": "smarty",
-    "*.sops.yaml": "lock",
     "helmfile.yaml": "helm",
     "kubeconfig": "kubernetes",
     "talosconfig": "kubernetes"
@@ -105,7 +104,6 @@
     "system-upgrade": "update",
     "volsync-system": "aws"
   },
-  "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
     "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"]
