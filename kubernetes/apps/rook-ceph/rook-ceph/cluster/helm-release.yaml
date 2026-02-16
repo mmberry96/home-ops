@@ -99,5 +99,5 @@ spec:
       name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
-    cephFileSystem: []
+    cephFileSystems: []
     cephObjectStores: []
