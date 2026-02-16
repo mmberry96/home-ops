@@ -42,12 +42,14 @@ machine:
         [ NFSMount_Global_Options ]
         nfsvers=4.2
         hard=True
-        nconnect=16
+        nconnect=8
         noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
     diskSelector:
       model: KBG40ZNS256G NVMe KIOXIA 256GB
-    image: factory.talos.dev/metal-installer/07fc545562cc6c5d76cf282c30a95d10b86286cd345bac2fa963c786397475cd:v1.12.4
+    image: factory.talos.dev/metal-installer/7167e0ee5a122cf9502e67b8124716c34eb92b98cf899768b18c620ee87f240b:v1.12.4
     wipe: false
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -204,10 +206,4 @@ mtu: 1500
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
-timeout: 5m
----
-apiVersion: v1alpha1
-kind: OOMConfig
-triggerExpression: 'false'
-cgroupRankingExpression: '0.0'
-sampleInterval: '5s'
+timeout: 10m
