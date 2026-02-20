@@ -53,7 +53,7 @@ spec:
             restartPolicy: Always
             image:
               repository: rclone/rclone
-              tag: 1.73.0
+              tag: 1.73.1
             args:
               - mount
               - 'zurg:'
