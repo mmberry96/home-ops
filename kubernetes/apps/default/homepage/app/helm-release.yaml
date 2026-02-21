@@ -35,7 +35,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ['[STAtUS] == 200']
+            conditions: ['[STATUS] == 200']
         hostnames:
           - '{{ .Release.Name }}.mordex.io'
         parentRefs:
