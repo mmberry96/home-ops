@@ -68,4 +68,4 @@ spec:
           - '{{ .Release.Name }}.mordex.io'
         parentRefs:
           - name: envoy-external
-            namespace: kube-system
+            namespace: network
