@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: latest
+              tag: v1.10.1
             env:
               HOMEPAGE_ALLOWED_HOSTS: '{{ .Release.Name }}.mordex.io'
             envFrom:
