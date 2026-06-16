@@ -15,12 +15,12 @@ spec:
       persistentVolume:
         enabled: true
         storageClassName: ceph-block
-        size: 20Gi
-      retentionPeriod: 14d
+        size: 50Gi
+      retentionPeriod: 90d
       route:
         enabled: true
         hostnames:
-          - victoria-logs.mordex.io
+          - vlogs.mordex.io
         parentRefs:
           - name: envoy-internal
             namespace: network
