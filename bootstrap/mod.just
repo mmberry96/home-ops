@@ -1,5 +1,4 @@
 set lazy := true
-set positional-arguments := true
 set quiet := true
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
@@ -79,7 +78,7 @@ namespaces:
 [script]
 resources:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! just template "{{ bootstrap_dir }}/resources.yaml.j2" | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
+    if ! just template "{{ source_directory() }}/resources.yaml.j2" | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
         just log fatal "Failed to apply resources" "stage" "$(basename "$0")"
     fi
 
@@ -87,7 +86,7 @@ resources:
 [script]
 crds:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/00-crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile.d/00-crds.yaml" template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
         just log fatal "Failed to apply crds" "stage" "$(basename "$0")"
     fi
 
@@ -95,6 +94,6 @@ crds:
 [script]
 apps:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ bootstrap_dir }}/helmfile.d/01-apps.yaml" sync --hide-notes; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile.d/01-apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile" "stage" "$(basename "$0")"
     fi
