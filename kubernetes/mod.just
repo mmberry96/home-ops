@@ -1,3 +1,4 @@
+set lazy := true
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
@@ -13,8 +14,8 @@ apply-ks ns ks:
     just kube render-local-ks "{{ ns }}" "{{ ks }}" | kubectl apply --server-side --field-manager=kustomize-controller -f /dev/stdin
 
 [doc('Browse a PVC')]
-browse-pvc namespace claim:
-    kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
+browse-pvc ns claim:
+    kubectl browse-pvc -n {{ ns }} -i mirror.gcr.io/alpine:latest {{ claim }}
 
 [doc('Delete local Flux Kustomization')]
 delete-ks ns ks:
@@ -74,8 +75,8 @@ sync-oci:
     done
 
 [doc('View a secret')]
-view-secret namespace secret:
-    kubectl view-secret -n {{ namespace }} {{ secret }}
+view-secret ns secret:
+    kubectl view-secret -n {{ ns }} {{ secret }}
 
 [doc('Install Krew plugins')]
 krew:
