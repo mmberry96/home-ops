@@ -48,7 +48,7 @@ machine:
   install:
     diskSelector:
       model: KBG40ZNS256G NVMe KIOXIA 256GB
-    image: factory.talos.dev/metal-installer/1f5d0cf81842948d2197868752005ce65a08131c0abc2333e0ab60658ba746ff:v1.12.6
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.12.6
     wipe: false
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
