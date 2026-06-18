@@ -1,4 +1,5 @@
 [env]
+_.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = '{{config_root}}/kubeconfig'
 MINIJINJA_CONFIG_FILE = '{{config_root}}/.minijinja.toml'
 TALOSCONFIG = '{{config_root}}/talosconfig'
@@ -18,6 +19,7 @@ LEFTHOOK_OUTPUT = 'false'
 'krew' = 'latest'
 'kubectl' = 'latest'
 'kustomize' = 'latest'
+'python' = 'latest'
 'talos' = 'latest'
 'uv' = 'latest'
 'yq' = 'latest'
