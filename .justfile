@@ -1,8 +1,7 @@
 #!/usr/bin/env -S just --justfile
 
-set lazy := true
-set quiet := true
-set script-interpreter := ['bash', '-euo', 'pipefail']
+set lazy
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 # Bootstrap Recipes
@@ -16,16 +15,13 @@ mod kube "kubernetes"
 mod talos "talos"
 
 [private]
-[script]
 default:
     just -l
 
 [private]
-[script]
 log lvl msg *args:
     gum log -t rfc3339 -s -l "{{ lvl }}" "{{ msg }}" {{ args }}
 
 [private]
-[script]
 template file *args:
     minijinja-cli "{{ file }}" {{ args }} | op inject
