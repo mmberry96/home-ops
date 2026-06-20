@@ -24,3 +24,6 @@ LEFTHOOK_OUTPUT = 'false'
 'uv' = 'latest'
 'yq' = 'latest'
 'pipx:flux-local' = 'latest'
+
+[hooks]
+postinstall = 'lefthook install'
