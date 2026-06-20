@@ -65,7 +65,7 @@ base: ready
 [script]
 apps:
     just log info "Running stage..." "stage" "$(basename "$0")"
-    if ! helmfile -f "{{ source_directory() }}/helmfile/apps.yaml" sync --hide-notes; then
+    if ! helmfile -f "{{ source_directory() }}/helmfile.d/apps.yaml" sync --hide-notes; then
         just log fatal "Failed to sync helmfile" "stage" "$(basename "$0")"
     fi
 

@@ -57,7 +57,7 @@ spec:
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
-        retention: 14d
+        retention: 30d
         retentionSize: 50GB
         resources:
           requests:
@@ -82,7 +82,7 @@ spec:
         dashboardsConfigMapRefEnabled: true
         folder: o11y
         matchLabels:
-          grafana.internal/instance: grafana
+          dashboards: grafana
     additionalPrometheusRulesMap:
       dockerhub-rules:
         groups:
