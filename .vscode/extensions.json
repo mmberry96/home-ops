@@ -2,6 +2,7 @@
   "recommendations": [
     "bluebrown.yamlfmt",
     "BlueGlassBlock.better-json5",
+    "hverlin.mise-vscode",
     "ms-kubernetes-tools.vscode-kubernetes-tools",
     "nefrob.vscode-just-syntax",
     "pkief.material-icon-theme",
