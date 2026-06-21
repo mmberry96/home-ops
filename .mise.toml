@@ -19,11 +19,8 @@ LEFTHOOK_OUTPUT = 'false'
 'krew' = 'latest'
 'kubectl' = 'latest'
 'kustomize' = 'latest'
-'python' = 'latest'
 'talos' = 'latest'
-'uv' = 'latest'
 'yq' = 'latest'
-'pipx:flux-local' = 'latest'
 
 [hooks]
 postinstall = 'lefthook install'
