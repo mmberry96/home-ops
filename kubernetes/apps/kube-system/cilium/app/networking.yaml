@@ -5,7 +5,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: pool
 spec:
-  allowFirstLastIPs: 'No'
+  allowFirstLastIPs: "No"
   blocks:
     - cidr: 10.60.0.0/24
 ---
@@ -24,7 +24,7 @@ spec:
           - LoadBalancerIP
       selector:
         matchExpressions:
-          - {key: somekey, operator: NotIn, values: ['never-used-value']}
+          - { key: somekey, operator: NotIn, values: ["never-used-value"] }
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumbgppeerconfig_v2.json
 apiVersion: cilium.io/v2

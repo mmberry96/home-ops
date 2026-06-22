@@ -13,7 +13,7 @@ spec:
     controllers:
       home-assistant:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -25,11 +25,11 @@ spec:
               HASS_HTTP_TRUSTED_PROXY_2: 10.244.0.0/16
             envFrom:
               - secretRef:
-                  name: '{{ .Release.Name }}-secret'
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ['ALL']}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -60,20 +60,20 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ['[STATUS] == 200']
+            conditions: ["[STATUS] == 200"]
         hostnames:
-          - '{{ .Release.Name }}.mordex.io'
+          - "{{ .Release.Name }}.mordex.io"
           - hass.mordex.io
         parentRefs:
           - name: envoy-external
             namespace: network
     persistence:
       config:
-        existingClaim: '{{ .Release.Name }}'
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: '{{ .Release.Name }}-cache'
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
       tmp:

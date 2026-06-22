@@ -22,7 +22,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ['ALL']}
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -39,9 +39,9 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ['[STATUS] == 200'']
+            conditions: ["[STATUS] == 200"]
         hostnames:
-          - '{{ .Release.Name }}.mordex.io'
+          - "{{ .Release.Name }}.mordex.io"
         parentRefs:
           - name: envoy-internal
             namespace: network

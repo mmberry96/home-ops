@@ -1,10 +1,10 @@
 {
   "recommendations": [
-    "bluebrown.yamlfmt",
     "BlueGlassBlock.better-json5",
     "hverlin.mise-vscode",
     "ms-kubernetes-tools.vscode-kubernetes-tools",
     "nefrob.vscode-just-syntax",
+    "oxc.oxc-vscode",
     "pkief.material-icon-theme",
     "redhat.vscode-yaml",
     "samuelcolvin.jinjahtml"
