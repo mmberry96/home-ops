@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: o11y.giantswarm.io/v1alpha2
+apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
   name: ceph-node-nfsmount-diskspace-warning
@@ -12,7 +12,7 @@ spec:
       value: /etc/nfsmount.conf
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: o11y.giantswarm.io/v1alpha2
+apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
   name: ceph-node-local-diskspace-warning
@@ -25,7 +25,7 @@ spec:
       matchType: "=~"
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: o11y.giantswarm.io/v1alpha2
+apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
   name: nas-memory-high-utilization
@@ -37,7 +37,7 @@ spec:
       value: komodo.internal:9100
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: o11y.giantswarm.io/v1alpha2
+apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
   name: hpa-maxed-out
