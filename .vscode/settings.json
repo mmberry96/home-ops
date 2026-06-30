@@ -32,7 +32,9 @@
     "k8snetworkplumbingwg",
     "kavita",
     "keygen",
+    "konflate",
     "kopia",
+    "kopiur",
     "krew",
     "kubelet",
     "letsencrypt",
@@ -68,6 +70,7 @@
     "unifi",
     "volsync",
     "websecure",
+    "zeroscaler",
     "zurg"
   ],
   "files.associations": {
@@ -98,7 +101,7 @@
     "flux-system": "pipe",
     "kube-system": "kubernetes",
     "network": "connection",
-    "observability": "event",
+    "o11y": "event",
     "openebs-system": "base",
     "rook-ceph": "dump",
     "system-upgrade": "update",
@@ -112,7 +115,22 @@
   "yaml.schemas": {
     "kubernetes": "./kubernetes/**/*.yaml"
   },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[json5]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[just]": {
+    "editor.defaultFormatter": "nefrob.vscode-just-syntax"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
   "[yaml]": {
-    "editor.defaultFormatter": "bluebrown.yamlfmt"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }
