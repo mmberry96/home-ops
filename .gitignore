@@ -1,4 +1,3 @@
-.task/
 .venv/
 *.env
 *.iso

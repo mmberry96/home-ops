@@ -19,7 +19,7 @@ configMapGenerator:
       - plex.yaml=./resources/loki-rule.yaml
     options:
       labels:
-        loki_rule: 'true'
+        loki_rule: "true"
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

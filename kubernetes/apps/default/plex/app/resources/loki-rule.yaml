@@ -10,5 +10,5 @@ groups:
           severity: critical
           category: logs
         annotations:
-          app: '{{ $labels.app }}'
-          summary: '{{ $labels.app }} is experiencing database issues'
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is experiencing database issues"

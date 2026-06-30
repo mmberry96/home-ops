@@ -11,24 +11,24 @@ Route Redistribution - Connected Routes
 
 ### Neighbors
 
--   Name - anole01
-    Peer-IP - 10.30.0.41
-    Soft reconfiguration inbound - Enabled
-    Peer Group - k8s
--   Name - anole02
-    Peer-IP - 10.30.0.42
-    Soft reconfiguration inbound - Enabled
-    Peer Group - k8s
--   Name - anole03
-    Peer-IP - 10.30.0.43
-    Soft reconfiguration inbound - Enabled
-    Peer Group - k8s
+- Name - anole01
+  Peer-IP - 10.30.0.41
+  Soft reconfiguration inbound - Enabled
+  Peer Group - k8s
+- Name - anole02
+  Peer-IP - 10.30.0.42
+  Soft reconfiguration inbound - Enabled
+  Peer Group - k8s
+- Name - anole03
+  Peer-IP - 10.30.0.43
+  Soft reconfiguration inbound - Enabled
+  Peer Group - k8s
 
 ### Peer Groups
 
--   Name - k8s
-    Remote AS - 64514
-    Next-Hop-Self
+- Name - k8s
+  Remote AS - 64514
+  Next-Hop-Self
 
 #### Generated config
 
