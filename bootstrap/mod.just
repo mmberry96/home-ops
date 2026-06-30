@@ -4,7 +4,7 @@ set quiet
 set script-interpreter := ['bash', '-euo', 'pipefail']
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-controller := `talosctl config info -o yaml | yq -r -e'.endpoints[0]'`
+controller := `talosctl config info -o yaml | yq -r -e '.endpoints[0]'`
 nodes := `talosctl config info -o yaml | yq -r -e '.nodes | join (" ")'`
 
 [private]
