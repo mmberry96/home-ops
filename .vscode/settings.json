@@ -32,6 +32,7 @@
     "k8snetworkplumbingwg",
     "kavita",
     "keygen",
+    "konflate",
     "kopia",
     "krew",
     "kubelet",
@@ -68,6 +69,7 @@
     "unifi",
     "volsync",
     "websecure",
+    "zeroscaler",
     "zurg"
   ],
   "files.associations": {
