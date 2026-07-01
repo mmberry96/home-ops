@@ -18,12 +18,12 @@ machine:
       port: 7445
     {% if ENV.CONTROLPLANE %}
     kubernetesTalosAPIAccess:
+      enabled: true
       allowedKubernetesNamespaces:
         - actions-runner-system
         - system-upgrade
       allowedRoles:
         - os:admin
-      enabled: true
     {% endif %}
     rbac: true
   files:
@@ -48,7 +48,7 @@ machine:
   install:
     diskSelector:
       model: KBG40ZNS256G NVMe KIOXIA 256GB
-    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.12.6
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.13.5
     wipe: false
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -68,7 +68,7 @@ machine:
       validSubnets:
         - 10.30.0.0/24
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
+    node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
   sysctls:
     fs.inotify.max_user_instances: "8192"
@@ -84,12 +84,12 @@ machine:
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
     net.ipv4.tcp_notsent_lowat: "131072"
-    net.ipv4.tcp_rmem: 4096 87380 33554432 # check
+    net.ipv4.tcp_rmem: 4096 87380 33554432
     net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
-    net.ipv4.tcp_wmem: 4096 87380 33554432 # check
-    sunrpc.tcp_slot_table_entries: "128"
+    net.ipv4.tcp_wmem: 4096 65536 33554432
     sunrpc.tcp_max_slot_table_entries: "128"
+    sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
   token: ref+op://kubernetes/talos/MACHINE_TOKEN
@@ -136,13 +136,13 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: HPAScalerToZero=true
-    image: registry.k8s.io/kube-apiserver:v1.36.1
+      feature-gates: HPAScaleToZero=true
+    image: registry.k8s.io/kube-apiserver:v1.36.2
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
       feature-gates: HPAScaleToZero=true
-    image: registry.k8s.io/kube-controller-manager:v1.36.1
+    image: registry.k8s.io/kube-controller-manager:v1.36.2
   coreDNS:
     disabled: true
   etcd:
@@ -155,7 +155,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.1
+    image: registry.k8s.io/kube-proxy:v1.36.2
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -176,7 +176,7 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.36.1
+    image: registry.k8s.io/kube-scheduler:v1.36.2
   secretboxEncryptionSecret: ref+op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: ref+op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
@@ -205,4 +205,4 @@ mtu: 1500
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
-timeout: 10m
+timeout: 5m
