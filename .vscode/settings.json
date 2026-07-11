@@ -68,7 +68,6 @@
     "truenas",
     "tuppr",
     "unifi",
-    "volsync",
     "websecure",
     "zeroscaler",
     "zurg"
@@ -105,7 +104,7 @@
     "openebs-system": "base",
     "rook-ceph": "dump",
     "system-upgrade": "update",
-    "volsync-system": "aws"
+    "kopiur-system": "aws"
   },
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
