@@ -14,6 +14,8 @@ spec:
         nfs:
           server: komodo.internal
           path: /mnt/storage0/Kopiur
+  create:
+    enabled: true
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
