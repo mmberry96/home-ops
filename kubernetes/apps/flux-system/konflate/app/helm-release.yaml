@@ -15,7 +15,6 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://{{ .Release.Name }}.mordex.io
-      mcp: true
     secret:
       existingSecret: konflate-webhook-token-secret
     httpRoute:
