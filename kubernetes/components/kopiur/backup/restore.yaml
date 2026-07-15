@@ -3,10 +3,8 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: Restore
 metadata:
-  name: ${app}
+  name: ${APP}
 spec:
-  credentialProjection:
-    enabled: true
   policy:
     onMissingSnapshot: Continue
   source:
