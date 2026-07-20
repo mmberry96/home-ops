@@ -13,6 +13,7 @@ spec:
     controllers:
       generic-device-plugin:
         type: daemonset
+        strategy: RollingUpdate
         containers:
           app:
             image:
@@ -30,10 +31,21 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      priorityClassName: system-node-critical
+      tolerations:
+        - operator: Exists
+          effect: NoSchedule
+        - operator: Exists
+          effect: NoExecute
     persistence:
       device-plugin:
         type: hostPath
         hostPath: /var/lib/kubelet/device-plugins
+        globalMounts:
+          - path: /var/lib/kubelet/device-plugins
       dev:
         type: hostPath
         hostPath: /dev
+        globalMounts:
+          - path: /dev
