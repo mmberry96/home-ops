@@ -80,7 +80,7 @@ spec:
                   - "SYS_ADMIN"
             resources:
               limits:
-                squat.ai/fuse: 1
+                devices.kubevirt.io/fuse: 1
         containers:
           app:
             image:

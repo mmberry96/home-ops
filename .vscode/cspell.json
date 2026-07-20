@@ -33,6 +33,7 @@
     "kopiur",
     "krew",
     "kubelet",
+    "kubevirt",
     "letsencrypt",
     "machineconfig",
     "minijinja",
