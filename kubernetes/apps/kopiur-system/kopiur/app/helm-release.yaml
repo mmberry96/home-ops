@@ -18,8 +18,6 @@ spec:
     extraVolumeMounts:
       - name: repo
         mountPath: /repo
-    logging:
-      level: debug
     monitoring:
       dashboards:
         enabled: true
