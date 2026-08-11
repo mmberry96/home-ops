@@ -19,7 +19,7 @@ JUST_UNSTABLE = "1"
 "krew" = "latest"
 "kubectl" = "latest"
 "kustomize" = "latest"
-"talos" = "latest"
+"talos" = "1.14.0-beta.0"
 "yq" = "latest"
 
 [hooks]
